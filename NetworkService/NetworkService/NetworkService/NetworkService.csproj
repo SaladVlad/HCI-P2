@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Logging.cs" />
+    <Compile Include="Model\EntityType.cs" />
+    <Compile Include="Model\FlowMeter.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -96,8 +99,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\volume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\turbine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\electronic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
