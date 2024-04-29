@@ -62,6 +62,22 @@ namespace NetworkService.Model
             }
         }
 
+        public int Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    OnPropertyChanged(nameof(Value));
+                }
+            }
+        }
+
         private void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
