@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+NetworkService/NetworkService/.vs/NetworkService/v17/DocumentLayout.json
+NetworkService/NetworkService/.vs/NetworkService/v17/.suo
+NetworkService/NetworkService/.vs/NetworkService/v17/.suo
