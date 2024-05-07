@@ -4,33 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NetworkService"
-        xmlns:ViewModel="clr-namespace:NetworkService.ViewModel"
-        xmlns:Views="clr-namespace:NetworkService.Views"
+        
+        xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
+        xmlns:views="clr-namespace:NetworkService.Views"
+        
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="932"
-        Width="430"
+        Width="445"
         Background="#4A4A4A"
         BorderBrush="#00C2FF"
         BorderThickness="3">
     <Window.DataContext>
-        <ViewModel:MainWindowViewModel/>
+        <viewModel:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <!--<DataTemplate DataType="{x:Type viewModel:EntitiesViewModel}">
+            <views:EntitiesView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:DisplayViewModel}">
+            <views:DisplayView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:GraphViewModel}">
+            <views:GraphView />
+        </DataTemplate>-->
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+        
 
         <Menu
             Grid.Row="0"
-            Margin="1"
-            Background="#3088A4">
+            Margin="1,0,0,1"
+            Background="#3088A4" Grid.ColumnSpan="2">
             <MenuItem
                 Height="60"
-                Width="140">
+                Width="140"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="Table">
                 <MenuItem.Header>
                     <TextBlock
                         Text="Table View"
@@ -43,7 +64,9 @@
             </MenuItem>
             <MenuItem
                 Height="60"
-                Width="140">
+                Width="140"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="Network">
                 <MenuItem.Header>
                     <TextBlock
                         Text="Network Display"
@@ -56,7 +79,9 @@
             </MenuItem>
             <MenuItem
                 Height="60"
-                Width="140">
+                Width="140"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="Graph">
                 <MenuItem.Header>
                     <TextBlock
                         Text="Graph View"
@@ -69,7 +94,33 @@
             </MenuItem>
         </Menu>
 
-        <ContentControl Grid.Row="1"/>
+        <ContentControl Grid.Row="1" Content="{Binding SelectedContent}" Grid.ColumnSpan="2"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Margin="0 0 1 0"
+                Background="#3088A4"
+                Content="Home"
+                Foreground="White"
+                FontSize="30"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="Network"
+                />
+            <Button
+                Grid.Column="1"
+                Margin="1 0 0 0"
+                Background="#3088A4"
+                Content="Undo"
+                Foreground="White"
+                FontSize="30"/>
+            
+        </Grid>
     </Grid>
- 
+
 </Window>
