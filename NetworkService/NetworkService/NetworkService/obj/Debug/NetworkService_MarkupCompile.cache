@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\App.xaml
-1219584333
+495962327
 
-91821284360
+1938857252
 13-1310406943
-MainWindow.xaml;
+MainWindow.xaml;Views\DisplayView.xaml;Views\EntitiesView.xaml;Views\GraphView.xaml;
 
-False
+True
 
