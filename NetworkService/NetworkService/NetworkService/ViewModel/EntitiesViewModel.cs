@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetworkService.Views
 {
-    internal class EntitiesViewModel
+    internal class EntitiesViewModel : BindableBase
     {
     }
 }

@@ -11,7 +11,7 @@ using NetworkService.Model;
 
 namespace NetworkService.ViewModel
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : BindableBase
     {
         public ObservableCollection<FlowMeter> FlowMeters {  get; set; }
 
