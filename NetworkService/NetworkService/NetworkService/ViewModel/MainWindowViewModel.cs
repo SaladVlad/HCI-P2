@@ -7,7 +7,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using NetworkService.Model;
+using NetworkService.Views;
 
 namespace NetworkService.ViewModel
 {
@@ -15,13 +18,45 @@ namespace NetworkService.ViewModel
     {
         public ObservableCollection<FlowMeter> FlowMeters {  get; set; }
 
+
+        public ICommand ChangeViewCommand { get; private set; }
+
+        private object selectedContent;
+
+        public object SelectedContent { get => selectedContent; set => SetProperty(ref selectedContent, value); }
+
         public MainWindowViewModel()
         {
-            createListener(); //Povezivanje sa serverskom aplikacijom
+            createListener(); //creating a listener for gathering info about network entities
+
             FlowMeters = new ObservableCollection<FlowMeter>();
             FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("volume", "volume.png") });
             FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
 
+            SelectedContent = new DisplayView(); //setting the net display view as a default
+
+            #region Commands
+
+            ChangeViewCommand = new MyICommand<string>(ChangeView);
+
+            #endregion
+
+        }
+
+        private void ChangeView(string viewName)
+        {
+            if (viewName == "Table" && SelectedContent.GetType()!= typeof(EntitiesView))
+            {
+                SelectedContent = new EntitiesView();
+            }
+            else if (viewName == "Network" && SelectedContent.GetType() != typeof(DisplayView))
+            {
+                SelectedContent = new DisplayView();
+            }
+            else if (viewName == "Graph" && SelectedContent.GetType() != typeof(GraphView))
+            {
+                SelectedContent = new GraphView();
+            }
         }
 
         private void createListener()
@@ -47,11 +82,6 @@ namespace NetworkService.ViewModel
                         //Ukoliko je primljena poruka pitanje koliko objekata ima u sistemu -> odgovor
                         if (incomming.Equals("Need object count"))
                         {
-                            //Response
-                            /* Umesto sto se ovde salje count.ToString(), potrebno je poslati 
-                             * duzinu liste koja sadrzi sve objekte pod monitoringom, odnosno
-                             * njihov ukupan broj (NE BROJATI OD NULE, VEC POSLATI UKUPAN BROJ)
-                             * */
                             Byte[] data = System.Text.Encoding.ASCII.GetBytes(FlowMeters.Count.ToString());
                             stream.Write(data, 0, data.Length);
                         }
@@ -77,5 +107,7 @@ namespace NetworkService.ViewModel
             listeningThread.IsBackground = true;
             listeningThread.Start();
         }
+
+        
     }
 }
