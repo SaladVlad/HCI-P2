@@ -8,7 +8,6 @@
         xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
         xmlns:views="clr-namespace:NetworkService.Views"
         
-        WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -16,7 +15,8 @@
         Width="445"
         Background="#4A4A4A"
         BorderBrush="#00C2FF"
-        BorderThickness="3">
+        BorderThickness="3"
+        ResizeMode="NoResize">
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
     </Window.DataContext>
