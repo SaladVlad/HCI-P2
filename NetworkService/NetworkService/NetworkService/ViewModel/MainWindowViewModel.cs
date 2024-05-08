@@ -16,10 +16,12 @@ namespace NetworkService.ViewModel
 {
     public class MainWindowViewModel : BindableBase
     {
-        public ObservableCollection<FlowMeter> FlowMeters {  get; set; }
+        public static ObservableCollection<FlowMeter> FlowMeters {  get; set; }
 
-
+        #region Commands
         public ICommand ChangeViewCommand { get; private set; }
+
+        #endregion
 
         private object selectedContent;
 
@@ -31,7 +33,7 @@ namespace NetworkService.ViewModel
 
             FlowMeters = new ObservableCollection<FlowMeter>();
             FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("volume", "volume.png") });
-            FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
+            //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
 
             SelectedContent = new DisplayView(); //setting the net display view as a default
 
@@ -90,14 +92,22 @@ namespace NetworkService.ViewModel
                             //U suprotnom, server je poslao promenu stanja nekog objekta u sistemu
                             Console.WriteLine(incomming); //Na primer: "Entitet_1:272"
 
+                            Helpers.Logging.AppendToFile("log.txt",incomming);
+
                             string[] parts = incomming.Split(':');
                             int id = int.Parse(parts[0].Split('_')[1]);
                             int value = int.Parse(parts[1]);
                             FlowMeters[id].Value = value;
 
+                            AddValueToList(FlowMeters[id]);
+
                             //################ IMPLEMENTACIJA ####################
                             // Obraditi poruku kako bi se dobile informacije o izmeni
                             // Azuriranje potrebnih stvari u aplikaciji
+
+
+
+
 
                         }
                     }, null);
@@ -108,6 +118,17 @@ namespace NetworkService.ViewModel
             listeningThread.Start();
         }
 
-        
+        private void AddValueToList(FlowMeter flowMeter)
+        {
+            if (flowMeter.Last_5_Values.Count == 5)
+            {
+                flowMeter.Last_5_Values.RemoveAt(0);
+                flowMeter.Last_5_Values.Add(flowMeter.Value);
+            }
+            else
+            {
+                flowMeter.Last_5_Values.Add(flowMeter.Value);
+            }
+        }
     }
 }
