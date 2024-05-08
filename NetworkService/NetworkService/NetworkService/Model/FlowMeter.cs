@@ -13,9 +13,31 @@ namespace NetworkService.Model
         string _name;
         EntityType _entityType;
         int _value;
+        List<int> _last_5_values;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        public FlowMeter()
+        {
+            Last_5_Values = new List<int>();
+        }
+
+        public List<int> Last_5_Values
+        {
+            get
+            {
+                return _last_5_values;
+            }
+            set
+            {
+                if (_last_5_values != value)
+                {
+                    _last_5_values = value;
+                    OnPropertyChanged(nameof(Last_5_Values));
+                }
+            }
+        }
         public int ID 
         { 
             get 
