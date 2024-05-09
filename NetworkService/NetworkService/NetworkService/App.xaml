@@ -4,6 +4,57 @@
              xmlns:local="clr-namespace:NetworkService"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="TransparentComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                                Name="ToggleButton"
+                                Template="{DynamicResource ComboBoxToggleButton}"
+                                Grid.Column="2"
+                                Focusable="false"
+                                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickMode="Press"/>
+                            <ContentPresenter
+                                Name="ContentSite"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                IsHitTestVisible="False"/>
+                            <Popup
+                                Name="Popup"
+                                Placement="Bottom"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True"
+                                Focusable="False"
+                                PopupAnimation="Slide">
+                                <Grid
+                                    Name="DropDown"
+                                    SnapsToDevicePixels="True"
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border
+                                        x:Name="DropDownBorder"
+                                        Background="Transparent"
+                                        BorderThickness="1"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" Foreground="{TemplateBinding Foreground}">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource TransparentComboBox}" />
+
     </Application.Resources>
 </Application>
