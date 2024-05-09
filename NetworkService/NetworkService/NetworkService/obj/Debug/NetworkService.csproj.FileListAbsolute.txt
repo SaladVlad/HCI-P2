@@ -20,3 +20,4 @@ C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\o
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService.csproj.GenerateResource.cache
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService.csproj.CoreCompileInputs.cache
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\App.baml

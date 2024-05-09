@@ -60,6 +60,7 @@
     <Compile Include="Model\EntityType.cs" />
     <Compile Include="Model\FlowMeter.cs" />
     <Compile Include="Model\Pair.cs" />
+    <Compile Include="Model\TextBoxGotFocusBehavior.cs" />
     <Compile Include="MyICommand.cs" />
     <Compile Include="ViewModel\DisplayViewModel.cs" />
     <Compile Include="ViewModel\GraphViewModel.cs" />
