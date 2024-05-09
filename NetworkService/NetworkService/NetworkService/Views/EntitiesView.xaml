@@ -3,10 +3,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NetworkService.Views"
+             xmlns:local="clr-namespace:NetworkService.Views" 
+             d:DataContext="{d:DesignInstance Type=local:EntitiesViewModel}"
+             xmlns:model="clr-namespace:NetworkService.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="872" d:DesignWidth="445"
+             DataContext="">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="400"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border CornerRadius="15"
+                BorderBrush="#00C2FF"
+                BorderThickness="2"
+                Margin="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Height="50" Orientation="Horizontal">
+                    <Label Content="ID:" Foreground="White" FontSize="20"/>
+                    <TextBox Width="100" Height="40" model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
+                    <Label Content="Type:" Foreground="White" FontSize="20"/>
+                    <TextBox  Width="100" Height="40"  model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
+                </StackPanel>
+                
+                <StackPanel Height="50" Orientation="Horizontal">
+                    <Label Content="Name:" Foreground="White" FontSize="20"/>
+                    <TextBox  Width="100" Height="40" model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
+
+                        <Button 
+                        Content="Create"
+                        Cursor="Hand"
+                        Width="100"
+                        Height="30"
+                        Margin="240 0 0 0"/>
+
+                </StackPanel>
+            </StackPanel>
             
+        </Border>
+        
+        
+        
+        <Grid 
+            Name="KeyboardGrid"
+            Grid.Row="2"
+            Background="DarkSlateGray">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Button Width="35" Height="50" Margin="3 0" Content="Q" Command="{Binding InputKeyCommand}" CommandParameter="Q"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="W" Command="{Binding InputKeyCommand}" CommandParameter="W"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="E" Command="{Binding InputKeyCommand}" CommandParameter="E"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="R" Command="{Binding InputKeyCommand}" CommandParameter="R"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="T" Command="{Binding InputKeyCommand}" CommandParameter="T"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="Y" Command="{Binding InputKeyCommand}" CommandParameter="Y"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="U" Command="{Binding InputKeyCommand}" CommandParameter="U"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="I" Command="{Binding InputKeyCommand}" CommandParameter="I"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="O" Command="{Binding InputKeyCommand}" CommandParameter="O"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="P" Command="{Binding InputKeyCommand}" CommandParameter="P"/>
+                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <Button Width="35" Height="50" Margin="25 0 5 0" Content="A" Command="{Binding InputKeyCommand}" CommandParameter="A"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="S" Command="{Binding InputKeyCommand}" CommandParameter="S"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="D" Command="{Binding InputKeyCommand}" CommandParameter="D"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="F" Command="{Binding InputKeyCommand}" CommandParameter="F"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="G" Command="{Binding InputKeyCommand}" CommandParameter="G"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="H" Command="{Binding InputKeyCommand}" CommandParameter="H"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="J" Command="{Binding InputKeyCommand}" CommandParameter="J"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="K" Command="{Binding InputKeyCommand}" CommandParameter="K"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="L" Command="{Binding InputKeyCommand}" CommandParameter="L"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <Button Width="35" Height="50" Margin="5 0" Content="" Visibility="Hidden" IsEnabled="False"/><!--Dummy button for alignment-->
+                <Button Width="35" Height="50" Margin="5 0" Content="Z" Command="{Binding InputKeyCommand}" CommandParameter="Z"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="X" Command="{Binding InputKeyCommand}" CommandParameter="X"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="C" Command="{Binding InputKeyCommand}" CommandParameter="C"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="V" Command="{Binding InputKeyCommand}" CommandParameter="V"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="B" Command="{Binding InputKeyCommand}" CommandParameter="B"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="N" Command="{Binding InputKeyCommand}" CommandParameter="N"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="M" Command="{Binding InputKeyCommand}" CommandParameter="M"/>
+                <Button Width="75" Height="50" Margin="5 0" Content="&lt;= Bksp" Command="{Binding BackspaceCommand}"/>
+
+            </StackPanel>
+
+            <Button Grid.Row="3" Width="300" Height="50" Content="Space" Command="{Binding InputKeyCommand}" CommandParameter=" "/>
+
+        </Grid>
     </Grid>
 </UserControl>
