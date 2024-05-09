@@ -19,13 +19,13 @@ namespace NetworkService.ViewModel
         private FlowMeter selectedMeter;
 
 
-        private double graphCoefficient = 0.16;
+        private readonly double graphCoefficient = 0.16;
 
         public MyICommand SelectCommand;
         public MyICommand SelectionChangedCommand { get; }
 
 
-        private Timer _timer;
+        private readonly Timer _timer;
 
         public GraphViewModel()
         {
@@ -225,6 +225,10 @@ namespace NetworkService.ViewModel
 
                 });
 
+            }
+            else if (SelectedMeter == null)
+            {
+                 //do nothing because no entity is selected
             }
             else
             {
