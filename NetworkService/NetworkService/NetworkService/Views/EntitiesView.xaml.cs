@@ -23,6 +23,7 @@ namespace NetworkService.Views
         public EntitiesView()
         {
             InitializeComponent();
+            DataContext = new EntitiesViewModel();
         }
     }
 }
