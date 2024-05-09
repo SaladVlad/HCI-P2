@@ -32,7 +32,7 @@ namespace NetworkService.ViewModel
             createListener(); //creating a listener for gathering info about network entities
 
             FlowMeters = new ObservableCollection<FlowMeter>();
-            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("volume", "volume.png") });
+            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("volume", "/Resources/Images/volume.png") });
             //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
 
             SelectedContent = new DisplayView(); //setting the net display view as a default
