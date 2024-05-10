@@ -11,8 +11,8 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="932"
-        Width="445"
+        Height="952"
+        Width="467"
         Background="#4A4A4A"
         BorderBrush="#00C2FF"
         BorderThickness="3"
@@ -22,17 +22,7 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <!--<DataTemplate DataType="{x:Type viewModel:EntitiesViewModel}">
-            <views:EntitiesView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModel:DisplayViewModel}">
-            <views:DisplayView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModel:GraphViewModel}">
-            <views:GraphView />
-        </DataTemplate>-->
+        <!--Something should be here, maybe-->
     </Window.Resources>
 
     <Grid>
