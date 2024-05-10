@@ -7,45 +7,243 @@
              d:DataContext="{d:DesignInstance Type=local:EntitiesViewModel}"
              xmlns:model="clr-namespace:NetworkService.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="872" d:DesignWidth="445"
-             DataContext="">
+             DataContext=""
+             Width="445"
+             Height="780">
+
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="BorderBrush" Value="#00C2FF"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#00C2FF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ValueStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ValueState}" Value="Normal">
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ValueState}" Value="Low">
+                    <Setter Property="Foreground" Value="Purple"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ValueState}" Value="High">
+                    <Setter Property="Foreground" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+           
+        </Style>
+
+
+        <DataTemplate DataType="model:FlowMeter">
+            <Border
+                BorderBrush="#00C2FF"
+                BorderThickness="1"
+                CornerRadius="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Stretch="Uniform"
+                        Source="{Binding EntityType.ImagePath}"/>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Vertical">
+                        <TextBlock
+                            Text="ID:"
+                            Foreground="White"
+                            FontSize="15"/>
+                        <TextBlock
+                            Foreground="White"
+                            FontSize="15"
+                            Text="{Binding ID}"/>
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="2"
+                        Orientation="Vertical">
+                        <TextBlock
+                            Text="Name:"
+                            Foreground="White"
+                            FontSize="15"/>
+                        <TextBlock
+                            Foreground="White"
+                            FontSize="15"
+                            Text="{Binding Name}"/>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="3"
+                        Orientation="Vertical">
+                        <TextBlock
+                            Text="Type:"
+                            Foreground="White"
+                            FontSize="15"/>
+                        <TextBlock
+                            Foreground="White"
+                            FontSize="15"
+                            Text="{Binding EntityType.Name}"/>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="4"
+                        Orientation="Vertical">
+                        <TextBlock
+                            Text="Value:"
+                            Foreground="White"
+                            FontSize="15"/>
+                        <TextBlock
+                            Foreground="White"
+                            FontSize="15"
+                            Text="{Binding Value}"
+                            Style="{StaticResource ValueStyle}"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="400"/>
-            <RowDefinition/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="300"/>
         </Grid.RowDefinitions>
 
         <Border CornerRadius="15"
                 BorderBrush="#00C2FF"
                 BorderThickness="2"
                 Margin="5">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Height="50" Orientation="Horizontal">
-                    <Label Content="ID:" Foreground="White" FontSize="20"/>
-                    <TextBox Width="100" Height="40" model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
-                    <Label Content="Type:" Foreground="White" FontSize="20"/>
-                    <TextBox  Width="100" Height="40"  model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
+            <StackPanel
+                Orientation="Vertical"
+                Margin="10 20">
+                <StackPanel
+                    Height="50"
+                    Orientation="Horizontal">
+                    <Label 
+                        Content="ID:"
+                        Foreground="White" 
+                        FontSize="20"
+                        VerticalContentAlignment="Center"/>
+                    <TextBox
+                        x:Name="IDTextBox"
+                        Width="100"
+                        Height="35"
+                        Margin="35 0 0 0"
+                        Text="{Binding IDText}"
+                        model:TextBoxGotFocusBehavior.GotFocusCommand=
+                        "{Binding TextBoxGotFocusCommand}">
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                    <Label
+                        Content="Type:"
+                        Foreground="White"
+                        FontSize="20"
+                        Margin="80 0 5 0"
+                        VerticalContentAlignment="Center"/>
+                    <ComboBox 
+                        Width="100"
+                        Height="35"
+                        ItemsSource="{Binding Types}" 
+                        SelectedItem="{Binding SelectedType}"/>
                 </StackPanel>
-                
-                <StackPanel Height="50" Orientation="Horizontal">
-                    <Label Content="Name:" Foreground="White" FontSize="20"/>
-                    <TextBox  Width="100" Height="40" model:TextBoxGotFocusBehavior.GotFocusCommand="{Binding TextBoxGotFocusCommand}"/>
 
-                        <Button 
+                <StackPanel 
+                    Height="50"
+                    Orientation="Horizontal">
+                    <Label
+                        Content="Name:"
+                        Foreground="White"
+                        FontSize="20"/>
+                    <TextBox 
+                        x:Name="NameTextBox"
+                        Width="100" 
+                        Height="35"
+                        Text="{Binding NameText}"
+                        model:TextBoxGotFocusBehavior.GotFocusCommand=
+                        "{Binding TextBoxGotFocusCommand}">
+                        <TextBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+                    <Button 
                         Content="Create"
                         Cursor="Hand"
-                        Width="100"
+                        ToolTip="Create new Entity"
+                        Width="110"
                         Height="30"
-                        Margin="240 0 0 0"/>
+                        Margin="130 0 0 0"
+                        Command="{Binding AddEntityCommand}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
 
                 </StackPanel>
             </StackPanel>
-            
+
         </Border>
-        
-        
-        
+
+        <Border 
+            Grid.Row="1"
+            CornerRadius="15"
+            BorderBrush="#00C2FF"
+            BorderThickness="2"
+            Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <ListView
+                    Grid.Row="1"
+                    Background="Transparent"
+                    ItemsSource="{Binding FlowMeters}"
+                    SelectedItem="{Binding SelectedEntity}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    SelectionMode="Single">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Margin" Value="5 2.5"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    
+                </ListView>
+                
+            </Grid>
+        </Border>
+
+
         <Grid 
             Name="KeyboardGrid"
             Grid.Row="2"
@@ -55,9 +253,24 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <Button Width="35" Height="50" Margin="3 0" Content="1" Command="{Binding InputNumberCommand}" CommandParameter="1"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="2" Command="{Binding InputNumberCommand}" CommandParameter="2"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="3" Command="{Binding InputNumberCommand}" CommandParameter="3"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="4" Command="{Binding InputNumberCommand}" CommandParameter="4"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="5" Command="{Binding InputNumberCommand}" CommandParameter="5"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="6" Command="{Binding InputNumberCommand}" CommandParameter="6"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="7" Command="{Binding InputNumberCommand}" CommandParameter="7"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="8" Command="{Binding InputNumberCommand}" CommandParameter="8"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="9" Command="{Binding InputNumberCommand}" CommandParameter="9"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="0" Command="{Binding InputNumberCommand}" CommandParameter="0"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
                 <Button Width="35" Height="50" Margin="3 0" Content="Q" Command="{Binding InputKeyCommand}" CommandParameter="Q"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="W" Command="{Binding InputKeyCommand}" CommandParameter="W"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="E" Command="{Binding InputKeyCommand}" CommandParameter="E"/>
@@ -68,9 +281,9 @@
                 <Button Width="35" Height="50" Margin="5 0" Content="I" Command="{Binding InputKeyCommand}" CommandParameter="I"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="O" Command="{Binding InputKeyCommand}" CommandParameter="O"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="P" Command="{Binding InputKeyCommand}" CommandParameter="P"/>
-                
+
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
                 <Button Width="35" Height="50" Margin="25 0 5 0" Content="A" Command="{Binding InputKeyCommand}" CommandParameter="A"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="S" Command="{Binding InputKeyCommand}" CommandParameter="S"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="D" Command="{Binding InputKeyCommand}" CommandParameter="D"/>
@@ -81,8 +294,9 @@
                 <Button Width="35" Height="50" Margin="5 0" Content="K" Command="{Binding InputKeyCommand}" CommandParameter="K"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="L" Command="{Binding InputKeyCommand}" CommandParameter="L"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Button Width="35" Height="50" Margin="5 0" Content="" Visibility="Hidden" IsEnabled="False"/><!--Dummy button for alignment-->
+            <StackPanel Orientation="Horizontal" Grid.Row="3">
+                <Button Width="35" Height="50" Margin="5 0" Content="" Visibility="Hidden" IsEnabled="False"/>
+                <!--Dummy button for alignment-->
                 <Button Width="35" Height="50" Margin="5 0" Content="Z" Command="{Binding InputKeyCommand}" CommandParameter="Z"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="X" Command="{Binding InputKeyCommand}" CommandParameter="X"/>
                 <Button Width="35" Height="50" Margin="5 0" Content="C" Command="{Binding InputKeyCommand}" CommandParameter="C"/>
@@ -94,7 +308,7 @@
 
             </StackPanel>
 
-            <Button Grid.Row="3" Width="300" Height="50" Content="Space" Command="{Binding InputKeyCommand}" CommandParameter=" "/>
+            <Button Grid.Row="4" Width="300" Height="50" Content="Space" Command="{Binding BackspaceCommand}" CommandParameter=" "/>
 
         </Grid>
     </Grid>
