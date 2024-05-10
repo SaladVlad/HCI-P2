@@ -44,81 +44,79 @@
         </Style>
 
 
-        <DataTemplate DataType="model:FlowMeter">
-            <Border
-                BorderBrush="#00C2FF"
-                BorderThickness="1"
-                CornerRadius="4">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+        <DataTemplate DataType="{x:Type model:FlowMeter}">
 
-                    <Image
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="165"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image
                         Grid.Column="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Height="50"
+                        Margin="0 0 5 0"
                         Stretch="Uniform"
                         Source="{Binding EntityType.ImagePath}"/>
 
-                    <StackPanel
+                <StackPanel
                         Grid.Column="1"
                         Orientation="Vertical">
-                        <TextBlock
+                    <TextBlock
                             Text="ID:"
                             Foreground="White"
                             FontSize="15"/>
-                        <TextBlock
+                    <TextBlock
                             Foreground="White"
                             FontSize="15"
                             Text="{Binding ID}"/>
-                    </StackPanel>
-                    <StackPanel
+                </StackPanel>
+                <StackPanel
                         Grid.Column="2"
                         Orientation="Vertical">
-                        <TextBlock
+                    <TextBlock
                             Text="Name:"
                             Foreground="White"
                             FontSize="15"/>
-                        <TextBlock
+                    <TextBlock
                             Foreground="White"
                             FontSize="15"
                             Text="{Binding Name}"/>
-                    </StackPanel>
+                </StackPanel>
 
-                    <StackPanel
+                <StackPanel
                         Grid.Column="3"
                         Orientation="Vertical">
-                        <TextBlock
+                    <TextBlock
                             Text="Type:"
                             Foreground="White"
                             FontSize="15"/>
-                        <TextBlock
+                    <TextBlock
                             Foreground="White"
                             FontSize="15"
                             Text="{Binding EntityType.Name}"/>
-                    </StackPanel>
+                </StackPanel>
 
-                    <StackPanel
+                <StackPanel
                         Grid.Column="4"
                         Orientation="Vertical">
-                        <TextBlock
+                    <TextBlock
                             Text="Value:"
                             Foreground="White"
                             FontSize="15"/>
-                        <TextBlock
+                    <TextBlock
                             Foreground="White"
                             FontSize="15"
                             Text="{Binding Value}"
                             Style="{StaticResource ValueStyle}"/>
-                    </StackPanel>
+                </StackPanel>
 
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -150,15 +148,18 @@
                         Width="100"
                         Height="35"
                         Margin="35 0 0 0"
-                        Text="{Binding IDText}"
-                        model:TextBoxGotFocusBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}">
+                        Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        model:TextBoxBehavior.GotFocusCommand=
+                        "{Binding TextBoxGotFocusCommand}" 
+                        model:TextBoxBehavior.TextChangedCommand=
+                        "{Binding TextChangedCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
                             </Style>
                         </TextBox.Resources>
                     </TextBox>
+
                     <Label
                         Content="Type:"
                         Foreground="White"
@@ -183,9 +184,11 @@
                         x:Name="NameTextBox"
                         Width="100" 
                         Height="35"
-                        Text="{Binding NameText}"
-                        model:TextBoxGotFocusBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}">
+                        Text="{Binding NameText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        model:TextBoxBehavior.GotFocusCommand=
+                        "{Binding TextBoxGotFocusCommand}"
+                        model:TextBoxBehavior.TextChangedCommand=
+                        "{Binding TextChangedCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -224,6 +227,13 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
+                <Grid
+                    Grid.Row="0">
+                    <Button
+                        Content="Remove Selected"
+                        Command="{Binding RemoveEntityCommand}"/>
+                </Grid>
+
                 <ListView
                     Grid.Row="1"
                     Background="Transparent"
@@ -243,7 +253,7 @@
             </Grid>
         </Border>
 
-
+        <!--Keyboard grid-->
         <Grid 
             Name="KeyboardGrid"
             Grid.Row="2"
