@@ -25,5 +25,6 @@ namespace NetworkService.Views
             InitializeComponent();
             DataContext = new EntitiesViewModel();
         }
+
     }
 }
