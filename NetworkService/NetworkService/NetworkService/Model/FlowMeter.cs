@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace NetworkService.Model
 {
+    public enum ValueState { Normal, Low, High }
     public class FlowMeter:INotifyPropertyChanged
     {
+
+        ValueState _valueState;
         int _id;
         string _name;
         EntityType _entityType;
@@ -16,7 +19,6 @@ namespace NetworkService.Model
         List<int> _last_5_values;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         public FlowMeter()
         {
@@ -35,6 +37,21 @@ namespace NetworkService.Model
                 {
                     _last_5_values = value;
                     OnPropertyChanged(nameof(Last_5_Values));
+                }
+            }
+        }
+        public ValueState ValueState
+        {
+            get
+            {
+                return _valueState;
+            }
+            set
+            {
+                if (_valueState != value)
+                {
+                    _valueState = value;
+                    OnPropertyChanged(nameof(ValueState));
                 }
             }
         }
@@ -83,7 +100,6 @@ namespace NetworkService.Model
                 }
             }
         }
-
         public int Value
         {
             get
@@ -96,6 +112,11 @@ namespace NetworkService.Model
                 {
                     _value = value;
                     OnPropertyChanged(nameof(Value));
+
+                    if (_value < 675) ValueState = ValueState.Low;
+                    else if (_value > 735) ValueState = ValueState.High;
+                    else ValueState = ValueState.Normal;
+
                 }
             }
         }
