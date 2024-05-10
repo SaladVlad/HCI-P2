@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -51,7 +52,7 @@ namespace NetworkService.Views
             }
         }
 
-        public ObservableCollection<FlowMeter> FlowMeters = MainWindowViewModel.FlowMeters;
+        public ObservableCollection<FlowMeter> FlowMeters { get; set; }
 
         public ObservableCollection<FlowMeter> FilteredMeteres { get; set; }
 
@@ -75,12 +76,17 @@ namespace NetworkService.Views
             get; set;
         }
 
+        public MyICommand TextChangedCommand
+        {
+            get;set;
+        }
+
         public MyICommand AddEntityCommand
         {
             get; set;
         }
 
-        public MyICommand<object> RemoveEntityCommand
+        public MyICommand RemoveEntityCommand
         {
             get;set;
         }
@@ -111,15 +117,18 @@ namespace NetworkService.Views
         public EntitiesViewModel()
         {
             
+            FlowMeters = MainWindowViewModel.FlowMeters;
+
             //creating commands for keyboard
             InputKeyCommand = new MyICommand<string>(InputKey);
             InputNumberCommand = new MyICommand<string>(InputNumber);
             TextBoxGotFocusCommand = new MyICommand<object>(TextBoxGotFocus);
             BackspaceCommand = new MyICommand(Backspace);
+            TextChangedCommand = new MyICommand(TextChanged);
 
             //creating commands for adding and removing entities
             AddEntityCommand = new MyICommand(OnAddEntity, CanAddEntity);
-            RemoveEntityCommand = new MyICommand<object>(OnRemoveEntity, CanRemoveEntity);
+            RemoveEntityCommand = new MyICommand(OnRemoveEntity, CanRemoveEntity);
 
             Types = new List<string>();
             Types.Add("Volume");
@@ -131,14 +140,24 @@ namespace NetworkService.Views
             SelectedType = Types[0];
         }
 
-        private bool CanRemoveEntity(object arg)
+        private void TextChanged()
         {
-            throw new NotImplementedException();
+
         }
 
-        private void OnRemoveEntity(object obj)
+        private bool CanRemoveEntity()
         {
-            throw new NotImplementedException();
+            if(SelectedEntity!=null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void OnRemoveEntity()
+        {
+            FlowMeters.Remove(SelectedEntity);
+            SelectedEntity = null;
         }
 
         private void OnAddEntity()
@@ -146,8 +165,8 @@ namespace NetworkService.Views
             FlowMeter newFlowMeter = new FlowMeter();
             newFlowMeter.ID = int.Parse(IDText);
             newFlowMeter.Name = NameText;
-            string type = (SelectedType as string).ToLower();
-            newFlowMeter.EntityType = new EntityType(type, $"/Resources/Images/{type}.png");
+            string type = (SelectedType as string);
+            newFlowMeter.EntityType = new EntityType(type, $"/Resources/Images/{type.ToLower()}.png");
 
             FlowMeters.Add(newFlowMeter);
             //raise some toast or something, tell the user it was successful
