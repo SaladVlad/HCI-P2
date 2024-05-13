@@ -7,9 +7,10 @@
              d:DataContext="{d:DesignInstance Type=local:EntitiesViewModel}"
              xmlns:model="clr-namespace:NetworkService.Model"
              mc:Ignorable="d" 
-             DataContext=""
              Width="445"
-             Height="780">
+             Height="780"
+             Focusable="True"
+             Name="EntitiesUserControl">
 
     <UserControl.Resources>
         <Style TargetType="Button">
@@ -40,7 +41,7 @@
                     <Setter Property="Foreground" Value="Red"/>
                 </DataTrigger>
             </Style.Triggers>
-           
+
         </Style>
 
 
@@ -125,13 +126,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Border CornerRadius="15"
                 BorderBrush="#00C2FF"
                 BorderThickness="2"
-                Margin="5">
+                Margin="5,5,5,5">
             <StackPanel
                 Orientation="Vertical"
                 Margin="10 20">
@@ -150,9 +151,7 @@
                         Margin="35 0 0 0"
                         Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}" 
-                        model:TextBoxBehavior.TextChangedCommand=
-                        "{Binding TextChangedCommand}">
+                        "{Binding TextBoxGotFocusCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -186,9 +185,7 @@
                         Height="35"
                         Text="{Binding NameText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}"
-                        model:TextBoxBehavior.TextChangedCommand=
-                        "{Binding TextChangedCommand}">
+                        "{Binding TextBoxGotFocusCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -217,19 +214,77 @@
 
         <Border 
             Grid.Row="1"
+            Grid.RowSpan="2"
             CornerRadius="15"
             BorderBrush="#00C2FF"
             BorderThickness="2"
-            Margin="5">
+            Margin="5,5,5,5">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="100"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Grid
                     Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0">
+                        <!--Grid for filter section-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.8*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Grid.Row="0" Grid.Column="0"
+                                CornerRadius="5"
+                                BorderBrush="Blue"
+                                BorderThickness="2">
+                                <StackPanel Orientation="Vertical">
+                                    <ComboBox ItemsSource="{Binding Types}"/>
+                                    <WrapPanel>
+                                        <Label Content="'Onaj'" Foreground="White"/>
+                                        <RadioButton/>
+                                        <Label Content="'Onaj'" Foreground="White"/>
+                                        <RadioButton/>
+                                        <Label Content="'Onaj'" Foreground="White"/>
+                                        <RadioButton/>
+
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <TextBox Grid.Column="1"
+                                     VerticalAlignment="Top"
+                                     Width="90"
+                                     Height="40"
+                                     Text="{Binding Path=FilterText,Mode=TwoWay}">
+                                <TextBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="10"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+
+                            <Button Grid.Column="1"
+                                    VerticalAlignment="Bottom"
+                                    Width="90"
+                                    Height="40"
+                                    Content="Filter"
+                                    Command="{Binding FilterCommand}"/>
+
+                        </Grid>
+                    </Border>
                     <Button
+                        Grid.Column="1"
+                        Margin="10"
                         Content="Remove Selected"
                         Command="{Binding RemoveEntityCommand}"/>
                 </Grid>
@@ -247,17 +302,19 @@
                             <Setter Property="Margin" Value="5 2.5"/>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    
+
                 </ListView>
-                
+
             </Grid>
         </Border>
 
         <!--Keyboard grid-->
         <Grid 
             Name="KeyboardGrid"
+            Visibility="{Binding KeyboardVisibility}"
+            IsEnabled="{Binding IsKeyboardEnabled}"
             Grid.Row="2"
-            Background="DarkSlateGray">
+            Background="DarkSlateGray" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -318,7 +375,16 @@
 
             </StackPanel>
 
-            <Button Grid.Row="4" Width="300" Height="50" Content="Space" Command="{Binding BackspaceCommand}" CommandParameter=" "/>
+
+            <StackPanel
+                Grid.Row="4"
+                Orientation="Horizontal">
+
+                <Button Width="80" Height="50" Margin="10 0 20 0" Content="Hide KB" Command="{Binding HideKeyboardCommand}"/>
+                <Button Width="300" Height="50" Margin="0 5" Content="Space" Command="{Binding BackspaceCommand}" CommandParameter=" "/>
+
+
+            </StackPanel>
 
         </Grid>
     </Grid>
