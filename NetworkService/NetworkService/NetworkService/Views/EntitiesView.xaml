@@ -151,7 +151,9 @@
                         Margin="35 0 0 0"
                         Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}">
+                        "{Binding TextBoxGotFocusCommand}"
+                        model:TextBoxBehavior.LostFocusCommand=
+                        "{Binding TextBoxLostFocusCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -185,7 +187,9 @@
                         Height="35"
                         Text="{Binding NameText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}">
+                        "{Binding TextBoxGotFocusCommand}"
+                        model:TextBoxBehavior.LostFocusCommand=
+                        "{Binding TextBoxLostFocusCommand}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -248,16 +252,35 @@
                                 BorderBrush="Blue"
                                 BorderThickness="2">
                                 <StackPanel Orientation="Vertical">
-                                    <ComboBox ItemsSource="{Binding Types}"/>
+                                    <ComboBox 
+                                        ItemsSource="{Binding Types}"
+                                        SelectedItem="{Binding FilterType}"/>
                                     <WrapPanel>
-                                        <Label Content="'Onaj'" Foreground="White"/>
-                                        <RadioButton/>
-                                        <Label Content="'Onaj'" Foreground="White"/>
-                                        <RadioButton/>
-                                        <Label Content="'Onaj'" Foreground="White"/>
-                                        <RadioButton/>
+                                        <Label
+                                            Content="'Onaj'" 
+                                            Foreground="White"/>
+                                        <RadioButton
+                                            GroupName="filter"
+                                            IsChecked="{Binding IsLowerThanChecked, Mode=TwoWay}"/>
+                                        <Label 
+                                            Content="'Onaj'" 
+                                            Foreground="White"/>
+                                        <RadioButton
+                                            GroupName="filter"
+                                            IsChecked="{Binding IsEqualChecked, Mode=TwoWay}"/>
+                                        <Label 
+                                            Content="'Onaj'" 
+                                            Foreground="White"/>
+                                        <RadioButton
+                                            GroupName="filter"
+                                            IsChecked="{Binding IsGreaterThanChecked,Mode=TwoWay}"/>
 
                                     </WrapPanel>
+                                    <Button
+                                        Width="100"
+                                        Height="35"
+                                        Content="Reset"
+                                        Command="{Binding ClearFiltersCommand}"/>
                                 </StackPanel>
                             </Border>
 
@@ -265,7 +288,11 @@
                                      VerticalAlignment="Top"
                                      Width="90"
                                      Height="40"
-                                     Text="{Binding Path=FilterText,Mode=TwoWay}">
+                                     Text="{Binding Path=FilterText,Mode=TwoWay}"
+                                     model:TextBoxBehavior.GotFocusCommand=
+                                     "{Binding TextBoxGotFocusCommand}"
+                                     model:TextBoxBehavior.LostFocusCommand=
+                                     "{Binding TextBoxLostFocusCommand}">
                                 <TextBox.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="10"/>
@@ -292,7 +319,7 @@
                 <ListView
                     Grid.Row="1"
                     Background="Transparent"
-                    ItemsSource="{Binding FlowMeters}"
+                    ItemsSource="{Binding FilteredMeters}"
                     SelectedItem="{Binding SelectedEntity}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectionMode="Single">
@@ -381,7 +408,7 @@
                 Orientation="Horizontal">
 
                 <Button Width="80" Height="50" Margin="10 0 20 0" Content="Hide KB" Command="{Binding HideKeyboardCommand}"/>
-                <Button Width="300" Height="50" Margin="0 5" Content="Space" Command="{Binding BackspaceCommand}" CommandParameter=" "/>
+                <Button Width="300" Height="50" Margin="0 5" Content="Space" Command="{Binding InputKeyCommand}" CommandParameter=" "/>
 
 
             </StackPanel>
