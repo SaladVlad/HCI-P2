@@ -21,3 +21,7 @@ C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\o
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService.Properties.Resources.resources
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService.csproj.GenerateResource.cache
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService.csproj.CoreCompileInputs.cache
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkS.954836E0.Up2Date
