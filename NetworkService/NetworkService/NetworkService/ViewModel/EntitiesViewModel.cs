@@ -59,7 +59,7 @@ namespace NetworkService.Views
             }
         }
         public ObservableCollection<FlowMeter> FlowMeters { get; set; }
-        public ObservableCollection<FlowMeter> FilteredMeteres { get; set; }
+        public ObservableCollection<FlowMeter> FilteredMeters { get; set; }
         public MyICommand<string> InputKeyCommand
         {
             get; set;
@@ -91,6 +91,7 @@ namespace NetworkService.Views
             get;set;
         }
         public MyICommand FilterCommand { get; set; }
+        public MyICommand ClearFiltersCommand { get; set; }
 
         private string _idText;
         public string IDText
@@ -102,7 +103,6 @@ namespace NetworkService.Views
                 AddEntityCommand.RaiseCanExecuteChanged();
             }
         }
-
         private string _nameText;
         public string NameText
         {
@@ -122,6 +122,55 @@ namespace NetworkService.Views
                 SetProperty(ref _filterText, value);
             }
         }
+        private string _filterType;
+        public string FilterType
+        {
+            get => _filterType;
+            set => SetProperty(ref _filterType, value);
+        }
+
+
+        private bool _isLowerThanChecked;
+        public bool IsLowerThanChecked
+        {
+            get => _isLowerThanChecked;
+            set {
+                SetProperty(ref _isLowerThanChecked, value);
+                if (_isLowerThanChecked)
+                {
+                    IsEqualChecked = false;
+                    IsGreaterThanChecked = false;
+                }
+            }
+        }
+        private bool _isEqualChecked;
+        public bool IsEqualChecked
+        {
+            get => _isEqualChecked;
+            set {
+                SetProperty(ref _isEqualChecked, value);
+                if (_isEqualChecked)
+                {
+                    IsLowerThanChecked = false;
+                    IsGreaterThanChecked = false;
+                }
+                
+            }
+        }
+        private bool _isGreaterThanChecked;
+        public bool IsGreaterThanChecked
+        {
+            get => _isGreaterThanChecked;
+            set 
+            {
+                SetProperty(ref _isGreaterThanChecked, value);
+                if (_isGreaterThanChecked)
+                {
+                    IsLowerThanChecked= false;
+                    IsEqualChecked = false;
+                }
+            }
+        }
 
         #endregion
 
@@ -129,6 +178,12 @@ namespace NetworkService.Views
         {
             
             FlowMeters = MainWindowViewModel.FlowMeters;
+            FilteredMeters = new ObservableCollection<FlowMeter>();
+
+            foreach(FlowMeter f in FlowMeters)
+            {
+                FilteredMeters.Add(f);
+            }
 
             //creating commands for keyboard
             InputKeyCommand = new MyICommand<string>(InputKey);
@@ -147,6 +202,7 @@ namespace NetworkService.Views
             RemoveEntityCommand = new MyICommand(OnRemoveEntity, CanRemoveEntity);
 
             FilterCommand = new MyICommand(Filter);
+            ClearFiltersCommand = new MyICommand(ClearFilters);
 
             Types = new List<string>();
             Types.Add("Volume");
@@ -157,15 +213,118 @@ namespace NetworkService.Views
             NameText = "";
             SelectedType = Types[0];
 
+
             KeyboardVisibility = Visibility.Hidden;
             IsKeyboardEnabled = false;
 
         }
 
+        private void ClearFilters()
+        {
+            //resetting UI elements
+            IsEqualChecked = false;
+            IsGreaterThanChecked = false;
+            IsLowerThanChecked = false;
+            FilterText = string.Empty;
+            FilterType = null;
+
+            //repopulating the table
+            FilteredMeters.Clear();
+            foreach (FlowMeter f in FlowMeters)
+                FilteredMeters.Add(f);
+        }
+
         private void Filter()
         {
             //TODO filter out data and display it inside the listview
-            //(changing the binding perhaps?)
+
+            char selectedOption = ' ';
+            if (IsEqualChecked)
+                selectedOption = '=';
+            else if (IsLowerThanChecked)
+                selectedOption = '<';
+            else if(IsGreaterThanChecked)
+                selectedOption = '>';
+
+
+            if(!string.IsNullOrWhiteSpace(FilterText) && selectedOption != ' ')
+            {
+                // NEEDS TO SELECT A FILTER OPTION,
+
+                //TODO feedback
+                return;
+            }
+
+            int filterID = FilterText != null && FilterText!= "" ? int.Parse(FilterText) : -1; ;
+
+            FilteredMeters.Clear();
+            foreach(FlowMeter flowMeter in FlowMeters)
+            {
+                if (selectedOption == '=')
+                {
+                    if (FilterType != null)
+                    {
+                        if (flowMeter.ID == filterID && flowMeter.EntityType.Name.Equals(FilterType))
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                    else
+                    {
+                        if(flowMeter.ID == filterID)
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+
+                    
+                }
+                if(selectedOption == '<')
+                {
+                    if (FilterType != null)
+                    {
+                        if (flowMeter.ID < filterID && flowMeter.EntityType.Name.Equals(FilterType))
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                    else
+                    {
+                        if (flowMeter.ID < filterID)
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                }
+                if (selectedOption == '>')
+                {
+                    if (FilterType != null)
+                    {
+                        if (flowMeter.ID > filterID && flowMeter.EntityType.Name.Equals(FilterType))
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                    else
+                    {
+                        if (flowMeter.ID > filterID)
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                }
+                //nothing is selected, filter only by the category
+                if (selectedOption == ' ')
+                {
+                    if (FilterType != null)
+                    {
+                        if (flowMeter.EntityType.Name.Equals(FilterType))
+                        {
+                            FilteredMeters.Add(flowMeter);
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -204,6 +363,8 @@ namespace NetworkService.Views
             newFlowMeter.EntityType = new EntityType(type, $"/Resources/Images/{type.ToLower()}.png");
 
             FlowMeters.Add(newFlowMeter);
+
+            ClearFilters();
             //raise some toast or something, tell the user it was successful
         }
 
@@ -254,7 +415,7 @@ namespace NetworkService.Views
         {
             if (SelectedTextBox.Text.Length > 0)
             {
-                SelectedTextBox.Text.Remove(SelectedTextBox.Text.Length - 1, 1);
+                SelectedTextBox.Text = SelectedTextBox.Text.Remove(SelectedTextBox.Text.Length - 1, 1);
             }
         }
 
