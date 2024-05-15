@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,16 +24,26 @@ namespace NetworkService.ViewModel
 
         #endregion
 
-        private object selectedContent;
+        private object _selectedContent;
+        public object SelectedContent
+        {
+            get => _selectedContent;
+            set
+            {
+                SetProperty(ref _selectedContent, value);
+                if(_selectedContent.GetType()== typeof(DisplayView))
+                {
 
-        public object SelectedContent { get => selectedContent; set => SetProperty(ref selectedContent, value); }
+                }
+            }
+        }
 
         public MainWindowViewModel()
         {
             createListener(); //creating a listener for gathering info about network entities
 
             FlowMeters = new ObservableCollection<FlowMeter>();
-            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("volume", "/Resources/Images/volume.png") });
+            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("Volume", "/Resources/Images/volume.png") });
             //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
 
             SelectedContent = new DisplayView(); //setting the net display view as a default
