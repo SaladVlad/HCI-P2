@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="BindableBase.cs" />
     <Compile Include="Helpers\Logging.cs" />
+    <Compile Include="Helpers\PathFinder.cs" />
     <Compile Include="Model\CanvasBehavior.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\EntityType.cs" />
