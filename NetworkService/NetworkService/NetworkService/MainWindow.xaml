@@ -25,6 +25,13 @@
         <!--Something should be here, maybe-->
     </Window.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding UndoCommand}"
+                    Gesture="CTRL+Z"/>
+        <KeyBinding Command="{Binding QuitCommand}"
+                    Gesture="CTRL+Q"/>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -93,7 +100,7 @@
             </Grid.ColumnDefinitions>
 
             <Button
-                Grid.Column="0"
+                Grid.Column="1"
                 Margin="0 0 1 0"
                 Background="#3088A4"
                 Content="Home"
@@ -103,12 +110,13 @@
                 CommandParameter="Network"
                 />
             <Button
-                Grid.Column="1"
+                Grid.Column="0"
                 Margin="1 0 0 0"
                 Background="#3088A4"
                 Content="Undo"
                 Foreground="White"
-                FontSize="30"/>
+                FontSize="30"
+                Command="{Binding UndoCommand}"/>
             
         </Grid>
     </Grid>
