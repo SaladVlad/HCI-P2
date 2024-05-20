@@ -16,16 +16,16 @@ namespace NetworkService.Model
         string _name;
         EntityType _entityType;
         int _value;
-        List<int> _last_5_values;
+        List<Pair<DateTime,int>> _last_5_values;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public FlowMeter()
         {
-            Last_5_Values = new List<int>();
+            Last_5_Values = new List<Pair<DateTime, int>>();
         }
 
-        public List<int> Last_5_Values
+        public List<Pair<DateTime, int>> Last_5_Values
         {
             get
             {
