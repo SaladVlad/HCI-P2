@@ -30,10 +30,17 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
+            <Canvas
+                Panel.ZIndex="-1000"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.RowSpan="4"
+                Grid.ColumnSpan="3"/>
+
             <Border
-                Grid.Row="0" Grid.Column="0"
-                BorderBrush="{Binding BorderBrushCollection[0]}"
-                BorderThickness="2">
+                    Grid.Row="0" Grid.Column="0"
+                    BorderBrush="{Binding BorderBrushCollection[0]}"
+                    BorderThickness="2">
             </Border>
             <DockPanel
                 Grid.Row="0" Grid.Column="0">
@@ -56,7 +63,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -67,6 +74,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="0"/>
             </DockPanel>
 
             <Border
@@ -95,7 +105,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -106,6 +116,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="1"/>
             </DockPanel>
 
             <Border
@@ -134,7 +147,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -145,6 +158,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="2"/>
             </DockPanel>
 
             <Border
@@ -173,7 +189,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -184,6 +200,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="3"/>
             </DockPanel>
 
             <Border
@@ -191,7 +210,7 @@
                 BorderBrush="{Binding BorderBrushCollection[4]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="1" Grid.Column="1">
                 <ContentControl 
@@ -213,7 +232,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -224,6 +243,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="4"/>
             </DockPanel>
 
             <Border
@@ -231,7 +253,7 @@
                 BorderBrush="{Binding BorderBrushCollection[5]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="1" Grid.Column="2">
                 <ContentControl 
@@ -253,7 +275,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -264,6 +286,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="5"/>
             </DockPanel>
 
             <Border
@@ -293,7 +318,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -304,6 +329,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="6"/>
             </DockPanel>
 
             <Border
@@ -311,7 +339,7 @@
                 BorderBrush="{Binding BorderBrushCollection[7]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="2" Grid.Column="1">
                 <ContentControl 
@@ -333,7 +361,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -344,6 +372,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="7"/>
             </DockPanel>
 
             <Border
@@ -351,7 +382,7 @@
                 BorderBrush="{Binding BorderBrushCollection[8]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="2" Grid.Column="2">
                 <ContentControl 
@@ -373,7 +404,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -384,6 +415,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="8"/>
             </DockPanel>
 
             <Border
@@ -413,7 +447,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -424,6 +458,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="9"/>
             </DockPanel>
 
             <Border
@@ -431,7 +468,7 @@
                 BorderBrush="{Binding BorderBrushCollection[10]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="3" Grid.Column="1">
                 <ContentControl 
@@ -453,7 +490,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -464,6 +501,9 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="10"/>
             </DockPanel>
 
             <Border
@@ -471,7 +511,7 @@
                 BorderBrush="{Binding BorderBrushCollection[11]}"
                 BorderThickness="2">
             </Border>
-            
+
             <DockPanel
                 Grid.Row="3" Grid.Column="2">
                 <ContentControl 
@@ -493,7 +533,7 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="130"
+                    Width="120"
                     Height="20"
                     Background="White">
                     <TextBlock.Text>
@@ -504,100 +544,129 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <Button Content="X"
+                        Command="{Binding ClearCanvasCommand}"
+                        CommandParameter="11"/>
             </DockPanel>
+
+
         </Grid>
-        
-        <Grid
+
+        <ScrollViewer
+            Grid.Row="1">
+
+            <Grid
             Grid.Row="1"
             Panel.ZIndex="1000">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <ListView
+                <Label
+                    Grid.Row="0"
+                    Foreground="White"
+                    Content="Volume:"
+                    Background="Transparent"/>
+                <ListView
                 x:Name="ListView1"
-                Grid.Column="0"
+                Grid.Row="1"
                 ItemsSource="{Binding Categories[0].FlowMeters}"
-                d:ItemsSource="{d:SampleData ItemCount=5}"
+                d:ItemsSource="{d:SampleData ItemCount=2}"
                 SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
-                
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:FlowMeter}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
 
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:FlowMeter}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
                                                CommandParameter="{Binding ElementName=ListView1}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
-            </ListView>
-
-            <ListView
-                x:Name="ListView2"
-                Grid.Column="1"
-                ItemsSource="{Binding Categories[1].FlowMeters}"
-                d:ItemsSource="{d:SampleData ItemCount=5}"
-                SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:FlowMeter}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
-                                               CommandParameter="{Binding ElementName=ListView2}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </ListView>
                 
-            </ListView>
-            
-            <ListView
+                <Label
+                    Grid.Row="2"
+                    Foreground="White"
+                    Content="Turbine:"
+                    Background="Transparent"/>  
+                
+                <ListView
+                x:Name="ListView2"
+                Grid.Row="3"
+                ItemsSource="{Binding Categories[1].FlowMeters}"
+                d:ItemsSource="{d:SampleData ItemCount=2}"
+                SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:FlowMeter}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                               CommandParameter="{Binding ElementName=ListView2}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                </ListView>
+
+                <Label
+                    Grid.Row="4"
+                    Foreground="White"
+                    Content="Electronic:"
+                    Background="Transparent"/>
+                
+                <ListView
                 x:Name="ListView3"
-                Grid.Column="2"
+                Grid.Row="5"
                 ItemsSource="{Binding Categories[2].FlowMeters}" 
                 d:ItemsSource="{d:SampleData ItemCount=5}"
                 SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:FlowMeter}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:FlowMeter}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
                                                CommandParameter="{Binding ElementName=ListView3}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                
-            </ListView>
-            
-        </Grid>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                </ListView>
+
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>
