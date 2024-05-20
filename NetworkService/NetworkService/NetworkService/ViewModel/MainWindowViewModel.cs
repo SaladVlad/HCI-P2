@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -9,7 +10,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using NetworkService.Model;
 using NetworkService.Views;
 
@@ -19,8 +23,12 @@ namespace NetworkService.ViewModel
     {
         public static ObservableCollection<FlowMeter> FlowMeters {  get; set; }
 
+        public static Stack<SaveState<CommandType,object>> UndoStack { get; set; }
+
         #region Commands
-        public ICommand ChangeViewCommand { get; private set; }
+        public MyICommand<string> ChangeViewCommand { get; set; }
+        public MyICommand UndoCommand { get; set; }
+        public MyICommand QuitCommand { get; set; }
 
         #endregion
 
@@ -31,6 +39,7 @@ namespace NetworkService.ViewModel
             set
             {
                 SetProperty(ref _selectedContent, value);
+                UndoCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -41,30 +50,40 @@ namespace NetworkService.ViewModel
             FlowMeters = new ObservableCollection<FlowMeter>();
             FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("Volume", "../../Resources/Images/volume.png") });
             //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
+            UndoStack = new Stack<SaveState<CommandType, object>>();
 
-            SelectedContent = new DisplayView(); //setting the net display view as a default
 
             #region Commands
 
             ChangeViewCommand = new MyICommand<string>(ChangeView);
+            UndoCommand = new MyICommand(OnUndo, CanUndo);
+            QuitCommand = new MyICommand(OnQuit);
 
             #endregion
 
+            SelectedContent = new DisplayView(); //setting the net display view as a default
         }
 
+        
         private void ChangeView(string viewName)
         {
             if (viewName == "Table" && SelectedContent.GetType()!= typeof(EntitiesView))
             {
+                UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new EntitiesView();
+                
             }
             else if (viewName == "Network" && SelectedContent.GetType() != typeof(DisplayView))
             {
+                UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new DisplayView();
+                
             }
             else if (viewName == "Graph" && SelectedContent.GetType() != typeof(GraphView))
             {
+                UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new GraphView();
+                
             }
         }
 
@@ -108,14 +127,6 @@ namespace NetworkService.ViewModel
 
                             AddValueToList(FlowMeters[id]);
 
-                            //################ IMPLEMENTACIJA ####################
-                            // Obraditi poruku kako bi se dobile informacije o izmeni
-                            // Azuriranje potrebnih stvari u aplikaciji
-
-
-
-
-
                         }
                     }, null);
                 }
@@ -137,5 +148,59 @@ namespace NetworkService.ViewModel
                 flowMeter.Last_5_Values.Add(new Pair<DateTime, int>(DateTime.Now, flowMeter.Value));
             }
         }
+
+        public bool CanUndo()
+        {
+            return UndoStack.Count != 0;
+        }
+        public void OnUndo()
+        {
+            SaveState<CommandType, object> saveState = UndoStack.Pop();
+            if(saveState.CommandType == CommandType.SwitchViews)
+            {
+                Type viewType= saveState.SavedState as Type;
+
+                if (viewType == typeof(EntitiesView))
+                {
+                    SelectedContent = new EntitiesView();
+                }
+                else if (viewType == typeof(DisplayView))
+                {
+                    SelectedContent = new DisplayView();
+                }
+                else
+                {
+                    SelectedContent = new GraphView();
+                }
+            }
+            else if(saveState.CommandType == CommandType.EntityManipulation)
+            {
+                FlowMeters = saveState.SavedState as ObservableCollection<FlowMeter>;
+                //refreshing the list
+                SelectedContent = new EntitiesView();
+            }
+            else if(saveState.CommandType == CommandType.CanvasManipulation)
+            {
+                CanvasState canvasState = saveState.SavedState as CanvasState;
+                if (canvasState != null)
+                {
+                    DisplayViewModel.AddedToGrid = new Dictionary<int, FlowMeter>(canvasState.AddedToGrid);
+                    DisplayViewModel.Lines = new Dictionary<Pair<int, int>, Line>(canvasState.Lines);
+                    DisplayViewModel.EntityInfo = new ObservableCollection<FlowMeter>(canvasState.EntityInfo);
+                    DisplayViewModel.BorderBrushCollection = new ObservableCollection<Brush>(canvasState.BorderBrushCollection);
+
+                    SelectedContent = new DisplayView();
+                }
+                
+            }
+
+            GC.Collect();
+            UndoCommand.RaiseCanExecuteChanged();
+        }
+        private void OnQuit()
+        {
+            Application.Current.MainWindow.Close();
+        }
+
     }
 }
