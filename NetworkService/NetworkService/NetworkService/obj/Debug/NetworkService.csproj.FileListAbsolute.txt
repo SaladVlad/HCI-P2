@@ -7,7 +7,6 @@ C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\o
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService_MarkupCompile.cache
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkService_MarkupCompile.lref
-C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\App.baml
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\MainWindow.baml
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\Views\DisplayView.baml
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\Views\GraphView.baml
