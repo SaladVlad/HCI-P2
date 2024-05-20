@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:model="clr-namespace:NetworkService.Model"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              Width="445"
              Height="780">
     <Grid>
@@ -14,7 +14,9 @@
             <RowDefinition Height="5*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-
+        
+        
+        <!--Canvases grid-->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -505,28 +507,97 @@
             </DockPanel>
         </Grid>
         
-        <TreeView
+        <Grid
             Grid.Row="1"
-            ItemsSource="{Binding Categories}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding FlowMeters}">
-                    <TextBlock Text="{Binding Name}"/>
-                    <HierarchicalDataTemplate.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </HierarchicalDataTemplate.ItemTemplate>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectionChanged}" CommandParameter="{Binding ElementName=TreeView}"/>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <i:InvokeCommandAction Command="{Binding MouseLeftButtonUp}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            Panel.ZIndex="1000">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ListView
+                x:Name="ListView1"
+                Grid.Column="0"
+                ItemsSource="{Binding Categories[0].FlowMeters}"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:FlowMeter}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                               CommandParameter="{Binding ElementName=ListView1}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ListView>
+
+            <ListView
+                x:Name="ListView2"
+                Grid.Column="1"
+                ItemsSource="{Binding Categories[1].FlowMeters}"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:FlowMeter}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                               CommandParameter="{Binding ElementName=ListView2}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                
+            </ListView>
             
-        </TreeView>
+            <ListView
+                x:Name="ListView3"
+                Grid.Column="2"
+                ItemsSource="{Binding Categories[2].FlowMeters}" 
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                SelectedItem="{Binding Path=SelectedEntity, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:FlowMeter}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding EntityType.ImagePath}" Width="40" Height="40"/>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="18"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}"
+                                               CommandParameter="{Binding ElementName=ListView3}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MouseLeftButtonUpCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                
+            </ListView>
+            
+        </Grid>
     </Grid>
 </UserControl>
