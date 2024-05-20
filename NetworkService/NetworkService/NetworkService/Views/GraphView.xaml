@@ -59,7 +59,7 @@
                 </ComboBox.ItemTemplate>
 
             </ComboBox>
-            <Line X1="80" Y1="0" X2="350" Y2="0"
+            <Line X1="100" Y1="0" X2="350" Y2="0"
                   Stroke="White"
                   StrokeThickness="3"/>
 
@@ -228,6 +228,33 @@
                 Padding="6"
                 Foreground="White"
                 Background="Transparent"/>
+
+
+            <TextBlock
+                Text="{Binding Time_1}"
+                Margin="30 230"
+                Width="40"
+                FontSize="8"/>
+            <TextBlock
+                Text="{Binding Time_2}"
+                Margin="80 230"
+                Width="40"
+                FontSize="8"/>
+            <TextBlock
+                Text="{Binding Time_3}"
+                Margin="130 230"
+                Width="40"
+                FontSize="8"/>
+            <TextBlock
+                Text="{Binding Time_4}"
+                Margin="180 230"
+                Width="40"
+                FontSize="8"/>
+            <TextBlock
+                Text="{Binding Time_5}"
+                Margin="230 230"
+                Width="40"
+                FontSize="8"/>
 
         </Canvas>
     </Grid>
