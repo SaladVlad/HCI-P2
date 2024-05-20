@@ -360,7 +360,7 @@ namespace NetworkService.Views
             newFlowMeter.ID = int.Parse(IDText);
             newFlowMeter.Name = NameText;
             string type = (SelectedType as string);
-            newFlowMeter.EntityType = new EntityType(type, $"/Resources/Images/{type.ToLower()}.png");
+            newFlowMeter.EntityType = new EntityType(type, $"../../Resources/Images/{type.ToLower()}.png");
 
             FlowMeters.Add(newFlowMeter);
 
