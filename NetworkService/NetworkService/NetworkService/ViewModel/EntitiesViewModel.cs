@@ -19,6 +19,8 @@ namespace NetworkService.Views
     public class EntitiesViewModel : BindableBase
     {
         #region Properties and Commands
+
+        #region Properties
         public List<string> Types { get; set; }
 
         private object _selectedType;
@@ -60,6 +62,92 @@ namespace NetworkService.Views
         }
         public ObservableCollection<FlowMeter> FlowMeters { get; set; }
         public ObservableCollection<FlowMeter> FilteredMeters { get; set; }
+
+        private string _idText;
+        public string IDText
+        {
+            get { return _idText; }
+            set
+            {
+                SetProperty(ref _idText, value);
+                AddEntityCommand.RaiseCanExecuteChanged();
+            }
+        }
+        private string _nameText;
+        public string NameText
+        {
+            get { return _nameText; }
+            set
+            {
+                SetProperty(ref _nameText, value);
+                AddEntityCommand.RaiseCanExecuteChanged();
+            }
+        }
+        private string _filterText;
+        public string FilterText
+        {
+            get { return _filterText; }
+            set
+            {
+                SetProperty(ref _filterText, value);
+                FilterCommand.RaiseCanExecuteChanged();
+            }
+        }
+        private string _filterType;
+        public string FilterType
+        {
+            get => _filterType;
+            set => SetProperty(ref _filterType, value);
+        }
+        private bool _isLowerThanChecked;
+        public bool IsLowerThanChecked
+        {
+            get => _isLowerThanChecked;
+            set
+            {
+                SetProperty(ref _isLowerThanChecked, value);
+                if (_isLowerThanChecked)
+                {
+                    IsEqualChecked = false;
+                    IsGreaterThanChecked = false;
+                }
+                FilterCommand.RaiseCanExecuteChanged();
+            }
+        }
+        private bool _isEqualChecked;
+        public bool IsEqualChecked
+        {
+            get => _isEqualChecked;
+            set
+            {
+                SetProperty(ref _isEqualChecked, value);
+                if (_isEqualChecked)
+                {
+                    IsLowerThanChecked = false;
+                    IsGreaterThanChecked = false;
+                }
+                FilterCommand.RaiseCanExecuteChanged();
+            }
+        }
+        private bool _isGreaterThanChecked;
+        public bool IsGreaterThanChecked
+        {
+            get => _isGreaterThanChecked;
+            set
+            {
+                SetProperty(ref _isGreaterThanChecked, value);
+                if (_isGreaterThanChecked)
+                {
+                    IsLowerThanChecked = false;
+                    IsEqualChecked = false;
+                }
+                FilterCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        #endregion
+
+        #region Command Definitions
         public MyICommand<string> InputKeyCommand
         {
             get; set;
@@ -93,87 +181,12 @@ namespace NetworkService.Views
         public MyICommand FilterCommand { get; set; }
         public MyICommand ClearFiltersCommand { get; set; }
 
-        private string _idText;
-        public string IDText
-        {
-            get { return _idText; }
-            set
-            {
-                SetProperty(ref _idText, value);
-                AddEntityCommand.RaiseCanExecuteChanged();
-            }
-        }
-        private string _nameText;
-        public string NameText
-        {
-            get { return _nameText; }
-            set {
-                SetProperty(ref _nameText, value);
-                AddEntityCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        private string _filterText;
-        public string FilterText
-        {
-            get { return _filterText; }
-            set
-            {
-                SetProperty(ref _filterText, value);
-            }
-        }
-        private string _filterType;
-        public string FilterType
-        {
-            get => _filterType;
-            set => SetProperty(ref _filterType, value);
-        }
-
-
-        private bool _isLowerThanChecked;
-        public bool IsLowerThanChecked
-        {
-            get => _isLowerThanChecked;
-            set {
-                SetProperty(ref _isLowerThanChecked, value);
-                if (_isLowerThanChecked)
-                {
-                    IsEqualChecked = false;
-                    IsGreaterThanChecked = false;
-                }
-            }
-        }
-        private bool _isEqualChecked;
-        public bool IsEqualChecked
-        {
-            get => _isEqualChecked;
-            set {
-                SetProperty(ref _isEqualChecked, value);
-                if (_isEqualChecked)
-                {
-                    IsLowerThanChecked = false;
-                    IsGreaterThanChecked = false;
-                }
-                
-            }
-        }
-        private bool _isGreaterThanChecked;
-        public bool IsGreaterThanChecked
-        {
-            get => _isGreaterThanChecked;
-            set 
-            {
-                SetProperty(ref _isGreaterThanChecked, value);
-                if (_isGreaterThanChecked)
-                {
-                    IsLowerThanChecked= false;
-                    IsEqualChecked = false;
-                }
-            }
-        }
+        #endregion
 
         #endregion
 
+
+        #region Constructor
         public EntitiesViewModel()
         {
             
@@ -201,7 +214,7 @@ namespace NetworkService.Views
             AddEntityCommand = new MyICommand(OnAddEntity, CanAddEntity);
             RemoveEntityCommand = new MyICommand(OnRemoveEntity, CanRemoveEntity);
 
-            FilterCommand = new MyICommand(Filter);
+            FilterCommand = new MyICommand(Filter,CanFilter);
             ClearFiltersCommand = new MyICommand(ClearFilters);
 
             Types = new List<string>();
@@ -213,10 +226,36 @@ namespace NetworkService.Views
             NameText = "";
             SelectedType = Types[0];
 
-
             KeyboardVisibility = Visibility.Hidden;
             IsKeyboardEnabled = false;
 
+        }
+
+        #endregion
+
+        #region Filter Actions
+        private bool CanFilter()
+        {
+            if (int.TryParse(FilterText, out _)&&
+                (IsEqualChecked || IsGreaterThanChecked || IsLowerThanChecked))
+            {
+                return true;
+            }
+            else if(FilterType!=null && (int.TryParse(FilterText, out _) &&
+                !(IsEqualChecked || IsGreaterThanChecked || IsLowerThanChecked))){
+                return false;
+            }
+            else if (FilterType != null && (int.TryParse(FilterText, out _) &&
+                (IsEqualChecked || IsGreaterThanChecked || IsLowerThanChecked)))
+            {
+                return true;
+            }
+            else if (FilterType == null && (int.TryParse(FilterText, out _) &&
+                !(IsEqualChecked || IsGreaterThanChecked || IsLowerThanChecked)))
+            {
+                return false;
+            }
+            return false;
         }
 
         private void ClearFilters()
@@ -236,109 +275,57 @@ namespace NetworkService.Views
 
         private void Filter()
         {
-            //TODO filter out data and display it inside the listview
+            //TODO warning about not selecting anything
 
-            char selectedOption = ' ';
-            if (IsEqualChecked)
-                selectedOption = '=';
-            else if (IsLowerThanChecked)
-                selectedOption = '<';
-            else if(IsGreaterThanChecked)
-                selectedOption = '>';
-
-
-            if(!string.IsNullOrWhiteSpace(FilterText) && selectedOption != ' ')
-            {
-                // NEEDS TO SELECT A FILTER OPTION,
-
-                //TODO feedback
-                return;
-            }
-
-            int filterID = FilterText != null && FilterText!= "" ? int.Parse(FilterText) : -1; ;
 
             FilteredMeters.Clear();
-            foreach(FlowMeter flowMeter in FlowMeters)
+            foreach (FlowMeter flowMeter in FlowMeters)
             {
-                if (selectedOption == '=')
+                //filter by type
+                if(FilterType!=null || !string.IsNullOrEmpty(FilterType))
                 {
-                    if (FilterType != null)
+                    if (flowMeter.EntityType.Name.Equals(FilterType))
                     {
-                        if (flowMeter.ID == filterID && flowMeter.EntityType.Name.Equals(FilterType))
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
+                        FilteredMeters.Add(flowMeter);
                     }
-                    else
-                    {
-                        if(flowMeter.ID == filterID)
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
-                    }
+                }
+                else
+                {
+                    FilteredMeters.Add(flowMeter);
+                }
 
-                    
-                }
-                if(selectedOption == '<')
+                //second filter pass
+                if((IsEqualChecked||IsGreaterThanChecked||IsLowerThanChecked) && !string.IsNullOrWhiteSpace(FilterText))
                 {
-                    if (FilterType != null)
+                    if (IsLowerThanChecked && flowMeter.ID<int.Parse(FilterText))
                     {
-                        if (flowMeter.ID < filterID && flowMeter.EntityType.Name.Equals(FilterType))
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
+                        FilteredMeters.Add(flowMeter);
                     }
-                    else
+                    if (IsEqualChecked && flowMeter.ID == int.Parse(FilterText))
                     {
-                        if (flowMeter.ID < filterID)
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
+                        FilteredMeters.Add(flowMeter);
+                    }
+                    if (IsGreaterThanChecked && flowMeter.ID < int.Parse(FilterText))
+                    {
+                        FilteredMeters.Add(flowMeter);
                     }
                 }
-                if (selectedOption == '>')
+                else
                 {
-                    if (FilterType != null)
-                    {
-                        if (flowMeter.ID > filterID && flowMeter.EntityType.Name.Equals(FilterType))
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
-                    }
-                    else
-                    {
-                        if (flowMeter.ID > filterID)
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
-                    }
-                }
-                //nothing is selected, filter only by the category
-                if (selectedOption == ' ')
-                {
-                    if (FilterType != null)
-                    {
-                        if (flowMeter.EntityType.Name.Equals(FilterType))
-                        {
-                            FilteredMeters.Add(flowMeter);
-                        }
-                    }
+                    FilteredMeters.Add(flowMeter);
                 }
             }
-
+            //TODO toast of successful filtering
         }
 
-        private void HideKeyboard()
-        {
-            KeyboardVisibility = Visibility.Hidden;
-            IsKeyboardEnabled = false;
-        }
+        #endregion
 
         private void TextChanged()
         {
 
         }
 
+        #region Creating/Removing
         private bool CanRemoveEntity()
         {
             if(SelectedEntity!=null)
@@ -347,25 +334,12 @@ namespace NetworkService.Views
             }
             return false;
         }
-
         private void OnRemoveEntity()
         {
+            SaveState();
+
             FlowMeters.Remove(SelectedEntity);
             SelectedEntity = null;
-        }
-
-        private void OnAddEntity()
-        {
-            FlowMeter newFlowMeter = new FlowMeter();
-            newFlowMeter.ID = int.Parse(IDText);
-            newFlowMeter.Name = NameText;
-            string type = (SelectedType as string);
-            newFlowMeter.EntityType = new EntityType(type, $"../../Resources/Images/{type.ToLower()}.png");
-
-            FlowMeters.Add(newFlowMeter);
-
-            ClearFilters();
-            //raise some toast or something, tell the user it was successful
         }
 
         private bool CanAddEntity()
@@ -407,10 +381,39 @@ namespace NetworkService.Views
 
             return allGood;
         }
+        private void OnAddEntity()
+        {
+            SaveState();
 
+            FlowMeter newFlowMeter = new FlowMeter();
+            newFlowMeter.ID = int.Parse(IDText);
+            newFlowMeter.Name = NameText;
+            string type = (SelectedType as string);
+            newFlowMeter.EntityType = new EntityType(type, $"../../Resources/Images/{type.ToLower()}.png");
 
+            FlowMeters.Add(newFlowMeter);
+
+            HideKeyboard();
+
+            ClearFilters();
+            //raise some toast or something, tell the user it was successful
+        }
+        private void SaveState()
+        {
+            MainWindowViewModel.UndoStack.Push(new SaveState<CommandType, object>
+                (CommandType.EntityManipulation,
+                new ObservableCollection<FlowMeter>(FlowMeters)));
+        }
+
+        #endregion
 
         #region Keyboard Actions
+
+        private void HideKeyboard()
+        {
+            KeyboardVisibility = Visibility.Hidden;
+            IsKeyboardEnabled = false;
+        }
         private void Backspace()
         {
             if (SelectedTextBox.Text.Length > 0)
@@ -441,9 +444,13 @@ namespace NetworkService.Views
 
         private void InputKey(string keyPressed)
         {
-            if (SelectedTextBox != null)
+            if (SelectedTextBox != null && !SelectedTextBox.Name.Equals("IDTextBox"))
             {
                 SelectedTextBox.Text += keyPressed;
+            }
+            else if(SelectedTextBox.Name.Equals("IDTextBox"))
+            {
+                //TODO warning about using only numbers
             }
 
         }
@@ -457,12 +464,8 @@ namespace NetworkService.Views
         }
 
         
-
-
         #endregion
 
-
     }
-
 
 }
