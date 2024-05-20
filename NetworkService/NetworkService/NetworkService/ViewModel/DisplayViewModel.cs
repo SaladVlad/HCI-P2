@@ -2,15 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using NetworkService.Helpers;
+using System.Threading;
+using System.Windows.Shapes;
+using System.Windows.Navigation;
 
 namespace NetworkService.ViewModel
 {
     public class DisplayViewModel : BindableBase
     {
+
+        private readonly Timer _timer;
 
         private FlowMeter _selectedEntity;
         public FlowMeter SelectedEntity
@@ -29,9 +37,8 @@ namespace NetworkService.ViewModel
 
         public ObservableCollection<FlowMeter> FlowMeters = MainWindowViewModel.FlowMeters;
         public ObservableCollection<Category> Categories { get; set; }
-
         public static Dictionary<int, FlowMeter> AddedToGrid { get; set; }
-
+        public static Dictionary<Pair<int,int>,Line> Lines { get; set; }
         public static ObservableCollection<Canvas> CanvasCollection { get; set; }
         public static ObservableCollection<FlowMeter> EntityInfo { get; set; }
         public static ObservableCollection<Brush> BorderBrushCollection { get; set; }
@@ -39,78 +46,50 @@ namespace NetworkService.ViewModel
 
         #region Commands
 
-        public MyICommand<object> DropEntityOnCanvasCommand { get; set; }
-        public MyICommand<object> MouseLeftButtonDownCommand { get; set; }
+        public MyICommand<string> DropEntityOnCanvasCommand { get; set; }
+        public MyICommand<string> MouseLeftButtonDownCommand { get; set; }
         public MyICommand MouseLeftButtonUpCommand { get; set; }
-        public MyICommand<object> FreeCanvas { get; set; }
+        public MyICommand<string> FreeCanvas { get; set; }
         public MyICommand<object> SelectionChangedCommand { get; set; }
+
+        public MyICommand TreeViewItemMouseMoveCommand { get; set; }
+        public MyICommand TreeViewSelectedItemChangedCommand { get; set; }
 
         #endregion
 
 
         public DisplayViewModel()
         {
-            if (AddedToGrid == null)
-            {
-                AddedToGrid = new Dictionary<int, FlowMeter>();
-            }
-            if (CanvasCollection == null)
-            {
-                CanvasCollection = new ObservableCollection<Canvas>();
-                for (int i = 0; i < 12; i++)
-                {
-                    CanvasCollection.Add(new Canvas()
-                    {
-                        Background = Brushes.PeachPuff,
-                        AllowDrop = true
-                    });
-                }
-            }
+            InitializeCategories();
+            InitializeCollections();
 
-            if (EntityInfo == null)
-            {
-                EntityInfo = new ObservableCollection<FlowMeter>();
-
-                for (int i = 0; i < 12; i++)
-                {
-                    FlowMeter newInfo = new FlowMeter
-                    {
-                        ID = -1,
-                        Name = "",
-                        EntityType = new EntityType("",""),
-                        Value = 0
-                    };
-
-                    EntityInfo.Add(newInfo);
-                }
-            }
-
-            if (BorderBrushCollection == null)
-            {
-                BorderBrushCollection = new ObservableCollection<Brush>();
-                for (int i = 0; i < 12; i++)
-                {
-                    BorderBrushCollection.Add(Brushes.Black);
-                }
-            }
-
-            DropEntityOnCanvasCommand = new MyICommand<object>(OnDrop);
-            MouseLeftButtonDownCommand = new MyICommand<object>(OnLeftMouseButtonDown);
+            DrawExistingLines();
+            
+            DropEntityOnCanvasCommand = new MyICommand<string>(OnDrop);
+            MouseLeftButtonDownCommand = new MyICommand<string>(OnLeftMouseButtonDown);
             MouseLeftButtonUpCommand = new MyICommand(OnLeftMouseButtonUp);
-            FreeCanvas = new MyICommand<object>(OnFreeCanvas);
+            FreeCanvas = new MyICommand<string>(ResetCanvas);
             SelectionChangedCommand = new MyICommand<object>(OnSelectionChanged);
 
+            //setting up an update timer to update the display visuals
+            _timer = new Timer(UpdateEntitiesOnCanvas, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(500));
 
-            Categories = new ObservableCollection<Category>()
+        }
+
+        
+
+        private void InitializeCategories()
+        {
+            Categories = new ObservableCollection<Category>
             {
                 new Category("Volume"),
                 new Category("Turbine"),
                 new Category("Electronic")
             };
 
-            foreach(FlowMeter flowMeter in FlowMeters)
+            foreach (var flowMeter in FlowMeters)
             {
-                foreach(Category category in Categories)
+                foreach (var category in Categories)
                 {
                     if (category.Name.Equals(flowMeter.EntityType.Name))
                     {
@@ -118,28 +97,50 @@ namespace NetworkService.ViewModel
                     }
                 }
             }
+        }
+        private void InitializeCollections()
+        {
+            CanvasCollection = CanvasCollection ?? new ObservableCollection<Canvas>();
 
-            
+            EntityInfo = EntityInfo ?? new ObservableCollection<FlowMeter>();
 
+            BorderBrushCollection = BorderBrushCollection ?? new ObservableCollection<Brush>();
+
+            AddedToGrid = AddedToGrid ?? new Dictionary<int, FlowMeter>();
+
+            Lines = Lines ?? new Dictionary<Pair<int, int>, Line>();
+
+            if (CanvasCollection.Count == 0) //if this is the first initialization, fill with default values
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    CanvasCollection.Add(new Canvas { Background = Brushes.PeachPuff, AllowDrop = true });
+                    EntityInfo.Add(new FlowMeter { ID = -1, Name = "", EntityType = new EntityType("", ""), Value = 0 });
+                    BorderBrushCollection.Add(Brushes.Black);
+                }
+            }
+            foreach(FlowMeter f in AddedToGrid.Values)
+                RemoveFromCategory(f);
 
         }
 
-        private void OnFreeCanvas(object obj)
+        private void DrawExistingLines()
         {
             throw new NotImplementedException();
         }
 
+
+
         private void OnLeftMouseButtonUp()
         {
-            _draggedItem = null;
-            SelectedEntity = null;
             _dragging = false;
+            _draggedItem = null;
             _draggingSourceIndex = -1;
         }
 
         private void OnSelectionChanged(object parameter)
         {
-            if (!_dragging)
+            if (!_dragging && parameter!=null)
             {
                 _dragging = true;
                 _draggedItem = SelectedEntity;
@@ -147,86 +148,160 @@ namespace NetworkService.ViewModel
             }
         }
 
-        private void OnLeftMouseButtonDown(object parameter)
+        private void OnLeftMouseButtonDown(string indexString)
         {
-            if (!_dragging)
+            int index = int.Parse(indexString);
+            if (!_dragging && CanvasCollection[index].Resources.Contains("taken"))
             {
-                int index = Convert.ToInt32(parameter);
+                _dragging = true;
+                _draggedItem = CanvasCollection[index].Resources["data"] as FlowMeter;
+                _draggingSourceIndex = index;
+                DragDrop.DoDragDrop(CanvasCollection[index], _draggedItem, DragDropEffects.Move);
+                EntityInfo[index] = new FlowMeter { ID = -1, Name = "", EntityType = new EntityType("", ""), Value = 0 };
+            }
+        }
 
-                if (CanvasCollection[index].Resources["taken"] != null)
+        private void OnDrop(string indexString)
+        {
+            int index = int.Parse(indexString);
+            if (_draggedItem != null && !CanvasCollection[index].Resources.Contains("taken"))
+            {
+                var logo = new BitmapImage(new Uri(_draggedItem.EntityType.ImagePath, UriKind.Relative));
+                CanvasCollection[index].Background = new ImageBrush(logo);
+                CanvasCollection[index].Resources.Add("taken", true);
+                CanvasCollection[index].Resources.Add("data", _draggedItem);
+                BorderBrushCollection[index] = _draggedItem.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
+                EntityInfo[index] = _draggedItem;
+
+                //if the dragged item is from a different canvas control, clear the previous one
+                if (_draggingSourceIndex != -1)
                 {
-                    _dragging = true;
-                    _draggedItem = (FlowMeter)(CanvasCollection[index].Resources["data"]);
-                    _draggingSourceIndex = index;
-                    DragDrop.DoDragDrop(CanvasCollection[index],_draggedItem,DragDropEffects.Move);
+                    ResetCanvas(_draggingSourceIndex.ToString());
+                    _draggingSourceIndex = -1;
+                }
 
-                    EntityInfo[index] = new FlowMeter()
-                    {
-                        ID = -1,
-                        Name = "",
-                        EntityType = new EntityType("",""),
-                        Value = 0
-                    };
+                //end the Drag&Drop action
+                RemoveFromCategory(_draggedItem);
+                _draggedItem = null;
+                _dragging= false;
+
+                SaveState();
+
+            }
+            //if the Drag&Drop action happened in between two taken canvases, draw a line
+            else if(_draggedItem!= null  && CanvasCollection[index].Resources.Contains("taken"))
+            {
+                //draw a line, if it's not already drawn
+
+                if (!IsLineAlreadyDrawn(_draggingSourceIndex,index))
+                {
+                    Pair<int, int> coordinates = 
+                        new Pair<int, int>(_draggingSourceIndex, index);
+
+                    Line newLine = new Line();
+                    //TODO draw the line on the canvas
+                }
+            }
+
+
+        }
+
+        private bool IsLineAlreadyDrawn(int sourceIndex, int destinationIndex)
+        {
+            foreach(Pair<int,int> coordinates in Lines.Keys)
+            {
+                if(sourceIndex == coordinates.Item1 && destinationIndex == coordinates.Item2)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //method for clearing the canvas of its entity, and placing the entity back into the list
+        private void ResetCanvas(string indexString)
+        {
+
+            int index = int.Parse(indexString);
+            CanvasCollection[index].Background = Brushes.PeachPuff;
+
+            CanvasCollection[index].Resources.Remove("taken");
+            FlowMeter removedMeter = CanvasCollection[index].Resources["data"] as FlowMeter;
+            CanvasCollection[index].Resources.Remove("data");
+            AddToCategory(removedMeter);
+            BorderBrushCollection[index] = Brushes.Black;
+            EntityInfo[index] = new FlowMeter { ID = -1, Name = "", EntityType = new EntityType("", ""), Value = 0 };
+
+        }
+
+        //add entity back to the list
+        private void AddToCategory(FlowMeter flowMeter)
+        {
+            foreach(Category c in Categories)
+            {
+                if (c.Name.Equals(flowMeter.EntityType.Name))
+                {
+                    c.FlowMeters.Add(flowMeter);
+                    break;
                 }
             }
         }
 
-        private void OnDrop(object parameter)
+        //method to remove entities that are already added to the grid
+        private void RemoveFromCategory(FlowMeter flowMeter)
         {
-            if (_draggedItem != null)
+            foreach (var category in Categories) //going through all the categories
             {
-                int index = Convert.ToInt32(parameter);
-
-                if (CanvasCollection[index].Resources["taken"] == null)
+                if (category.FlowMeters.Contains(flowMeter)) //if the added meter is in the list, remove it
                 {
-                    BitmapImage logo = new BitmapImage();
-                    logo.BeginInit();
-                    logo.UriSource = new Uri(_draggedItem.EntityType.ImagePath, UriKind.Relative);
-                    logo.EndInit();
+                    category.FlowMeters.Remove(flowMeter);
+                    break;
+                }
+            }
+        }
 
-                    CanvasCollection[index].Background = new ImageBrush(logo);
-                    CanvasCollection[index].Resources.Add("taken", true);
-                    CanvasCollection[index].Resources.Add("data", _draggedItem);
-                    BorderBrushCollection[index] = 
-                        _draggedItem.ValueState==ValueState.Normal 
-                        ? Brushes.GreenYellow : Brushes.Crimson;
+        //getting the right canvas based on the entity's ID
+        public static int GetCanvasIndexForEntityId(int entityId)
+        {
+            for (int i = 0; i < CanvasCollection.Count; i++)
+            {
+                FlowMeter entity = (CanvasCollection[i].Resources["data"]) as FlowMeter;
 
-                    AddedToGrid.Add(index, _draggedItem);
-                    EntityInfo[index] = AddedToGrid[index];
+                if ((entity != null) && (entity.ID == entityId))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
-                    // Premeštanje iz jednog u drugi
-                    if (_draggingSourceIndex != -1)
+        //method for updating border color based on the value
+        private void UpdateEntitiesOnCanvas(object state)
+        {
+            foreach(FlowMeter entity in FlowMeters)
+            {
+                int canvasIndex = GetCanvasIndexForEntityId(entity.ID);
+
+                if (canvasIndex != -1)
+                {
+                    if (entity.ValueState == ValueState.Normal)
                     {
-                        CanvasCollection[_draggingSourceIndex].Background = (Brush)(new BrushConverter().ConvertFrom("#8B9DC3"));
-                        CanvasCollection[_draggingSourceIndex].Resources.Remove("taken");
-                        CanvasCollection[_draggingSourceIndex].Resources.Remove("data");
-                        BorderBrushCollection[_draggingSourceIndex] = (Brush)(new BrushConverter().ConvertFrom("#282B30"));
-
-                        //UpdateLinesForCanvas(draggingSourceIndex, index);
-
-                        // Prekid linije ako se pomeri
-                        //if (sourceCanvasIndex != -1)
-                        //{
-                        //    isLineSourceSelected = false;
-                        //    sourceCanvasIndex = -1;
-                        //    linePoint1 = new Point();
-                        //    linePoint2 = new Point();
-                        //    currentLine = new MyLine();
-                        //}
-
-                        _draggingSourceIndex = -1;
+                        BorderBrushCollection[canvasIndex] = Brushes.GreenYellow;
                     }
-
-                    foreach(Category category in Categories)
+                    else
                     {
-                        if (category.FlowMeters.Contains(_draggedItem))
-                        {
-                            category.FlowMeters.Remove(_draggedItem);
-                            break;
-                        }
+                        BorderBrushCollection[canvasIndex] = Brushes.Crimson;
                     }
                 }
             }
+
+            
+        }
+
+
+        private void SaveState()
+        {
+            throw new NotImplementedException();
         }
     }
 }
