@@ -165,7 +165,7 @@ namespace NetworkService.ViewModel
                             NodeColor_1 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[0].Item1;
-                        Time_1 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                        Time_1 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
 
@@ -188,7 +188,7 @@ namespace NetworkService.ViewModel
                             NodeColor_2 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[1].Item1;
-                        Time_2 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                        Time_2 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
                     if (SelectedMeter.Last_5_Values.Count > 2)
@@ -210,7 +210,7 @@ namespace NetworkService.ViewModel
                             NodeColor_3 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[2].Item1;
-                        Time_3 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                        Time_3 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
 
@@ -233,7 +233,7 @@ namespace NetworkService.ViewModel
                             NodeColor_4 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[3].Item1;
-                        Time_4 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                        Time_4 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
                     if (SelectedMeter.Last_5_Values.Count > 4)
@@ -255,7 +255,7 @@ namespace NetworkService.ViewModel
                             NodeColor_5 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[4].Item1;
-                        Time_5 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                        Time_5 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
                     
                 });
