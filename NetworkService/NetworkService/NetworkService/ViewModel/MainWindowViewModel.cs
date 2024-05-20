@@ -31,10 +31,6 @@ namespace NetworkService.ViewModel
             set
             {
                 SetProperty(ref _selectedContent, value);
-                if(_selectedContent.GetType()== typeof(DisplayView))
-                {
-
-                }
             }
         }
 
@@ -43,7 +39,7 @@ namespace NetworkService.ViewModel
             createListener(); //creating a listener for gathering info about network entities
 
             FlowMeters = new ObservableCollection<FlowMeter>();
-            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("Volume", "/Resources/Images/volume.png") });
+            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("Volume", "../../Resources/Images/volume.png") });
             //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
 
             SelectedContent = new DisplayView(); //setting the net display view as a default
@@ -134,11 +130,11 @@ namespace NetworkService.ViewModel
             if (flowMeter.Last_5_Values.Count == 5)
             {
                 flowMeter.Last_5_Values.RemoveAt(0);
-                flowMeter.Last_5_Values.Add(flowMeter.Value);
+                flowMeter.Last_5_Values.Add(new Pair<DateTime,int>(DateTime.Now,flowMeter.Value));
             }
             else
             {
-                flowMeter.Last_5_Values.Add(flowMeter.Value);
+                flowMeter.Last_5_Values.Add(new Pair<DateTime, int>(DateTime.Now, flowMeter.Value));
             }
         }
     }
