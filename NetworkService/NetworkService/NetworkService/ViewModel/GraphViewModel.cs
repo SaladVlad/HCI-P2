@@ -60,6 +60,12 @@ namespace NetworkService.ViewModel
             NodeText_4 = "0";
             NodeText_5 = "0";
 
+            Time_1 = "00:00:00";
+            Time_2 = "00:00:00";
+            Time_3 = "00:00:00";
+            Time_4 = "00:00:00";
+            Time_5 = "00:00:00";
+
             //setting up an update timer to update the graph visuals
             _timer = new Timer(UpdatePositions, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
@@ -115,125 +121,149 @@ namespace NetworkService.ViewModel
         private string nodeText_5;
         public string NodeText_5 { get => nodeText_5; set => SetProperty(ref nodeText_5, value); }
 
+        private string time_1;
+        public string Time_1 { get => time_1; set => SetProperty(ref time_1, value); }
+        private string time_2;
+        public string Time_2 { get => time_2; set => SetProperty(ref time_2, value); }
+        private string time_3;
+        public string Time_3 { get => time_3; set => SetProperty(ref time_3, value); }
+        private string time_4;
+        public string Time_4 { get => time_4; set => SetProperty(ref time_4, value); }
+        private string time_5;
+        public string Time_5 { get => time_5; set => SetProperty(ref time_5, value); }
+
         #endregion
 
 
         #region Actions
-
-
-
         private void UpdatePositions(object state)
         {
-            if (SelectedMeter.Last_5_Values.Count == 5 && SelectedMeter!=null)
+            if (SelectedMeter!=null)
             {
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
 
+
+                    if (SelectedMeter.Last_5_Values.Count > 0)
+                    {
+                        LinePoint_1 = new Point(LinePoint_1.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[0].Item2 * graphCoefficient));
+                        StartPoint = LinePoint_1;
+                        MarginPoint_1 = new Thickness(MarginPoint_1.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[0].Item2 * graphCoefficient), 0, 0);
+                        NodeText_1 = SelectedMeter.Last_5_Values[0].Item2.ToString();
+
+                        if (SelectedMeter.Last_5_Values[0].Item2 < 670)
+                        {
+                            NodeColor_1 = new SolidColorBrush(Colors.Purple);
+                        }
+                        else if (SelectedMeter.Last_5_Values[0].Item2 > 735)
+                        {
+                            NodeColor_1 = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            NodeColor_1 = new SolidColorBrush(Colors.Green);
+                        }
+                        DateTime dateTime = SelectedMeter.Last_5_Values[0].Item1;
+                        Time_1 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                    }
+
+
+                    if (SelectedMeter.Last_5_Values.Count > 1)
+                    {
+                        LinePoint_2 = new Point(LinePoint_2.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[1].Item2 * graphCoefficient));
+                        MarginPoint_2 = new Thickness(MarginPoint_2.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[1].Item2 * graphCoefficient), 0, 0);
+                        NodeText_2 = SelectedMeter.Last_5_Values[1].Item2.ToString();
+
+                        if (SelectedMeter.Last_5_Values[1].Item2 < 670)
+                        {
+                            NodeColor_2 = new SolidColorBrush(Colors.Purple);
+                        }
+                        else if (SelectedMeter.Last_5_Values[1].Item2 > 735)
+                        {
+                            NodeColor_2 = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            NodeColor_2 = new SolidColorBrush(Colors.Green);
+                        }
+                        DateTime dateTime = SelectedMeter.Last_5_Values[1].Item1;
+                        Time_2 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                    }
+
+                    if (SelectedMeter.Last_5_Values.Count > 2)
+                    {
+                        LinePoint_3 = new Point(LinePoint_3.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[2].Item2 * graphCoefficient));
+                        MarginPoint_3 = new Thickness(MarginPoint_3.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[2].Item2 * graphCoefficient), 0, 0);
+                        NodeText_3 = SelectedMeter.Last_5_Values[2].Item2.ToString();
+
+                        if (SelectedMeter.Last_5_Values[2].Item2 < 670)
+                        {
+                            NodeColor_3 = new SolidColorBrush(Colors.Purple);
+                        }
+                        else if (SelectedMeter.Last_5_Values[2].Item2 > 735)
+                        {
+                            NodeColor_3 = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            NodeColor_3 = new SolidColorBrush(Colors.Green);
+                        }
+                        DateTime dateTime = SelectedMeter.Last_5_Values[2].Item1;
+                        Time_3 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                    }
+
+
+                    if (SelectedMeter.Last_5_Values.Count > 3)
+                    {
+                        LinePoint_4 = new Point(LinePoint_4.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[3].Item2 * graphCoefficient));
+                        MarginPoint_4 = new Thickness(MarginPoint_4.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[3].Item2 * graphCoefficient), 0, 0);
+                        NodeText_4 = SelectedMeter.Last_5_Values[3].Item2.ToString();
+
+                        if (SelectedMeter.Last_5_Values[3].Item2 < 670)
+                        {
+                            NodeColor_4 = new SolidColorBrush(Colors.Purple);
+                        }
+                        else if (SelectedMeter.Last_5_Values[3].Item2 > 735)
+                        {
+                            NodeColor_4 = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            NodeColor_4 = new SolidColorBrush(Colors.Green);
+                        }
+                        DateTime dateTime = SelectedMeter.Last_5_Values[3].Item1;
+                        Time_4 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                    }
+
+                    if (SelectedMeter.Last_5_Values.Count > 4)
+                    {
+                        LinePoint_5 = new Point(LinePoint_5.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[4].Item2 * graphCoefficient));
+                        MarginPoint_5 = new Thickness(MarginPoint_5.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[4].Item2 * graphCoefficient), 0, 0);
+                        NodeText_5 = SelectedMeter.Last_5_Values[4].Item2.ToString();
+
+                        if (SelectedMeter.Last_5_Values[4].Item2 < 670)
+                        {
+                            NodeColor_5 = new SolidColorBrush(Colors.Purple);
+                        }
+                        else if (SelectedMeter.Last_5_Values[4].Item2 > 735)
+                        {
+                            NodeColor_5 = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            NodeColor_5 = new SolidColorBrush(Colors.Green);
+                        }
+                        DateTime dateTime = SelectedMeter.Last_5_Values[4].Item1;
+                        Time_5 = dateTime.Hour.ToString() + dateTime.Minute.ToString() + dateTime.Second.ToString();
+                    }
                     
-
-                    LinePoint_1 = new Point(LinePoint_1.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[0] * graphCoefficient));
-                    StartPoint = LinePoint_1;
-                    MarginPoint_1 = new Thickness(MarginPoint_1.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[0] * graphCoefficient), 0, 0);
-                    NodeText_1 = SelectedMeter.Last_5_Values[0].ToString();
-
-                    if (SelectedMeter.Last_5_Values[0] < 670)
-                    {
-                        NodeColor_1 = new SolidColorBrush(Colors.Purple);
-                    }
-                    else if (SelectedMeter.Last_5_Values[0] > 735)
-                    {
-                        NodeColor_1 = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        NodeColor_1 = new SolidColorBrush(Colors.Green);
-                    }
-
-
-
-                    LinePoint_2 = new Point(LinePoint_2.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[1] * graphCoefficient));
-                    MarginPoint_2 = new Thickness(MarginPoint_2.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[1] * graphCoefficient), 0, 0);
-                    NodeText_2 = SelectedMeter.Last_5_Values[1].ToString();
-
-                    if (SelectedMeter.Last_5_Values[1] < 670)
-                    {
-                        NodeColor_2 = new SolidColorBrush(Colors.Purple);
-                    }
-                    else if (SelectedMeter.Last_5_Values[1] > 735)
-                    {
-                        NodeColor_2 = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        NodeColor_2 = new SolidColorBrush(Colors.Green);
-                    }
-
-
-                    LinePoint_3 = new Point(LinePoint_3.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[2] * graphCoefficient));
-                    MarginPoint_3 = new Thickness(MarginPoint_3.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[2] * graphCoefficient), 0, 0);
-                    NodeText_3 = SelectedMeter.Last_5_Values[2].ToString();
-
-                    if (SelectedMeter.Last_5_Values[2] < 670)
-                    {
-                        NodeColor_3 = new SolidColorBrush(Colors.Purple);
-                    }
-                    else if (SelectedMeter.Last_5_Values[2] > 735)
-                    {
-                        NodeColor_3 = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        NodeColor_3 = new SolidColorBrush(Colors.Green);
-                    }
-
-
-                    LinePoint_4 = new Point(LinePoint_4.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[3] * graphCoefficient));
-                    MarginPoint_4 = new Thickness(MarginPoint_4.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[3] * graphCoefficient), 0, 0);
-                    NodeText_4 = SelectedMeter.Last_5_Values[3].ToString();
-
-                    if (SelectedMeter.Last_5_Values[3] < 670)
-                    {
-                        NodeColor_4 = new SolidColorBrush(Colors.Purple);
-                    }
-                    else if (SelectedMeter.Last_5_Values[3] > 735)
-                    {
-                        NodeColor_4 = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        NodeColor_4 = new SolidColorBrush(Colors.Green);
-                    }
-
-
-                    LinePoint_5 = new Point(LinePoint_5.X, (int)Math.Round(210 - SelectedMeter.Last_5_Values[4] * graphCoefficient));
-                    MarginPoint_5 = new Thickness(MarginPoint_5.Left, (int)Math.Round(195 - SelectedMeter.Last_5_Values[4] * graphCoefficient), 0, 0);
-                    NodeText_5 = SelectedMeter.Last_5_Values[4].ToString();
-
-                    if (SelectedMeter.Last_5_Values[4] < 670)
-                    {
-                        NodeColor_5 = new SolidColorBrush(Colors.Purple);
-                    }
-                    else if (SelectedMeter.Last_5_Values[4] > 735)
-                    {
-                        NodeColor_5 = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        NodeColor_5 = new SolidColorBrush(Colors.Green);
-                    }
-
                 });
 
             }
-            else if (SelectedMeter == null)
-            {
-                 //do nothing because no entity is selected
-            }
             else
             {
-                Console.WriteLine($"[ WARNING ] Waiting on at least 5 values; Current: {SelectedMeter.Last_5_Values.Count}");
-               
+                 //do nothing because no entity is selected
             }
         }
 
