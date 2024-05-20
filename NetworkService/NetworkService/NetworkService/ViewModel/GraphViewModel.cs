@@ -138,7 +138,7 @@ namespace NetworkService.ViewModel
         #region Actions
         private void UpdatePositions(object state)
         {
-            if (SelectedMeter!=null)
+            if (SelectedMeter!=null && Application.Current!=null)
             {
 
                 Application.Current.Dispatcher.Invoke(() =>
@@ -260,6 +260,10 @@ namespace NetworkService.ViewModel
                     
                 });
 
+            }
+            else if (Application.Current == null)
+            {
+                Dispose(); //if the application is shut down, dispose of the timer
             }
             else
             {
