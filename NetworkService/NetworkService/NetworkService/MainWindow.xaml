@@ -4,25 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NetworkService"
-        
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
         xmlns:views="clr-namespace:NetworkService.Views"
-        
+        xmlns:notifications="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="952"
         Width="467"
-        Background="#4A4A4A"
-        BorderBrush="#00C2FF"
-        BorderThickness="3"
+        Background="{StaticResource BackgroundGradientBrush}"
         ResizeMode="NoResize">
     <Window.DataContext>
         <viewModel:MainWindowViewModel/>
     </Window.DataContext>
 
     <Window.Resources>
-        <!--Something should be here, maybe-->
+        
     </Window.Resources>
 
     <Window.InputBindings>
@@ -34,64 +32,90 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+
+        <DockPanel
+            Grid.Row="0"
+            Grid.ColumnSpan="2">
+            <Menu
+                Grid.Row="0"
+                Margin="-5,0,-7,5"
+                Background="{StaticResource PrimaryBrush}"
+                Grid.ColumnSpan="2" Width="453"
+                >
+                <MenuItem
+                    Height="60"
+                    Width="150"
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="Table"
+                    ToolTip="Entities View"
+                    Cursor="Hand"
+                    Style="{StaticResource MenuItemStyle}">
+                    <MenuItem.Header>
+                        <fa5:FontAwesome
+                            Icon="Solid_Table"
+                            Width="140"
+                            Height="40"
+                            FontSize="30"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource TextBrush}">
+                        </fa5:FontAwesome>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem
+                    Height="60"
+                    Width="150"
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="Network"
+                    ToolTip="Network Display View"
+                    Cursor="Hand"
+                    Style="{StaticResource MenuItemStyle}">
+                    <MenuItem.Header>
+                        <fa5:FontAwesome
+                            Icon="Solid_NetworkWired"
+                            Width="140"
+                            Height="40"
+                            FontSize="30"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource TextBrush}">
+                        </fa5:FontAwesome>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem
+                    Height="60"
+                    Width="150"
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="Graph"
+                    ToolTip="Graph View"
+                    Cursor="Hand"
+                    Style="{StaticResource MenuItemStyle}">
+                    <MenuItem.Header>
+                        <fa5:FontAwesome
+                            Icon="Solid_ChartBar"
+                            Width="140"
+                            Height="40"
+                            FontSize="30"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource TextBrush}">
+                        </fa5:FontAwesome>
+                    </MenuItem.Header>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
         
 
-        <Menu
-            Grid.Row="0"
-            Margin="1,0,0,1"
-            Background="#3088A4" Grid.ColumnSpan="2">
-            <MenuItem
-                Height="60"
-                Width="140"
-                Command="{Binding ChangeViewCommand}"
-                CommandParameter="Table">
-                <MenuItem.Header>
-                    <TextBlock
-                        Text="Table View"
-                        FontSize="20"
-                        Foreground="White"
-                        Margin="15 0 0 0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem
-                Height="60"
-                Width="140"
-                Command="{Binding ChangeViewCommand}"
-                CommandParameter="Network">
-                <MenuItem.Header>
-                    <TextBlock
-                        Text="Network Display"
-                        FontSize="18"
-                        Foreground="White"
-                        Margin="-5 0 0 0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem
-                Height="60"
-                Width="140"
-                Command="{Binding ChangeViewCommand}"
-                CommandParameter="Graph">
-                <MenuItem.Header>
-                    <TextBlock
-                        Text="Graph View"
-                        FontSize="20"
-                        Foreground="White"
-                        Margin="12 0 0 0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
-                </MenuItem.Header>
-            </MenuItem>
-        </Menu>
-
         <ContentControl Grid.Row="1" Content="{Binding SelectedContent}" Grid.ColumnSpan="2"/>
+
+        <notifications:NotificationArea
+            x:Name="MainNotificationArea"
+            Grid.Row="1"
+            Panel.ZIndex="1000"
+            MaxItems="2"
+            Position="TopCenter"
+            Width="250"/>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -102,22 +126,31 @@
             <Button
                 Grid.Column="1"
                 Margin="0 0 1 0"
-                Background="#3088A4"
-                Content="Home"
-                Foreground="White"
+                Background="{StaticResource PrimaryBrush}"
+                Foreground="{StaticResource TextBrush}"
                 FontSize="30"
                 Command="{Binding ChangeViewCommand}"
-                CommandParameter="Network"
-                />
+                CommandParameter="Home"
+                Style="{StaticResource CustomButtonStyle}"
+                >
+                <Button.Content>
+                    <fa5:FontAwesome
+                        Icon="Solid_Home"/>
+                </Button.Content>
+            </Button>
             <Button
                 Grid.Column="0"
                 Margin="1 0 0 0"
-                Background="#3088A4"
-                Content="Undo"
-                Foreground="White"
                 FontSize="30"
-                Command="{Binding UndoCommand}"/>
-            
+                Style="{StaticResource CustomButtonStyle}"
+                Command="{Binding UndoCommand}"
+                >
+                <Button.Content>
+                    <fa5:FontAwesome
+                        Icon="Solid_Undo"/>
+                </Button.Content>
+            </Button>
+
         </Grid>
     </Grid>
 
