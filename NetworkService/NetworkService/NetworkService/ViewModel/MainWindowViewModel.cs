@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using NetworkService.Helpers;
 using NetworkService.Model;
 using NetworkService.Views;
 
@@ -21,9 +22,9 @@ namespace NetworkService.ViewModel
 {
     public class MainWindowViewModel : BindableBase
     {
-        public static ObservableCollection<FlowMeter> FlowMeters {  get; set; }
+        public static ObservableCollection<FlowMeter> FlowMeters { get; set; }
 
-        public static Stack<SaveState<CommandType,object>> UndoStack { get; set; }
+        public static Stack<SaveState<CommandType, object>> UndoStack { get; set; }
 
         #region Commands
         public MyICommand<string> ChangeViewCommand { get; set; }
@@ -61,29 +62,37 @@ namespace NetworkService.ViewModel
 
             #endregion
 
-            SelectedContent = new DisplayView(); //setting the net display view as a default
+            SelectedContent = new HomeView(); //setting the net display view as a default
+            
         }
 
-        
+
         private void ChangeView(string viewName)
         {
-            if (viewName == "Table" && SelectedContent.GetType()!= typeof(EntitiesView))
+            if (viewName == "Table" && SelectedContent.GetType() != typeof(EntitiesView))
             {
                 UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new EntitiesView();
-                
+
+
             }
             else if (viewName == "Network" && SelectedContent.GetType() != typeof(DisplayView))
             {
                 UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new DisplayView();
-                
+
             }
             else if (viewName == "Graph" && SelectedContent.GetType() != typeof(GraphView))
             {
                 UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
                 SelectedContent = new GraphView();
-                
+
+            }
+            else if (viewName == "Home" && SelectedContent.GetType() != typeof(HomeView))
+            {
+                UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, SelectedContent.GetType()));
+                SelectedContent = new HomeView();
+
             }
         }
 
@@ -118,14 +127,20 @@ namespace NetworkService.ViewModel
                             //U suprotnom, server je poslao promenu stanja nekog objekta u sistemu
                             Console.WriteLine(incomming); //Na primer: "Entitet_1:272"
 
-                            Helpers.Logging.AppendToFile("log.txt",incomming);
+                            Helpers.Logging.AppendToFile("log.txt", incomming);
 
                             string[] parts = incomming.Split(':');
                             int id = int.Parse(parts[0].Split('_')[1]);
                             int value = int.Parse(parts[1]);
-                            FlowMeters[id].Value = value;
-
-                            AddValueToList(FlowMeters[id]);
+                            if (FlowMeters[id] != null)
+                            {
+                                FlowMeters[id].Value = value;
+                                AddValueToList(FlowMeters[id]);
+                            }
+                            else
+                            {
+                                //TODO small toast about unknown recieved value
+                            }
 
                         }
                     }, null);
@@ -141,7 +156,7 @@ namespace NetworkService.ViewModel
             if (flowMeter.Last_5_Values.Count == 5)
             {
                 flowMeter.Last_5_Values.RemoveAt(0);
-                flowMeter.Last_5_Values.Add(new Pair<DateTime,int>(DateTime.Now,flowMeter.Value));
+                flowMeter.Last_5_Values.Add(new Pair<DateTime, int>(DateTime.Now, flowMeter.Value));
             }
             else
             {
@@ -156,9 +171,9 @@ namespace NetworkService.ViewModel
         public void OnUndo()
         {
             SaveState<CommandType, object> saveState = UndoStack.Pop();
-            if(saveState.CommandType == CommandType.SwitchViews)
+            if (saveState.CommandType == CommandType.SwitchViews)
             {
-                Type viewType= saveState.SavedState as Type;
+                Type viewType = saveState.SavedState as Type;
 
                 if (viewType == typeof(EntitiesView))
                 {
@@ -168,30 +183,34 @@ namespace NetworkService.ViewModel
                 {
                     SelectedContent = new DisplayView();
                 }
-                else
+                else if (viewType == typeof(GraphView))
                 {
                     SelectedContent = new GraphView();
                 }
+                else
+                {
+                    SelectedContent = new HomeView();
+                }
             }
-            else if(saveState.CommandType == CommandType.EntityManipulation)
+            else if (saveState.CommandType == CommandType.EntityManipulation)
             {
                 FlowMeters = saveState.SavedState as ObservableCollection<FlowMeter>;
                 //refreshing the list
                 SelectedContent = new EntitiesView();
             }
-            else if(saveState.CommandType == CommandType.CanvasManipulation)
+            else if (saveState.CommandType == CommandType.CanvasManipulation)
             {
-                CanvasState canvasState = saveState.SavedState as CanvasState;
-                if (canvasState != null)
-                {
-                    DisplayViewModel.AddedToGrid = new Dictionary<int, FlowMeter>(canvasState.AddedToGrid);
-                    DisplayViewModel.Lines = new Dictionary<Pair<int, int>, Line>(canvasState.Lines);
-                    DisplayViewModel.EntityInfo = new ObservableCollection<FlowMeter>(canvasState.EntityInfo);
-                    DisplayViewModel.BorderBrushCollection = new ObservableCollection<Brush>(canvasState.BorderBrushCollection);
-
-                    SelectedContent = new DisplayView();
-                }
                 
+                DisplayViewModel.AddedToGrid.Clear();
+                foreach(var entry in saveState.SavedState as Dictionary<int,FlowMeter>)
+                {
+                    DisplayViewModel.AddedToGrid.Add(entry.Key, entry.Value);
+                }
+
+                DisplayViewModel.InitializeCollections();
+                DisplayViewModel.InitializeCategories();
+
+
             }
 
             GC.Collect();
