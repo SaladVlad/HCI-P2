@@ -35,7 +35,7 @@ namespace NetworkService.ViewModel
         private bool _dragging = false;
         public int _draggingSourceIndex = -1;
 
-        public ObservableCollection<FlowMeter> FlowMeters = MainWindowViewModel.FlowMeters;
+        public static ObservableCollection<FlowMeter> FlowMeters { get; set; }
         public static ObservableCollection<Category> Categories { get; set; }
         public static Dictionary<int, FlowMeter> AddedToGrid { get; set; }
         public static Dictionary<Pair<int,int>,Line> Lines { get; set; }
@@ -58,6 +58,7 @@ namespace NetworkService.ViewModel
 
         public DisplayViewModel()
         {
+            
             InitializeCollections();
             InitializeCategories();
             
@@ -75,7 +76,7 @@ namespace NetworkService.ViewModel
 
         }
 
-        private void InitializeCollections()
+        public static void InitializeCollections()
         {
             CanvasCollection = CanvasCollection ?? new ObservableCollection<Canvas>();
             EntityInfo = EntityInfo ?? new ObservableCollection<FlowMeter>();
@@ -98,7 +99,7 @@ namespace NetworkService.ViewModel
                     }
                     else
                     {
-                        canvas.Background = Brushes.PeachPuff;
+                        canvas.Background = Brushes.Transparent;
                         EntityInfo.Add(new FlowMeter { ID = -1, Name = "", EntityType = new EntityType("", ""), Value = 0 });
                     }
 
@@ -117,28 +118,37 @@ namespace NetworkService.ViewModel
                         CanvasCollection[i].Background = new ImageBrush(logo);
                         CanvasCollection[i].Resources["taken"] = true;
                         CanvasCollection[i].Resources["data"] = AddedToGrid[i];
+                        EntityInfo[i] = AddedToGrid[i];
                     }
                     else
                     {
-                        CanvasCollection[i].Background = Brushes.PeachPuff;
-                        CanvasCollection[i].Resources["taken"] = null;
-                        CanvasCollection[i].Resources["data"] = null;
+                        CanvasCollection[i].Background = Brushes.Transparent;
+                        if(CanvasCollection[i].Resources.Contains("taken")) 
+                            CanvasCollection[i].Resources.Remove("taken");
+                        if (CanvasCollection[i].Resources.Contains("data"))
+                            CanvasCollection[i].Resources.Remove("data");
+                        EntityInfo[i] = new FlowMeter { ID = -1, Name = "", EntityType = new EntityType("", ""), Value = 0 };
+                        BorderBrushCollection[i] = Brushes.Black;
                     }
                 }
             }
-
             foreach(FlowMeter f in AddedToGrid.Values)
                 RemoveFromCategory(f);
 
         }
-        private void InitializeCategories()
+        public static void InitializeCategories()
         {
-            Categories = new ObservableCollection<Category>
+            FlowMeters = MainWindowViewModel.FlowMeters;
+
+            Categories = Categories ?? new ObservableCollection<Category>
             {
                 new Category("Volume"),
                 new Category("Turbine"),
                 new Category("Electronic")
             };
+            Categories[0].FlowMeters.Clear();
+            Categories[1].FlowMeters.Clear();
+            Categories[2].FlowMeters.Clear();
 
             foreach (var flowMeter in FlowMeters)
             {
@@ -174,7 +184,8 @@ namespace NetworkService.ViewModel
             {
                 _dragging = true;
                 _draggedItem = SelectedEntity;
-                DragDrop.DoDragDrop((ListView)parameter, _draggedItem, DragDropEffects.Move);
+                if(_draggedItem !=null)
+                    DragDrop.DoDragDrop((ListView)parameter, _draggedItem, DragDropEffects.Move);
             }
         }
 
@@ -186,7 +197,9 @@ namespace NetworkService.ViewModel
                 _dragging = true;
                 _draggedItem = CanvasCollection[index].Resources["data"] as FlowMeter;
                 _draggingSourceIndex = index;
-                DragDrop.DoDragDrop(CanvasCollection[index], _draggedItem, DragDropEffects.Move);
+
+                if(_draggedItem !=null)
+                    DragDrop.DoDragDrop(CanvasCollection[index], _draggedItem, DragDropEffects.Move);
                 
             }
         }
@@ -206,6 +219,7 @@ namespace NetworkService.ViewModel
                 CanvasCollection[index].Resources.Add("taken", true);
                 CanvasCollection[index].Resources.Add("data", _draggedItem);
 
+
                 AddedToGrid.Add(index,_draggedItem);
 
                 BorderBrushCollection[index] = _draggedItem.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
@@ -223,7 +237,6 @@ namespace NetworkService.ViewModel
                 _draggedItem = null;
                 _dragging= false;
 
-                
 
             }
             //if the Drag&Drop action happened in between two taken canvases, draw a line
@@ -275,7 +288,7 @@ namespace NetworkService.ViewModel
                 SaveState();
             }
 
-            CanvasCollection[index].Background = Brushes.PeachPuff;
+            CanvasCollection[index].Background = Brushes.Transparent;
 
             CanvasCollection[index].Resources.Remove("taken");
             FlowMeter removedMeter = CanvasCollection[index].Resources["data"] as FlowMeter;
@@ -303,7 +316,7 @@ namespace NetworkService.ViewModel
         }
 
         //method to remove entities that are already added to the grid
-        private void RemoveFromCategory(FlowMeter flowMeter)
+        private static void RemoveFromCategory(FlowMeter flowMeter)
         {
             foreach (var category in Categories) //going through all the categories
             {
@@ -315,46 +328,21 @@ namespace NetworkService.ViewModel
             }
         }
 
-        //getting the right canvas based on the entity's ID
-        public int GetCanvasIndexForEntityId(int entityId)
-        {
-            for (int i = 0; i < CanvasCollection.Count; i++)
-            {
-                FlowMeter entity = (CanvasCollection[i].Resources["data"]) as FlowMeter;
-
-                if ((entity != null) && (entity.ID == entityId))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         //method for updating border color based on the value
         private void UpdateEntitiesOnCanvas(object state)
         {
-            if(BorderBrushCollection.Count == 12) //if the viewModel is fully loaded
+            for (int i = 0; i < 12; i++)
             {
-                foreach (FlowMeter entity in FlowMeters)
+                if (CanvasCollection[i].Resources.Contains("taken"))
                 {
-                    int canvasIndex = GetCanvasIndexForEntityId(entity.ID);
-
-                    if (canvasIndex != -1 && AddedToGrid.ContainsKey(canvasIndex))
+                    if (AddedToGrid.TryGetValue(i, out FlowMeter flowMeter))
                     {
-                        if (entity.ValueState == ValueState.Normal)
-                        {
-                            BorderBrushCollection[canvasIndex] = Brushes.GreenYellow;
-                        }
-                        else
-                        {
-                            BorderBrushCollection[canvasIndex] = Brushes.Crimson;
-                        }
+                        BorderBrushCollection[i] = flowMeter.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
                     }
                 }
             }
-            
-        }
 
+        }
 
         //method for saving state before an action
         private void SaveState()
@@ -366,9 +354,15 @@ namespace NetworkService.ViewModel
             canvasState.BorderBrushCollection = new ObservableCollection<Brush>(BorderBrushCollection);
             canvasState.EntityInfo = new ObservableCollection<FlowMeter>(EntityInfo);
 
+            Dictionary<int, FlowMeter> state = new Dictionary<int, FlowMeter>();
+            foreach (var entry in AddedToGrid)
+            {
+                state.Add(entry.Key, entry.Value);
+            }
+
             //pushing state onto an undo stack
             MainWindowViewModel.UndoStack.Push(
-                new SaveState<CommandType,object>(CommandType.CanvasManipulation, canvasState));
+                new SaveState<CommandType,object>(CommandType.CanvasManipulation, state));
 
         }
     }
