@@ -15,6 +15,8 @@ namespace NetworkService.ViewModel
     public class GraphViewModel : BindableBase
     {
 
+        #region Properties and Commands
+
         public ObservableCollection<FlowMeter> FlowMeters { get; set; }
         private FlowMeter selectedMeter;
 
@@ -27,53 +29,15 @@ namespace NetworkService.ViewModel
 
         private readonly Timer _timer;
 
-        public GraphViewModel()
+        public FlowMeter SelectedMeter
         {
-            this.FlowMeters= MainWindowViewModel.FlowMeters;
-            if(FlowMeters.Count!=0)
-                SelectedMeter = FlowMeters[0];
-
-            StartPoint = new Point(45, 210); //this always is the same (unless you move the graph lol)
-            
-            //setting the points to a default state before initialization
-            LinePoint_1 = new Point(45,210); 
-            LinePoint_2 = new Point(95, 210);
-            LinePoint_3 = new Point(145, 210);
-            LinePoint_4 = new Point(195,210);
-            LinePoint_5 = new Point(245,210);
-
-            MarginPoint_1 = new Thickness(30, 195, 0, 0);
-            MarginPoint_2 = new Thickness(80, 195, 0, 0);
-            MarginPoint_3 = new Thickness(130, 195, 0, 0);
-            MarginPoint_4 = new Thickness(180, 195, 0, 0);
-            MarginPoint_5 = new Thickness(230, 195, 0, 0);
-
-            NodeColor_1 = new SolidColorBrush(Colors.Purple);
-            NodeColor_2 = new SolidColorBrush(Colors.Purple);
-            NodeColor_3 = new SolidColorBrush(Colors.Purple);
-            NodeColor_4 = new SolidColorBrush(Colors.Purple);
-            NodeColor_5 = new SolidColorBrush(Colors.Purple);
-
-            NodeText_1 = "0";
-            NodeText_2 = "0";
-            NodeText_3 = "0";
-            NodeText_4 = "0";
-            NodeText_5 = "0";
-
-            Time_1 = "00:00:00";
-            Time_2 = "00:00:00";
-            Time_3 = "00:00:00";
-            Time_4 = "00:00:00";
-            Time_5 = "00:00:00";
-
-            //setting up an update timer to update the graph visuals
-            _timer = new Timer(UpdatePositions, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-
-
+            get => selectedMeter;
+            set
+            {
+                selectedMeter = value;
+                UpdatePositions(null);
+            }
         }
-        #region Properties
-
-        public FlowMeter SelectedMeter { get => selectedMeter; set => selectedMeter = value; }
 
         private Point startPoint;
         public Point StartPoint { get => startPoint; set => SetProperty(ref startPoint, value); }
@@ -134,6 +98,50 @@ namespace NetworkService.ViewModel
 
         #endregion
 
+        #region Constructor
+        public GraphViewModel()
+        {
+            this.FlowMeters= MainWindowViewModel.FlowMeters;
+            if(FlowMeters.Count!=0)
+                SelectedMeter = FlowMeters[0];
+
+            StartPoint = new Point(45, 210); //this always is the same (unless you move the graph lol)
+            
+            //setting the points to a default state before initialization
+            LinePoint_1 = new Point(45,210); 
+            LinePoint_2 = new Point(95, 210);
+            LinePoint_3 = new Point(145, 210);
+            LinePoint_4 = new Point(195,210);
+            LinePoint_5 = new Point(245,210);
+
+            MarginPoint_1 = new Thickness(30, 195, 0, 0);
+            MarginPoint_2 = new Thickness(80, 195, 0, 0);
+            MarginPoint_3 = new Thickness(130, 195, 0, 0);
+            MarginPoint_4 = new Thickness(180, 195, 0, 0);
+            MarginPoint_5 = new Thickness(230, 195, 0, 0);
+
+            NodeColor_1 = new SolidColorBrush(Colors.Teal);
+            NodeColor_2 = new SolidColorBrush(Colors.Teal);
+            NodeColor_3 = new SolidColorBrush(Colors.Teal);
+            NodeColor_4 = new SolidColorBrush(Colors.Teal);
+            NodeColor_5 = new SolidColorBrush(Colors.Teal);
+
+            NodeText_1 = "-";
+            NodeText_2 = "-";
+            NodeText_3 = "-";
+            NodeText_4 = "-";
+            NodeText_5 = "-";
+
+            Time_1 = "00:00";
+            Time_2 = "00:00";
+            Time_3 = "00:00";
+            Time_4 = "00:00";
+            Time_5 = "00:00";
+
+            //setting up an update timer to update the graph visuals
+            _timer = new Timer(UpdatePositions, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(300));
+        }
+        #endregion
 
         #region Actions
         private void UpdatePositions(object state)
@@ -165,7 +173,7 @@ namespace NetworkService.ViewModel
                             NodeColor_1 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[0].Item1;
-                        Time_1 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                        Time_1 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
 
@@ -188,7 +196,7 @@ namespace NetworkService.ViewModel
                             NodeColor_2 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[1].Item1;
-                        Time_2 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                        Time_2 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
                     if (SelectedMeter.Last_5_Values.Count > 2)
@@ -210,7 +218,7 @@ namespace NetworkService.ViewModel
                             NodeColor_3 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[2].Item1;
-                        Time_3 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                        Time_3 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
 
@@ -233,7 +241,7 @@ namespace NetworkService.ViewModel
                             NodeColor_4 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[3].Item1;
-                        Time_4 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                        Time_4 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
 
                     if (SelectedMeter.Last_5_Values.Count > 4)
@@ -255,7 +263,7 @@ namespace NetworkService.ViewModel
                             NodeColor_5 = new SolidColorBrush(Colors.Green);
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[4].Item1;
-                        Time_5 = dateTime.Hour.ToString() + ":" + dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                        Time_5 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
                     
                 });
@@ -263,7 +271,7 @@ namespace NetworkService.ViewModel
             }
             else if (Application.Current == null)
             {
-                Dispose(); //if the application is shut down, dispose of the timer
+                _timer.Dispose(); //if the application is shut down, dispose of the timer
             }
             else
             {
@@ -272,10 +280,5 @@ namespace NetworkService.ViewModel
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _timer.Dispose();
-        }
     }
 }
