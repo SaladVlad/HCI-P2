@@ -5,10 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:model="clr-namespace:NetworkService.Model"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Width="445"
              Height="780">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="DockPanelTemplate">
+            <DockPanel>
+                <ContentControl 
+                DockPanel.Dock="Top"
+                Width="110"
+                Height="100"
+                Margin="10 10 10 -10"
+                Content="{Binding Path=Canvas}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Drop">
+                            <i:InvokeCommandAction Command="{Binding DataContext.DropEntityOnCanvasCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Index}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding DataContext.MouseLeftButtonDownCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Index}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding DataContext.MouseLeftButtonUpCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ContentControl>
+                <TextBlock
+                Width="120"
+                Height="20"
+                Background="White">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} - {1} : {2}">
+                            <Binding Path="Entity.ID"/>
+                            <Binding Path="Entity.Name"/>
+                            <Binding Path="Entity.Value"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <Button Content="X"
+                    Command="{Binding DataContext.ClearCanvasCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    CommandParameter="{Binding Index}"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
@@ -37,18 +79,14 @@
                 Grid.RowSpan="4"
                 Grid.ColumnSpan="3"/>
 
-            <Border
-                    Grid.Row="0" Grid.Column="0"
-                    BorderBrush="{Binding BorderBrushCollection[0]}"
-                    BorderThickness="2">
-            </Border>
+            <!--Number 0-->
             <DockPanel
                 Grid.Row="0" Grid.Column="0">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[0]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -65,7 +103,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[0].ID"/>
@@ -74,24 +113,35 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="0"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="0">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="0" Grid.Column="1"
-                BorderBrush="{Binding BorderBrushCollection[1]}"
-                BorderThickness="2">
+                    Grid.Row="0" Grid.Column="0"
+                    BorderBrush="{Binding BorderBrushCollection[0]}"
+                    BorderThickness="3">
             </Border>
+            
+            <!--Number 1-->
             <DockPanel
-                Grid.Row="0" Grid.Column="1">
+    Grid.Row="0" Grid.Column="1">
                 <ContentControl 
-                    DockPanel.Dock="Top"
-                    Width="110"
-                    Height="100"
-                    Margin="10 10 10 -10"
-                    Content="{Binding Path=CanvasCollection[1]}">
+        DockPanel.Dock="Bottom"
+        Width="110"
+        Height="100"
+        Margin="10 0"
+        Content="{Binding Path=CanvasCollection[1]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
                             <i:InvokeCommandAction Command="{Binding DropEntityOnCanvasCommand}" CommandParameter="1"/>
@@ -105,9 +155,10 @@
                     </i:Interaction.Triggers>
                 </ContentControl>
                 <TextBlock
-                    Width="120"
-                    Height="20"
-                    Background="White">
+        Width="120"
+        Height="20"
+        Background="{StaticResource TextBackgroundGradientBrush}"
+        Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[1].ID"/>
@@ -116,23 +167,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="1"/>
+                <Button 
+        Background="{StaticResource ClearButtonGradientBrush}"
+        Command="{Binding ClearCanvasCommand}"
+        CommandParameter="1">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                Icon="Regular_WindowClose"
+                Width="15"
+                Height="Auto"
+                Foreground="{StaticResource TextBrush}"
+                FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="0" Grid.Column="2"
-                BorderBrush="{Binding BorderBrushCollection[2]}"
-                BorderThickness="2">
+                Grid.Row="0" Grid.Column="1"
+                BorderBrush="{Binding BorderBrushCollection[1]}"
+                BorderThickness="3">
             </Border>
-            <DockPanel
+            
+            <!--Number 2-->
+             <DockPanel
                 Grid.Row="0" Grid.Column="2">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[2]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -149,32 +211,44 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} - {1} : {2}">
+                        <MultiBinding StringFormat="{}  {0} - {1} : {2}">
                             <Binding Path="EntityInfo[2].ID"/>
                             <Binding Path="EntityInfo[2].Name"/>
                             <Binding Path="EntityInfo[2].Value"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="2"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="2">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="1" Grid.Column="0"
-                BorderBrush="{Binding BorderBrushCollection[3]}"
-                BorderThickness="2">
+                Grid.Row="0" Grid.Column="2"
+                BorderBrush="{Binding BorderBrushCollection[2]}"
+                BorderThickness="3">
             </Border>
+           
+            <!--Number 3-->
             <DockPanel
                 Grid.Row="1" Grid.Column="0">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[3]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -191,7 +265,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[3].ID"/>
@@ -200,24 +275,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="3"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="3">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="1" Grid.Column="1"
-                BorderBrush="{Binding BorderBrushCollection[4]}"
+                Grid.Row="1" Grid.Column="0"
+                BorderBrush="{Binding BorderBrushCollection[3]}"
                 BorderThickness="2">
             </Border>
-
+           
+            <!--Number 4-->
             <DockPanel
                 Grid.Row="1" Grid.Column="1">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[4]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -234,7 +319,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[4].ID"/>
@@ -243,21 +329,31 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="4"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="4">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="1" Grid.Column="2"
-                BorderBrush="{Binding BorderBrushCollection[5]}"
-                BorderThickness="2">
+                Grid.Row="1" Grid.Column="1"
+                BorderBrush="{Binding BorderBrushCollection[4]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 5-->
             <DockPanel
                 Grid.Row="1" Grid.Column="2">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
                     Margin="10 10 10 -10"
@@ -277,7 +373,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[5].ID"/>
@@ -286,24 +383,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="5"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="5">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="2" Grid.Column="0"
-                BorderBrush="{Binding BorderBrushCollection[6]}"
-                BorderThickness="2">
+                Grid.Row="1" Grid.Column="2"
+                BorderBrush="{Binding BorderBrushCollection[5]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 6-->
             <DockPanel
                 Grid.Row="2" Grid.Column="0">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[6]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -320,7 +427,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[6].ID"/>
@@ -329,24 +437,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="6"/>
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="6">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
             </DockPanel>
-
             <Border
-                Grid.Row="2" Grid.Column="1"
-                BorderBrush="{Binding BorderBrushCollection[7]}"
-                BorderThickness="2">
+                Grid.Row="2" Grid.Column="0"
+                BorderBrush="{Binding BorderBrushCollection[6]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 7-->
             <DockPanel
                 Grid.Row="2" Grid.Column="1">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[7]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -363,7 +481,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[7].ID"/>
@@ -372,24 +491,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="7"/>
-            </DockPanel>
-
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="7">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
+            </DockPanel>    
             <Border
-                Grid.Row="2" Grid.Column="2"
-                BorderBrush="{Binding BorderBrushCollection[8]}"
-                BorderThickness="2">
+                Grid.Row="2" Grid.Column="1"
+                BorderBrush="{Binding BorderBrushCollection[7]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 8-->
             <DockPanel
                 Grid.Row="2" Grid.Column="2">
-                <ContentControl 
-                    DockPanel.Dock="Top"
+                <ContentControl
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[8]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -406,7 +535,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[8].ID"/>
@@ -415,24 +545,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="8"/>
-            </DockPanel>
-
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="8">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
+            </DockPanel>    
             <Border
-                Grid.Row="3" Grid.Column="0"
-                BorderBrush="{Binding BorderBrushCollection[9]}"
-                BorderThickness="2">
+                Grid.Row="2" Grid.Column="2"
+                BorderBrush="{Binding BorderBrushCollection[8]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 9-->
             <DockPanel
                 Grid.Row="3" Grid.Column="0">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[9]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -449,7 +589,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[9].ID"/>
@@ -458,24 +599,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="9"/>
-            </DockPanel>
-
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="9">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
+            </DockPanel>    
             <Border
-                Grid.Row="3" Grid.Column="1"
-                BorderBrush="{Binding BorderBrushCollection[10]}"
-                BorderThickness="2">
+                Grid.Row="3" Grid.Column="0"
+                BorderBrush="{Binding BorderBrushCollection[9]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 10-->
             <DockPanel
                 Grid.Row="3" Grid.Column="1">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[10]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -492,7 +643,8 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} - {1} : {2}">
                             <Binding Path="EntityInfo[10].ID"/>
@@ -501,24 +653,34 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="10"/>
-            </DockPanel>
-
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="10">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
+            </DockPanel>    
             <Border
-                Grid.Row="3" Grid.Column="2"
-                BorderBrush="{Binding BorderBrushCollection[11]}"
-                BorderThickness="2">
+                Grid.Row="3" Grid.Column="1"
+                BorderBrush="{Binding BorderBrushCollection[10]}"
+                BorderThickness="3">
             </Border>
-
+            
+            <!--Number 11-->
             <DockPanel
                 Grid.Row="3" Grid.Column="2">
                 <ContentControl 
-                    DockPanel.Dock="Top"
+                    DockPanel.Dock="Bottom"
                     Width="110"
                     Height="100"
-                    Margin="10 10 10 -10"
+                    Margin="10 0"
                     Content="{Binding Path=CanvasCollection[11]}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Drop">
@@ -535,25 +697,42 @@
                 <TextBlock
                     Width="120"
                     Height="20"
-                    Background="White">
+                    FontSize="15"
+                    Background="{StaticResource TextBackgroundGradientBrush}"
+                    Foreground="{StaticResource TextBrush}">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} - {1} : {2}">
+                        <MultiBinding StringFormat="{}  {0} - {1} : {2}">
                             <Binding Path="EntityInfo[11].ID"/>
                             <Binding Path="EntityInfo[11].Name"/>
                             <Binding Path="EntityInfo[11].Value"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="X"
-                        Command="{Binding ClearCanvasCommand}"
-                        CommandParameter="11"/>
-            </DockPanel>
-
-
+                <Button 
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="11">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
+                </Button>
+            </DockPanel>    
+            <Border
+                Grid.Row="3" Grid.Column="2"
+                BorderBrush="{Binding BorderBrushCollection[11]}"
+                BorderThickness="3">
+            </Border>
+            
         </Grid>
 
         <ScrollViewer
-            Grid.Row="1">
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Auto">
 
             <Grid
             Grid.Row="1"

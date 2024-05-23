@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:NetworkService.Views" 
              d:DataContext="{d:DesignInstance Type=local:EntitiesViewModel}"
              xmlns:model="clr-namespace:NetworkService.Model"
@@ -131,7 +132,7 @@
         </Grid.RowDefinitions>
 
         <Border CornerRadius="15"
-                BorderBrush="#00C2FF"
+                BorderBrush="{StaticResource PrimaryBrush}"
                 BorderThickness="2"
                 Margin="5">
             <StackPanel
@@ -169,13 +170,16 @@
                         Content="Type:"
                         Foreground="White"
                         FontSize="20"
-                        Margin="80 0 5 0"
+                        Margin="60 0 5 0"
                         VerticalContentAlignment="Center"/>
                     <ComboBox 
-                        Width="100"
+                        Width="120"
                         Height="35"
                         ItemsSource="{Binding Types}" 
-                        SelectedItem="{Binding SelectedType}"/>
+                        SelectedItem="{Binding SelectedType}"
+                        Style="{StaticResource RoundComboBoxStyle}"
+                        Foreground="{StaticResource TextBrush}">
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel 
@@ -262,7 +266,9 @@
                                         Grid.Row="0"
                                         Grid.ColumnSpan="2"
                                         ItemsSource="{Binding Types}"
-                                        SelectedItem="{Binding FilterType}"/>
+                                        SelectedItem="{Binding FilterType}"
+                                        Style="{StaticResource RoundComboBoxStyle}"
+                                />
 
                             <StackPanel
                                         Orientation="Horizontal"

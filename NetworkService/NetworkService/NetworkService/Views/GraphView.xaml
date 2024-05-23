@@ -22,8 +22,9 @@
                 Text="Select one of the available entities to display:"
                 TextAlignment="Center"
                 Foreground="White"
-                FontSize="20"
-                Margin="0 50 0 20">
+                FontSize="25"
+                TextWrapping="WrapWithOverflow"
+                Margin="0 50 0 20" Width="314" Height="81">
 
             </TextBlock>
 
@@ -31,47 +32,57 @@
             <ComboBox
                 x:Name="SelectionComboBox"
                 Width="250"
-                Height="30"
+                Height="40"
                 Grid.Row="0"
                 ItemsSource="{Binding FlowMeters}"
-                SelectedItem="{Binding SelectedMeter}">
-                
+                SelectedItem="{Binding SelectedMeter}"
+                Style="{StaticResource RoundComboBoxStyle}"
+                >
+
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image 
                                 Source="{Binding EntityType.ImagePath}"
                                 Width="30"
-                                Height="Auto"/>
-
+                                Height="Auto"
+                                Margin="0 0 10 0"/>
+                            <TextBlock 
+                                Text="ID:"
+                                Margin="0 -3 0 0"
+                                FontSize="20"
+                                Padding="3"/>
                             <TextBlock 
                                 Text="{Binding ID}"
-                                Margin="10 0 0 0"
-                                FontSize="15"
+                                Margin="0 -3 0 0"
+                                FontSize="20"
                                 Padding="3"/>
                             <TextBlock
                                 Text="{Binding Name}"
-                                Margin="10 0 0 0"
-                                FontSize="15"
+                                Margin="10 -3 70 0"
+                                FontSize="20"
                                 Padding="3"/>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
 
             </ComboBox>
-            <Line X1="100" Y1="0" X2="350" Y2="0"
-                  Stroke="White"
-                  StrokeThickness="3"/>
 
 
         </StackPanel>
 
-
+        <Rectangle
+            Grid.Row="1"
+            Fill="{StaticResource GraphBackgroundBrush}"
+            Stroke="{StaticResource AccentBrush}"
+            StrokeThickness="10"
+            Width="400"
+            Height="300" Margin="25,0,25,157">
+            
+        </Rectangle>
         <Canvas
-            Width="300"
-            Height="300"
-            Margin="0 -120 0 0"
-            Background="White"
+            Margin="78,48,78,176"
+            Background="Transparent"
             Grid.Row="1"
             ToolTip="Graph with info">
 
@@ -109,7 +120,7 @@
 
             <!--The line connecting everything together-->
             <Path
-                Stroke="Blue"
+                Stroke="{StaticResource AccentBrush}"
                 StrokeThickness="3">
                 <Path.Data>
                     <PathGeometry>
@@ -234,27 +245,32 @@
                 Text="{Binding Time_1}"
                 Margin="30 230"
                 Width="40"
-                FontSize="8"/>
+                FontSize="12"
+                Foreground="{StaticResource TextBrush}"/>
             <TextBlock
                 Text="{Binding Time_2}"
                 Margin="80 230"
                 Width="40"
-                FontSize="8"/>
+                FontSize="12"
+                Foreground="{StaticResource TextBrush}"/>
             <TextBlock
                 Text="{Binding Time_3}"
                 Margin="130 230"
                 Width="40"
-                FontSize="8"/>
+                FontSize="12"
+                Foreground="{StaticResource TextBrush}"/>
             <TextBlock
                 Text="{Binding Time_4}"
                 Margin="180 230"
                 Width="40"
-                FontSize="8"/>
+                FontSize="12"
+                Foreground="{StaticResource TextBrush}"/>
             <TextBlock
                 Text="{Binding Time_5}"
                 Margin="230 230"
                 Width="40"
-                FontSize="8"/>
+                FontSize="12"
+                Foreground="{StaticResource TextBrush}"/>
 
         </Canvas>
     </Grid>
