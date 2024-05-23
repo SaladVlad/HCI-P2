@@ -24,3 +24,15 @@ C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\b
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Microsoft.Xaml.Behaviors.pdb
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Microsoft.Xaml.Behaviors.xml
 C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\NetworkS.954836E0.Up2Date
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\FontAwesome5.dll
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\FontAwesome5.Net.dll
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Notification.Wpf.dll
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\System.ValueTuple.dll
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\FontAwesome5.xml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\FontAwesome5.Net.xml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Notification.Wpf.pdb
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\Notification.Wpf.xml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\bin\Debug\System.ValueTuple.xml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\App.baml
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\Views\HomeView.g.cs
+C:\Users\PC\Desktop\HCI P2\HCI-P2\NetworkService\NetworkService\NetworkService\obj\Debug\Views\HomeView.baml
