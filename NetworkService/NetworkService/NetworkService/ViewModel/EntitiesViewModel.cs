@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using NetworkService.Helpers;
 
 namespace NetworkService.Views
 {
@@ -336,12 +337,26 @@ namespace NetworkService.Views
         }
         private void OnRemoveEntity()
         {
-            SaveState();
+            if(MessageBox.Show(
+                "Are you sure you want to remove the selected entity?",
+                "Confirmation Dialog",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                SaveState();
+                FlowMeters.Remove(SelectedEntity);
 
-            FlowMeters.Remove(SelectedEntity);
-            SelectedEntity = null;
+                ToastNotify.RaiseToast(
+                    "Deletion Successful",
+                    $"Entity with ID:{SelectedEntity.ID}",
+                    Notification.Wpf.NotificationType.Information);
+
+                SelectedEntity = null;
+                ClearFilters();
+            }
+            
+            
         }
-
         private bool CanAddEntity()
         {
             bool allGood = true;
@@ -396,7 +411,12 @@ namespace NetworkService.Views
             HideKeyboard();
 
             ClearFilters();
-            //raise some toast or something, tell the user it was successful
+
+            ToastNotify.RaiseToast(
+                    "Successful",
+                    $"Created entity!:{newFlowMeter.ID}",
+                    Notification.Wpf.NotificationType.Success);
+
         }
         private void SaveState()
         {
