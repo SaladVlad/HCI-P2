@@ -10,27 +10,12 @@
              Height="780">
 
     <UserControl.Resources>
-        
+
         <LinearGradientBrush x:Key="VerticalGradientBrush" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="{StaticResource PrimaryColor}" Offset="0"/>
             <GradientStop Color="{StaticResource PrimaryColorDark}" Offset="1"/>
         </LinearGradientBrush>
-
-        <Style x:Key="ShadowTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect
-                        Color="{StaticResource SecondaryColor}"
-                        Direction="320"
-                        ShadowDepth="5"
-                        Opacity="0.5"
-                        BlurRadius="10"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        
     </UserControl.Resources>
     
     <Grid>

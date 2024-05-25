@@ -13,47 +13,28 @@
              Focusable="True"
              Name="EntitiesUserControl">
 
+
+
     <UserControl.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="BorderThickness" Value="3"/>
-            <Setter Property="BorderBrush" Value="#00C2FF"/>
-        </Style>
+
 
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
             <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="#00C2FF"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <Style x:Key="ValueStyle" TargetType="TextBlock">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ValueState}" Value="Normal">
-                    <Setter Property="Foreground" Value="White"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ValueState}" Value="Low">
-                    <Setter Property="Foreground" Value="Purple"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ValueState}" Value="High">
-                    <Setter Property="Foreground" Value="Red"/>
-                </DataTrigger>
-            </Style.Triggers>
-
-        </Style>
-
-
         <DataTemplate DataType="{x:Type model:FlowMeter}">
 
-            <Grid>
+            <Grid
+                Background="{StaticResource BackgroundGradientBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="165"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="110"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
@@ -106,7 +87,8 @@
 
                 <StackPanel
                         Grid.Column="4"
-                        Orientation="Vertical">
+                        Orientation="Vertical"
+                        Margin="0 0 10 0">
                     <TextBlock
                             Text="Value:"
                             Foreground="White"
@@ -114,14 +96,15 @@
                     <TextBlock
                             Foreground="White"
                             FontSize="15"
-                            Text="{Binding Value}"
-                            Style="{StaticResource ValueStyle}"/>
+                            HorizontalAlignment="Right"
+                            Text="{Binding Value}"/>
                 </StackPanel>
 
             </Grid>
         </DataTemplate>
 
     </UserControl.Resources>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -132,16 +115,22 @@
         </Grid.RowDefinitions>
 
         <Border CornerRadius="15"
-                BorderBrush="{StaticResource PrimaryBrush}"
+                BorderBrush="{StaticResource AccentBrush}"
                 BorderThickness="2"
-                Margin="5">
+                Margin="5 5 5 0"
+                Background="{StaticResource PrimaryBrush}">
             <StackPanel
                 Orientation="Vertical"
-                Margin="10 20">
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="10 0">
                 <TextBlock
                     Text="Entity Creation"
                     Foreground="White"
+                    Style="{StaticResource ShadowTextStyle}"
                     FontSize="20"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
                     Margin="5 0"/>
                 <StackPanel
                     Height="50"
@@ -153,9 +142,9 @@
                         VerticalContentAlignment="Center"/>
                     <TextBox
                         x:Name="IDTextBox"
-                        Width="94"
+                        Width="140"
                         Height="34"
-                        Margin="35 0 0 0"
+                        Margin="33 0 0 0"
                         Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
                         "{Binding TextBoxGotFocusCommand}">
@@ -170,7 +159,7 @@
                         Content="Type:"
                         Foreground="White"
                         FontSize="20"
-                        Margin="60 0 5 0"
+                        Margin="10 0 5 0"
                         VerticalContentAlignment="Center"/>
                     <ComboBox 
                         Width="120"
@@ -178,7 +167,19 @@
                         ItemsSource="{Binding Types}" 
                         SelectedItem="{Binding SelectedType}"
                         Style="{StaticResource RoundComboBoxStyle}"
-                        Foreground="{StaticResource TextBrush}">
+                        Foreground="{StaticResource TextBrush}" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock 
+                                        Foreground="{StaticResource TextBrush}"
+                                        Text="{Binding }"
+                                        Margin="0 -3 0 0"
+                                        FontSize="15"
+                                        Padding="3"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
 
@@ -191,25 +192,28 @@
                         FontSize="20"/>
                     <TextBox 
                         x:Name="NameTextBox"
-                        Width="169" 
+                        Width="140" 
                         Height="34"
-                        Text="{Binding NameText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding NameText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         model:TextBoxBehavior.GotFocusCommand=
                         "{Binding TextBoxGotFocusCommand}">
                         <TextBox.Resources>
-                            <Style TargetType="Border">
+                            <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="10"/>
                             </Style>
                         </TextBox.Resources>
                     </TextBox>
+
                     <Button 
-                        Content="Create"
-                        Cursor="Hand"
-                        ToolTip="Create new Entity"
-                        Width="110"
-                        Height="30"
-                        Margin="60 0 0 0"
-                        Command="{Binding AddEntityCommand}">
+                            Width="120"
+                            Height="40"
+                            Margin="70 0 0 0"
+                            Content="Create"
+                            Cursor="Hand"
+                            ToolTip="Create new Entity"
+                            
+                            Style="{StaticResource CustomButtonStyle}"
+                            Command="{Binding AddEntityCommand}">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -217,149 +221,221 @@
                         </Button.Resources>
                     </Button>
 
+
+
                 </StackPanel>
             </StackPanel>
 
         </Border>
 
-        <Border 
+        <Border
+            Grid.Row="1"
+            BorderBrush="{StaticResource AccentBrush}"
+            BorderThickness="2"
+            Margin="5,5,5,5"
+            Panel.ZIndex="500"/>
+        <Grid
             Grid.Row="1"
             Grid.RowSpan="3"
-            CornerRadius="15"
-            BorderBrush="#00C2FF"
-            BorderThickness="2"
             Margin="5,5,5,5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
 
-                <Grid
-                    Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="145"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                    <Border
-                        Margin="5"
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        BorderBrush="AntiqueWhite"
-                        BorderThickness="2">
-                        <!--Grid for filter section-->
 
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+            <Grid
+                    Grid.Row="0"
+                    Background="{StaticResource PrimaryBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                            <ComboBox 
-                                        Margin="10 5"
-                                        Grid.Row="0"
-                                        Grid.ColumnSpan="2"
-                                        ItemsSource="{Binding Types}"
-                                        SelectedItem="{Binding FilterType}"
-                                        Style="{StaticResource RoundComboBoxStyle}"
-                                />
+                <Border
+                    Margin="5 5"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    BorderBrush="{StaticResource AccentBrush}"
+                    CornerRadius="10"
+                    BorderThickness="2">
+                    <!--Grid for filter section-->
 
-                            <StackPanel
-                                        Orientation="Horizontal"
-                                        Grid.Row="1"
-                                        Grid.Column="0">
-                                <Label
-                                            Content="Low" 
-                                            Foreground="White"/>
-                                <RadioButton
-                                            GroupName="filter"
-                                            IsChecked="{Binding IsLowerThanChecked, Mode=TwoWay}"
-                                            VerticalAlignment="Center"/>
-                                <Label 
-                                            Content="Eq" 
-                                            Foreground="White"/>
-                                <RadioButton
-                                            GroupName="filter"
-                                            IsChecked="{Binding IsEqualChecked, Mode=TwoWay}"
-                                            VerticalAlignment="Center"/>
-                                <Label 
-                                            Content="Great" 
-                                            Foreground="White"/>
-                                <RadioButton
-                                            GroupName="filter"
-                                            IsChecked="{Binding IsGreaterThanChecked,Mode=TwoWay}"
-                                            VerticalAlignment="Center"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.7*"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                            </StackPanel>
+                        <TextBlock 
+                            Panel.ZIndex="100"
+                            Width="70"
+                            TextAlignment="Center"
+                            VerticalAlignment="Top"
+                            Height="30"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="2"
+                            Foreground="{StaticResource TextBrush}"
+                            Text="Filter"
+                            FontWeight="Bold"
+                            FontSize="22"
+                            Style="{StaticResource ShadowTextStyle}"/>
 
-                            <Button
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Width="100"
-                                        Height="30"
-                                        Content="Reset"
-                                        Command="{Binding ClearFiltersCommand}"/>
+                        <TextBlock
+                                Grid.Row="1"
+                                Text="Choose type:"
+                                FontSize="18"
+                                Margin="3"
+                                HorizontalAlignment="Center"
+                                Foreground="{StaticResource TextBrush}"/>
+                        <ComboBox 
+                            Margin="0 5 10 5"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="1"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding Types}"
+                            SelectedItem="{Binding FilterType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource RoundComboBoxStyle}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock 
+                                            Foreground="{StaticResource TextBrush}"
+                                            Text="{Binding}"
+                                            Margin="0 -3 0 0"
+                                            FontSize="14"
+                                            Padding="3"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
-                            <TextBox 
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Top"
-                                        Width="90"
-                                        Height="30"
-                                        Text="{Binding Path=FilterText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                        model:TextBoxBehavior.GotFocusCommand=
-                                        "{Binding TextBoxGotFocusCommand}">
-                                <TextBox.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="10"/>
-                                    </Style>
-                                </TextBox.Resources>
-                            </TextBox>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Grid.Row="2"
+                            Grid.Column="0">
+                            <fa5:FontAwesome 
+                                VerticalAlignment="Center"
+                                Icon="Solid_LessThan"
+                                Foreground="{StaticResource TextBrush}"
+                                Margin="5"/>
+                            <RadioButton
+                                GroupName="filter"
+                                IsChecked="{Binding IsLowerThanChecked, Mode=TwoWay}"
+                                VerticalAlignment="Center"/>
+                            <fa5:FontAwesome 
+                                VerticalAlignment="Center"
+                                Icon="Solid_Equals"
+                                Foreground="{StaticResource TextBrush}"
+                                Margin="5"/>
+                            <RadioButton
+                                GroupName="filter"
+                                IsChecked="{Binding IsEqualChecked, Mode=TwoWay}"
+                                VerticalAlignment="Center"/>
+                            <fa5:FontAwesome 
+                                VerticalAlignment="Center"
+                                Icon="Solid_GreaterThan"
+                                Foreground="{StaticResource TextBrush}"
+                                Margin="5"/>
+                            <RadioButton
+                                GroupName="filter"
+                                IsChecked="{Binding IsGreaterThanChecked,Mode=TwoWay}"
+                                VerticalAlignment="Center"/>
 
-                            <Button 
-                                        Grid.Column="1"
-                                        Grid.Row="2"
-                                        VerticalAlignment="Center"
-                                        Width="90"
-                                        Height="30"
-                                        Content="Filter"
-                                        Command="{Binding FilterCommand}"/>
+                        </StackPanel>
 
-                        </Grid>
+                        <Button
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Width="100"
+                            Height="30"
+                            Style="{StaticResource CustomButtonStyle}"
+                            VerticalContentAlignment="Center"
+                            Content="Reset"
+                            Command="{Binding ClearFiltersCommand}"/>
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Margin="0 4 10 0"
+                            Text="Value:"
+                            FontSize="18"
+                            Foreground="{StaticResource TextBrush}"/>
+                        <TextBox 
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Width="90"
+                            Height="25"
+                            Margin="0 0 10 0"
+                            Text="{Binding Path=FilterText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            model:TextBoxBehavior.GotFocusCommand=
+                            "{Binding TextBoxGotFocusCommand}">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
 
-                    </Border>
-                    <Button
-                        Grid.Column="1"
-                        Margin="10"
-                        Height="50"
-                        Content="Remove"
-                        Command="{Binding RemoveEntityCommand}"/>
-                </Grid>
 
-                <ListView
-                    Grid.Row="1"
-                    Background="Transparent"
-                    ItemsSource="{Binding FilteredMeters}"
-                    SelectedItem="{Binding SelectedEntity}"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    SelectionMode="Single">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Background" Value="LightGray"/>
-                            <Setter Property="Margin" Value="5 2.5"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                        <Button 
+                            Width="90"
+                            Height="30"
+                            Grid.Column="1"
+                            Panel.ZIndex="500"
+                            Grid.Row="3"
+                            VerticalAlignment="Center"
+                            Content="Filter"
+                            Style="{StaticResource CustomButtonStyle}"
+                            Command="{Binding FilterCommand}"/>
+                    </Grid>
 
-                </ListView>
+                </Border>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="5"
+                    Height="50"
+                    Width="90"
+                    Style="{StaticResource CustomButtonStyle}"
+                    Content="Remove"
+                    Command="{Binding RemoveEntityCommand}"/>
+
+
+
+
 
             </Grid>
-        </Border>
+
+            <ListView
+        Grid.Row="1"
+        Background="Transparent"
+        ItemsSource="{Binding FilteredMeters}"
+        SelectedItem="{Binding SelectedEntity}"
+        ScrollViewer.VerticalScrollBarVisibility="Auto"
+        SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                        <Setter Property="Margin" Value="5 2.5"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+            </ListView>
+
+        </Grid>
+
 
         <!--Keyboard grid-->
         <Grid 
@@ -367,7 +443,7 @@
             Visibility="{Binding KeyboardVisibility}"
             IsEnabled="{Binding IsKeyboardEnabled}"
             Grid.Row="3"
-            Background="DarkSlateGray" Grid.RowSpan="2">
+            Background="{StaticResource PrimaryDarkBrush}" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -377,54 +453,56 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Button Width="35" Height="50" Margin="3 0" Content="1" Command="{Binding InputNumberCommand}" CommandParameter="1"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="2" Command="{Binding InputNumberCommand}" CommandParameter="2"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="3" Command="{Binding InputNumberCommand}" CommandParameter="3"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="4" Command="{Binding InputNumberCommand}" CommandParameter="4"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="5" Command="{Binding InputNumberCommand}" CommandParameter="5"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="6" Command="{Binding InputNumberCommand}" CommandParameter="6"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="7" Command="{Binding InputNumberCommand}" CommandParameter="7"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="8" Command="{Binding InputNumberCommand}" CommandParameter="8"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="9" Command="{Binding InputNumberCommand}" CommandParameter="9"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="0" Command="{Binding InputNumberCommand}" CommandParameter="0"/>
+                <Button Width="35" Height="50" Margin="3 0" Content="1" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="1"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="2" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="2"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="3" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="3"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="4" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="4"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="5" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="5"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="6" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="6"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="7" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="7"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="8" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="8"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="9" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="9"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="0" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputNumberCommand}" CommandParameter="0"/>
 
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <Button Width="35" Height="50" Margin="3 0" Content="Q" Command="{Binding InputKeyCommand}" CommandParameter="Q"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="W" Command="{Binding InputKeyCommand}" CommandParameter="W"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="E" Command="{Binding InputKeyCommand}" CommandParameter="E"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="R" Command="{Binding InputKeyCommand}" CommandParameter="R"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="T" Command="{Binding InputKeyCommand}" CommandParameter="T"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="Y" Command="{Binding InputKeyCommand}" CommandParameter="Y"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="U" Command="{Binding InputKeyCommand}" CommandParameter="U"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="I" Command="{Binding InputKeyCommand}" CommandParameter="I"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="O" Command="{Binding InputKeyCommand}" CommandParameter="O"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="P" Command="{Binding InputKeyCommand}" CommandParameter="P"/>
+                <Button Width="35" Height="50" Margin="3 0" Content="Q" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="Q"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="W" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="W"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="E" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="E"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="R" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="R"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="T" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="T"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="Y" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="Y"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="U" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="U"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="I" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="I"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="O" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="O"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="P" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="P"/>
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Button Width="35" Height="50" Margin="25 0 5 0" Content="A" Command="{Binding InputKeyCommand}" CommandParameter="A"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="S" Command="{Binding InputKeyCommand}" CommandParameter="S"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="D" Command="{Binding InputKeyCommand}" CommandParameter="D"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="F" Command="{Binding InputKeyCommand}" CommandParameter="F"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="G" Command="{Binding InputKeyCommand}" CommandParameter="G"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="H" Command="{Binding InputKeyCommand}" CommandParameter="H"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="J" Command="{Binding InputKeyCommand}" CommandParameter="J"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="K" Command="{Binding InputKeyCommand}" CommandParameter="K"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="L" Command="{Binding InputKeyCommand}" CommandParameter="L"/>
+                <Button Width="35" Height="50" Margin="25 0 5 0" Content="A" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="A"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="S"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="S"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="D"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="D"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="F"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="F"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="G"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="G"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="H"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="H"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="J"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="J"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="K"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="K"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="L"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="L"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3">
                 <Button Width="35" Height="50" Margin="5 0" Content="" Visibility="Hidden" IsEnabled="False"/>
                 <!--Dummy button for alignment-->
-                <Button Width="35" Height="50" Margin="5 0" Content="Z" Command="{Binding InputKeyCommand}" CommandParameter="Z"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="X" Command="{Binding InputKeyCommand}" CommandParameter="X"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="C" Command="{Binding InputKeyCommand}" CommandParameter="C"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="V" Command="{Binding InputKeyCommand}" CommandParameter="V"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="B" Command="{Binding InputKeyCommand}" CommandParameter="B"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="N" Command="{Binding InputKeyCommand}" CommandParameter="N"/>
-                <Button Width="35" Height="50" Margin="5 0" Content="M" Command="{Binding InputKeyCommand}" CommandParameter="M"/>
-                <Button Width="75" Height="50" Margin="5 0" Content="&lt;= Bksp" Command="{Binding BackspaceCommand}"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="Z" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="Z"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="X" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="X"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="C" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="C"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="V" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="V"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="B" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="B"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="N" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="N"/>
+                <Button Width="35" Height="50" Margin="5 0" Content="M" Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter="M"/>
+                <Button Width="75" Height="50" Margin="5 0"             Style="{StaticResource CustomButtonStyle}" Command="{Binding BackspaceCommand}">
+                    <fa5:FontAwesome Icon="Solid_Backspace" FontSize="22"/>
+                </Button>
 
             </StackPanel>
 
@@ -433,8 +511,12 @@
                 Grid.Row="4"
                 Orientation="Horizontal">
 
-                <Button Width="80" Height="50" Margin="10 0 20 0" Content="Hide KB" Command="{Binding HideKeyboardCommand}"/>
-                <Button Width="300" Height="50" Margin="0 5" Content="Space" Command="{Binding InputKeyCommand}" CommandParameter=" "/>
+                <Button Width="80" Height="50" Margin="10 0 20 0" Style="{StaticResource CustomButtonStyle}" Command="{Binding HideKeyboardCommand}">
+                    <fa5:FontAwesome Icon="Solid_LongArrowAltDown" Width="50" FontSize="30"/>
+                </Button>
+                <Button Width="300" Height="50" Margin="0 5"      Style="{StaticResource CustomButtonStyle}" Command="{Binding InputKeyCommand}" CommandParameter=" ">
+                    <fa5:FontAwesome Icon="Regular_WindowMinimize" Width="50" FontSize="30"/>
+                </Button>
 
 
             </StackPanel>

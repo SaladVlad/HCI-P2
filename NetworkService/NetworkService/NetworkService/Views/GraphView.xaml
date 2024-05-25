@@ -42,24 +42,22 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image 
-                                Source="{Binding EntityType.ImagePath}"
-                                Width="30"
-                                Height="Auto"
-                                Margin="0 0 10 0"/>
                             <TextBlock 
-                                Text="ID:"
+                                Foreground="{StaticResource TextBrush}"
+                                Text="ID :"
                                 Margin="0 -3 0 0"
                                 FontSize="20"
                                 Padding="3"/>
                             <TextBlock 
+                                Foreground="{StaticResource TextBrush}"
                                 Text="{Binding ID}"
                                 Margin="0 -3 0 0"
                                 FontSize="20"
                                 Padding="3"/>
                             <TextBlock
+                                Foreground="{StaticResource TextBrush}"
                                 Text="{Binding Name}"
-                                Margin="10 -3 70 0"
+                                Margin="10 -3 0 0"
                                 FontSize="20"
                                 Padding="3"/>
                         </StackPanel>
@@ -73,7 +71,7 @@
 
         <Rectangle
             Grid.Row="1"
-            Fill="{StaticResource GraphBackgroundBrush}"
+            Fill="{StaticResource TextBackgroundGradientBrush}"
             Stroke="{StaticResource AccentBrush}"
             StrokeThickness="10"
             Width="400"
@@ -99,23 +97,23 @@
             <!--These are the small separation lines-->
             <Line X1="70" Y1="20"
                   X2="70" Y2="210"
-                  Stroke="Gray"
+                  Stroke="{StaticResource AccentBrush}"
                   StrokeThickness="2"/>
             <Line X1="120" Y1="20"
                   X2="120" Y2="210"
-                  Stroke="Gray"
+                  Stroke="{StaticResource AccentBrush}"
                   StrokeThickness="2"/>
             <Line X1="170" Y1="20"
                   X2="170" Y2="210"
-                  Stroke="Gray"
+                  Stroke="{StaticResource AccentBrush}"
                   StrokeThickness="2"/>
             <Line X1="220" Y1="20"
                   X2="220" Y2="210"
-                  Stroke="Gray"
+                  Stroke="{StaticResource AccentBrush}"
                   StrokeThickness="2"/>
             <Line X1="270" Y1="20"
                   X2="270" Y2="210"
-                  Stroke="Gray"
+                  Stroke="{StaticResource AccentBrush}"
                   StrokeThickness="2"/>
 
             <!--The line connecting everything together-->

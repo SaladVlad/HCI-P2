@@ -6,11 +6,11 @@
     <Application.Resources>
 
         <!-- Color Resources -->
-        <Color x:Key="PrimaryColor">#00ADB5</Color>
-        <Color x:Key="PrimaryColorDark">#006267</Color>
-        <Color x:Key="SecondaryColor">#31363F</Color>
+        <Color x:Key="PrimaryColor">#3282B8</Color>
+        <Color x:Key="PrimaryColorDark">#0F4C75</Color>
+        <Color x:Key="SecondaryColor">#0F4C75</Color>
         <Color x:Key="SecondaryColorLight">#535c6b</Color>
-        <Color x:Key="AccentColor">#76ABAE</Color>
+        <Color x:Key="AccentColor">#BBE1FA</Color>
         <Color x:Key="TextColor">#EEEEEE</Color>
 
         <!-- SolidColorBrush Resources -->
@@ -44,9 +44,9 @@
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
             <Setter Property="Padding" Value="10,5" />
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="BorderThickness" Value="1" />
@@ -122,12 +122,27 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="ShadowTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect
+                Color="{StaticResource SecondaryColor}"
+                Direction="320"
+                ShadowDepth="5"
+                Opacity="0.5"
+                BlurRadius="10"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="ComboBox" x:Key="RoundComboBoxStyle">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
-            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="5,2,10,2"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -156,6 +171,7 @@
                                     <ContentPresenter 
                                         Grid.Column="0"
                                         x:Name="ContentSite"
+
                                               Margin="{TemplateBinding Padding}" 
                                               VerticalAlignment="Center" 
                                               HorizontalAlignment="Center"

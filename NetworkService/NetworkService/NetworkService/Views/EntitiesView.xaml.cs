@@ -26,7 +26,9 @@ namespace NetworkService.Views
             DataContext = new EntitiesViewModel();
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-
+        }
     }
 }
