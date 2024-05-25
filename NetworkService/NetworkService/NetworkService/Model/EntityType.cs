@@ -51,6 +51,11 @@ namespace NetworkService.Model
             this._imagePath = imagePath;
         }
 
+        public EntityType()
+        {
+
+        }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
