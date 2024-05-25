@@ -26,9 +26,7 @@ namespace NetworkService.ViewModel
         public MyICommand SelectCommand;
         public MyICommand SelectionChangedCommand { get; }
 
-
         private readonly Timer _timer;
-
         public FlowMeter SelectedMeter
         {
             get => selectedMeter;
@@ -139,7 +137,7 @@ namespace NetworkService.ViewModel
             Time_5 = "00:00";
 
             //setting up an update timer to update the graph visuals
-            _timer = new Timer(UpdatePositions, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(300));
+            _timer = new Timer(UpdatePositions, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(200));
         }
         #endregion
 
