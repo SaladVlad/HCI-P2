@@ -26,6 +26,8 @@ namespace NetworkService.ViewModel
 
         public static Stack<SaveState<CommandType, object>> UndoStack { get; set; }
 
+        public static Mutex Mutex { get; set; } = new Mutex();
+
         #region Commands
         public MyICommand<string> ChangeViewCommand { get; set; }
         public MyICommand UndoCommand { get; set; }
@@ -48,11 +50,8 @@ namespace NetworkService.ViewModel
         {
             createListener(); //creating a listener for gathering info about network entities
 
-            FlowMeters = new ObservableCollection<FlowMeter>();
-            FlowMeters.Add(new FlowMeter { ID = 1, Name = "Naziv1", EntityType = new EntityType("Volume", "../../Resources/Images/volume.png") });
-            //FlowMeters.Add(new FlowMeter { ID = 15, Name = "Naziv2", EntityType = new EntityType("electronic", "electronic.png") });
+            FlowMeters = XmlHelper.LoadData("entityData.xml");
             UndoStack = new Stack<SaveState<CommandType, object>>();
-
 
             #region Commands
 
@@ -62,7 +61,7 @@ namespace NetworkService.ViewModel
 
             #endregion
 
-            SelectedContent = new HomeView(); //setting the net display view as a default
+            SelectedContent = new HomeView(); //setting the home view as a default
             
         }
 
@@ -136,6 +135,7 @@ namespace NetworkService.ViewModel
                             {
                                 FlowMeters[id].Value = value;
                                 AddValueToList(FlowMeters[id]);
+                                DisplayViewModel.UpdateEntitiesOnCanvas();
                             }
                             else
                             {
@@ -200,16 +200,27 @@ namespace NetworkService.ViewModel
             }
             else if (saveState.CommandType == CommandType.CanvasManipulation)
             {
-                
+                Mutex.WaitOne();
+
                 DisplayViewModel.AddedToGrid.Clear();
-                foreach(var entry in saveState.SavedState as Dictionary<int,FlowMeter>)
+                DisplayViewModel.Lines.Clear();
+
+                List<object> state = saveState.SavedState as List<object>;
+
+                foreach(var entry in state[0] as Dictionary<int,FlowMeter>)
                 {
                     DisplayViewModel.AddedToGrid.Add(entry.Key, entry.Value);
                 }
+                foreach (var entry in state[1] as Dictionary<string, Line>)
+                {
+                    DisplayViewModel.Lines.Add(entry.Key, entry.Value);
+                }
+
+                Mutex.ReleaseMutex();
 
                 DisplayViewModel.InitializeCollections();
                 DisplayViewModel.InitializeCategories();
-
+                DisplayViewModel.DrawExistingLines();
 
             }
 
