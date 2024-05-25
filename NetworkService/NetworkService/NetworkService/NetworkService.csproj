@@ -74,11 +74,12 @@
     <Compile Include="Helpers\Logging.cs" />
     <Compile Include="Helpers\PathFinder.cs" />
     <Compile Include="Helpers\ToastNotify.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Model\CanvasBehavior.cs" />
-    <Compile Include="Model\CanvasState.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\EntityType.cs" />
     <Compile Include="Model\FlowMeter.cs" />
+    <Compile Include="Model\ObservableDictionary.cs" />
     <Compile Include="Model\Pair.cs" />
     <Compile Include="Model\SaveState.cs" />
     <Compile Include="Model\TextBoxBehavior.cs" />
