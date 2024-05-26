@@ -129,6 +129,7 @@
                 Background="{StaticResource PrimaryBrush}"
                 Foreground="{StaticResource TextBrush}"
                 FontSize="30"
+                Cursor="Hand"
                 Command="{Binding ChangeViewCommand}"
                 CommandParameter="Home"
                 Style="{StaticResource CustomButtonStyle}"
@@ -139,6 +140,7 @@
                 </Button.Content>
             </Button>
             <Button
+                Cursor="Hand"
                 Grid.Column="0"
                 Margin="1 0 0 0"
                 FontSize="30"
