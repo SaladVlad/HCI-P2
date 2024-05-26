@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -32,6 +33,7 @@ namespace NetworkService.ViewModel
         public MyICommand<string> ChangeViewCommand { get; set; }
         public MyICommand UndoCommand { get; set; }
         public MyICommand QuitCommand { get; set; }
+        public MyICommand CycleTabsCommand { get; set; }
 
         #endregion
 
@@ -58,13 +60,31 @@ namespace NetworkService.ViewModel
             ChangeViewCommand = new MyICommand<string>(ChangeView);
             UndoCommand = new MyICommand(OnUndo, CanUndo);
             QuitCommand = new MyICommand(OnQuit);
-
+            CycleTabsCommand = new MyICommand(OnCycleTabs)
+;
             #endregion
 
             SelectedContent = new HomeView(); //setting the home view as a default
             
         }
 
+        private void OnCycleTabs()
+        {
+            Type viewType = SelectedContent.GetType();
+            UndoStack.Push(new SaveState<CommandType, object>(CommandType.SwitchViews, viewType));
+            if (viewType == typeof(EntitiesView))
+            {
+                SelectedContent = new DisplayView();
+            }
+            else if(viewType == typeof(DisplayView))
+            {
+                SelectedContent = new GraphView();
+            }
+            else if (viewType == typeof(GraphView) || viewType==typeof(HomeView))
+            {
+                SelectedContent = new EntitiesView();
+            }
+        }
 
         private void ChangeView(string viewName)
         {
@@ -126,7 +146,7 @@ namespace NetworkService.ViewModel
                             //U suprotnom, server je poslao promenu stanja nekog objekta u sistemu
                             Console.WriteLine(incomming); //Na primer: "Entitet_1:272"
 
-                            Helpers.Logging.AppendToFile("log.txt", incomming);
+                            Logging.AppendToFile(@"..\..\log.txt", incomming);
 
                             string[] parts = incomming.Split(':');
                             int id = int.Parse(parts[0].Split('_')[1]);

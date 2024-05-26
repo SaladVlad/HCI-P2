@@ -28,6 +28,8 @@
                     Gesture="CTRL+Z"/>
         <KeyBinding Command="{Binding QuitCommand}"
                     Gesture="CTRL+Q"/>
+        <KeyBinding Command="{Binding CycleTabsCommand}"
+                    Gesture="CTRL+E"/>
     </Window.InputBindings>
     
     <Grid>
