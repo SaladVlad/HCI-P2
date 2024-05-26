@@ -12,23 +12,7 @@
              Height="780">
 
     <UserControl.Resources>
-
-        <Style x:Key="ClearButtonStyle" TargetType="Button">
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="ToolTip" Value="Remove Item From Grid"/>
-            <Setter Property="Background" Value="{StaticResource ClearButtonGradientBrush}"/>
-            <Setter Property="Content">
-                <Setter.Value>
-                    <fa5:FontAwesome 
-                        Icon="Regular_WindowClose"
-                        Width="15"
-                        Height="Auto"
-                        Foreground="{StaticResource TextBrush}"
-                        FontSize="12"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        
     </UserControl.Resources>
 
     <Grid>
@@ -101,9 +85,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="0">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -148,9 +142,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="1">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -195,9 +199,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                   Style="{StaticResource ClearButtonStyle}"
-                   Command="{Binding ClearCanvasCommand}"
-                   CommandParameter="2">
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
+                    Command="{Binding ClearCanvasCommand}"
+                    CommandParameter="2">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -297,9 +311,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="4">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -343,9 +367,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="5">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -389,9 +423,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="6">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -435,9 +479,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="7">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -481,9 +535,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="8">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
@@ -527,9 +591,19 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button 
-                    Style="{StaticResource ClearButtonStyle}"
+                    Cursor="Hand"
+                    ToolTip="Remove Item From Grid"
+                    Background="{StaticResource ClearButtonGradientBrush}"
                     Command="{Binding ClearCanvasCommand}"
                     CommandParameter="9">
+                    <Button.Content>
+                        <fa5:FontAwesome 
+                            Icon="Regular_WindowClose"
+                            Width="15"
+                            Height="Auto"
+                            Foreground="{StaticResource TextBrush}"
+                            FontSize="12"/>
+                    </Button.Content>
                 </Button>
             </DockPanel>
             <Border
