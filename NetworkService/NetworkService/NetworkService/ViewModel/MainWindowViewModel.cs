@@ -240,7 +240,7 @@ namespace NetworkService.ViewModel
 
                 DisplayViewModel.InitializeCollections();
                 DisplayViewModel.InitializeCategories();
-                DisplayViewModel.DrawExistingLines();
+                //DisplayViewModel.DrawExistingLines();
 
             }
 
