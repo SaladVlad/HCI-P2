@@ -355,7 +355,7 @@ namespace NetworkService.ViewModel
 
             return Math.Round(index * 148.333 + 74.167);
         }
-        private List<int> FindAllConnections(int index)
+        public static List<int> FindAllConnections(int index)
         {
             return Lines.Keys.Select(c =>
             {
@@ -369,7 +369,7 @@ namespace NetworkService.ViewModel
             .ToList();
 
         }
-        private void DeleteLine(int index1, int index2)
+        public static void DeleteLine(int index1, int index2)
         {
             string key = $"{index1},{index2}";
             if (!Lines.Remove(key))
@@ -480,7 +480,7 @@ namespace NetworkService.ViewModel
         }
 
         //method for saving state before an action
-        private void SaveState()
+        public static void SaveState()
         {
 
             Dictionary<int, FlowMeter> entityState = new Dictionary<int, FlowMeter>();
