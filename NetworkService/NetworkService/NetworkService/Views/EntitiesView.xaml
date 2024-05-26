@@ -6,6 +6,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:NetworkService.Views" 
              d:DataContext="{d:DesignInstance Type=local:EntitiesViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:model="clr-namespace:NetworkService.Model"
              mc:Ignorable="d" 
              Width="445"
@@ -145,14 +146,20 @@
                         Width="140"
                         Height="34"
                         Margin="33 0 0 0"
-                        Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        model:TextBoxBehavior.GotFocusCommand=
-                        "{Binding TextBoxGotFocusCommand}">
+                        Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
                             </Style>
                         </TextBox.Resources>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="GotFocus">
+                                <i:InvokeCommandAction Command="{Binding TextBoxGotFocusCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </TextBox>
 
                     <Label
@@ -371,6 +378,7 @@
                             FontSize="18"
                             Foreground="{StaticResource TextBrush}"/>
                         <TextBox 
+                            x:Name="FilterTextBox"
                             Grid.Row="2"
                             Grid.Column="1"
                             VerticalAlignment="Center"
@@ -378,14 +386,20 @@
                             Width="90"
                             Height="25"
                             Margin="0 0 10 0"
-                            Text="{Binding Path=FilterText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                            model:TextBoxBehavior.GotFocusCommand=
-                            "{Binding TextBoxGotFocusCommand}">
+                            Text="{Binding Path=FilterText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="10"/>
                                 </Style>
                             </TextBox.Resources>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding TextBoxGotFocusCommand}" CommandParameter="{Binding ElementName=FilterTextBox}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=FilterTextBox}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </TextBox>
 
 

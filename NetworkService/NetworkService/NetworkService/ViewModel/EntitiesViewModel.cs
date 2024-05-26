@@ -15,6 +15,10 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using NetworkService.Helpers;
 using System.Windows.Media.Animation;
+using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Windows.Shapes;
 
 namespace NetworkService.Views
 {
@@ -155,36 +159,15 @@ namespace NetworkService.Views
         #endregion
 
         #region Command Definitions
-        public MyICommand<string> InputKeyCommand
-        {
-            get; set;
-        }
-        public MyICommand<object> TextBoxGotFocusCommand
-        {
-            get; set;
-        }
+        public MyICommand<string> InputKeyCommand { get; set; }
+        public MyICommand<object> TextBoxGotFocusCommand { get; set; }
         public MyICommand<object> TextBoxLostFocusCommand { get; set; }
         public MyICommand HideKeyboardCommand { get; set; }
-        public MyICommand BackspaceCommand
-        {
-            get; set;
-        }
-        public MyICommand<string> InputNumberCommand
-        {
-            get; set;
-        }
-        public MyICommand TextChangedCommand
-        {
-            get; set;
-        }
-        public MyICommand AddEntityCommand
-        {
-            get; set;
-        }
-        public MyICommand RemoveEntityCommand
-        {
-            get; set;
-        }
+        public MyICommand BackspaceCommand { get; set; }
+        public MyICommand<string> InputNumberCommand { get; set; }
+        public MyICommand<TextBox> TextChangedCommand { get; set; }
+        public MyICommand AddEntityCommand { get; set; }
+        public MyICommand RemoveEntityCommand { get; set; }
         public MyICommand FilterCommand { get; set; }
         public MyICommand ClearFiltersCommand { get; set; }
 
@@ -212,7 +195,7 @@ namespace NetworkService.Views
             TextBoxLostFocusCommand = new MyICommand<object>(TextBoxLostFocus);
 
             BackspaceCommand = new MyICommand(Backspace);
-            TextChangedCommand = new MyICommand(TextChanged);
+            TextChangedCommand = new MyICommand<TextBox>(OnTextChanged);
 
             HideKeyboardCommand = new MyICommand(HideKeyboard);
 
@@ -263,8 +246,6 @@ namespace NetworkService.Views
 
             return false;
         }
-
-
         private void ClearFilters()
         {
             //resetting UI elements
@@ -279,12 +260,9 @@ namespace NetworkService.Views
             foreach (FlowMeter f in FlowMeters)
                 FilteredMeters.Add(f);
         }
-
         private void Filter()
         {
-            //TODO warning about not selecting anything
-
-
+            HideKeyboard();
             FilteredMeters.Clear();
 
             var filteredByType = new List<FlowMeter>();
@@ -338,39 +316,86 @@ namespace NetworkService.Views
                     FilteredMeters.Add(flowMeter);
                 }
             }
-            //TODO toast of successful filtering
+
+            ToastNotify.RaiseToast("Filtered", "Successful filtering!", Notification.Wpf.NotificationType.Notification);
         }
 
         #endregion
 
-        private void TextChanged()
+        private void AnimateInvalidInput(TextBox textBox)
         {
-            if (SelectedTextBox.Name.Equals("IDTextBox"))
+            // Create a color animation
+            var colorAnimation = new ColorAnimation
             {
-                // Create a color animation
-                var colorAnimation = new ColorAnimation
+                From = Colors.Red,
+                To = (Color)System.Windows.Application.Current.Resources["PrimaryColorDark"],
+                Duration = TimeSpan.FromSeconds(0.3),
+                AutoReverse = true
+            };
+
+            // Create a SolidColorBrush to use as the background brush for the animation
+            var brush = new SolidColorBrush(Colors.Red);
+            textBox.Background = brush;
+
+            // Create a storyboard and add the animation to it
+            var storyboard = new Storyboard();
+            storyboard.Children.Add(colorAnimation);
+
+            // Set the target property to the background color
+            Storyboard.SetTargetProperty(colorAnimation, new PropertyPath("(TextBox.Background).(SolidColorBrush.Color)"));
+
+            // Set the target object to the TextBox's background brush
+            Storyboard.SetTarget(colorAnimation, brush);
+
+            // Begin the animation
+            storyboard.Begin();
+        }
+        private void OnTextChanged(TextBox textBox)
+        {
+            if (textBox.Name.Equals("IDTextBox") || textBox.Name.Equals("FilterTextBox"))
+            {
+                if (Regex.IsMatch(textBox.Text, @"^\d+$"))
                 {
-                    From = Colors.Red,
-                    To = (Color)Application.Current.Resources["PrimaryColorDark"],
-                    Duration = TimeSpan.FromSeconds(0.3),
-                    AutoReverse = false,
-                    RepeatBehavior = new RepeatBehavior(1) // Repeat 3 times
-                };
+                    return;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(textBox.Text))
+                    {
+                        // Remove the last character
+                        textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+                        textBox.CaretIndex = textBox.Text.Length;
+                    }
 
-                // Create a storyboard and add the animation to it
-                var storyboard = new Storyboard();
-                storyboard.Children.Add(colorAnimation);
+                    // Ensure the background is a SolidColorBrush
+                    if (!(textBox.Background is SolidColorBrush))
+                    {
+                        textBox.Background = new SolidColorBrush(Colors.Transparent);
+                    }
 
-                // Set the target property to the background color
-                Storyboard.SetTargetProperty(colorAnimation, new PropertyPath("(TextBox.Background).(SolidColorBrush.Color)"));
+                    // Create a color animation
+                    var colorAnimation = new ColorAnimation
+                    {
+                        From = Colors.Red,
+                        To = (Color)System.Windows.Application.Current.Resources["PrimaryColorDark"],
+                        Duration = TimeSpan.FromSeconds(0.3),
+                        AutoReverse = false
+                    };
 
-                // Set the target object to the selected TextBox
-                Storyboard.SetTarget(colorAnimation, SelectedTextBox);
+                    // Create a storyboard and add the animation to it
+                    var storyboard = new Storyboard();
+                    storyboard.Children.Add(colorAnimation);
 
-                // Begin the animation
-                storyboard.Begin();
+                    // Set the target property to the background color
+                    Storyboard.SetTargetProperty(colorAnimation, new PropertyPath("(TextBox.Background).(SolidColorBrush.Color)"));
+
+                    // Set the target object to the TextBox's background brush
+                    Storyboard.SetTarget(colorAnimation, textBox);
+
+                    // Begin the animation
+                    storyboard.Begin();
+                }
             }
-
         }
 
         #region Creating/Removing
@@ -393,12 +418,22 @@ namespace NetworkService.Views
                 SaveState();
                 FlowMeters.Remove(SelectedEntity);
 
-                var keyToRemove = DisplayViewModel.AddedToGrid.FirstOrDefault(
+                if (DisplayViewModel.AddedToGrid != null)
+                {
+                    var keyToRemove = DisplayViewModel.AddedToGrid.FirstOrDefault(
                     x => EqualityComparer<FlowMeter>.Default.Equals(x.Value, SelectedEntity)).Key;
 
-                if (!EqualityComparer<int>.Default.Equals(keyToRemove, default(int)))
-                {
-                    DisplayViewModel.AddedToGrid.Remove(keyToRemove);
+                    if (!EqualityComparer<int>.Default.Equals(keyToRemove, default(int)))
+                    {
+                        DisplayViewModel.AddedToGrid.Remove(keyToRemove);
+                        List<int> connections = DisplayViewModel.FindAllConnections(keyToRemove);
+                        foreach (int connectedTo in connections)
+                        {
+                            int source = Math.Min(keyToRemove, connectedTo);
+                            int destination = Math.Max(keyToRemove, connectedTo);
+                            DisplayViewModel.DeleteLine(source, destination);
+                        }
+                    }
                 }
 
                 ToastNotify.RaiseToast(
@@ -457,7 +492,7 @@ namespace NetworkService.Views
 
             FlowMeter newFlowMeter = new FlowMeter();
             newFlowMeter.ID = int.Parse(IDText);
-            newFlowMeter.Name = NameText;
+            newFlowMeter.Name = NameText.Trim();
             string type = (SelectedType as string);
             newFlowMeter.EntityType = new EntityType(type, $"../../Resources/Images/{type.ToLower()}.png");
 
@@ -467,10 +502,13 @@ namespace NetworkService.Views
 
             ClearFilters();
 
+            AddEntityCommand.RaiseCanExecuteChanged();
+
             ToastNotify.RaiseToast(
                     "Successful",
                     $"Created entity!:{newFlowMeter.ID}",
                     Notification.Wpf.NotificationType.Success);
+
 
         }
         private void SaveState()
@@ -491,8 +529,17 @@ namespace NetworkService.Views
         }
         private void Backspace()
         {
+            if (!string.IsNullOrEmpty(SelectedTextBox.SelectedText))
+            {
+                int selectionStart = SelectedTextBox.SelectionStart;
+                SelectedTextBox.Text = SelectedTextBox.Text.Remove(selectionStart, SelectedTextBox.SelectionLength);
+                SelectedTextBox.CaretIndex = selectionStart;
+                return;
+            }
             if (SelectedTextBox.Text.Length > 0)
             {
+
+
                 SelectedTextBox.Text = SelectedTextBox.Text.Remove(SelectedTextBox.Text.Length - 1, 1);
             }
         }
@@ -529,7 +576,7 @@ namespace NetworkService.Views
                 var colorAnimation = new ColorAnimation
                 {
                     From = Colors.Red,
-                    To = (Color)Application.Current.Resources["PrimaryColorDark"],
+                    To = (Color)System.Windows.Application.Current.Resources["PrimaryColorDark"],
                     Duration = TimeSpan.FromSeconds(0.3),
                     AutoReverse = false,
                     RepeatBehavior = new RepeatBehavior(1) // Repeat 3 times
