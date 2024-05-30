@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\networkservice\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\networkservice\\viewmodel\\displayviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\viewmodel\\displayviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|c:\\users\\pc\\desktop\\hci p2\\hci-p2\\networkservice\\networkservice\\networkservice\\viewmodel\\entitiesviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\viewmodel\\entitiesviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|c:\\users\\pc\\desktop\\hci p2\\hci-p2\\networkservice\\networkservice\\networkservice\\views\\displayview.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\views\\displayview.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|c:\\users\\pc\\desktop\\hci p2\\hci-p2\\networkservice\\networkservice\\networkservice\\views\\displayview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\views\\displayview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|c:\\users\\pc\\desktop\\hci p2\\hci-p2\\networkservice\\networkservice\\networkservice\\viewmodel\\displayviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\viewmodel\\displayviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|c:\\users\\pc\\desktop\\hci p2\\hci-p2\\networkservice\\networkservice\\networkservice\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6AE2C93C-D3CE-4614-9394-158338AD45C1}|NetworkService\\NetworkService.csproj|solutionrelative:networkservice\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,12 +43,12 @@
           ]
         },
         {
-          "DockedWidth": 95,
+          "DockedWidth": 86,
           "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "DisplayView.xaml",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\Views\\DisplayView.xaml",
               "RelativeDocumentMoniker": "NetworkService\\Views\\DisplayView.xaml",
@@ -53,50 +57,63 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-05-26T17:00:40.942Z",
               "EditorCaption": ""
-            },
+            }
+          ]
+        },
+        {
+          "DockedWidth": 190,
+          "SelectedChildIndex": 3,
+          "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "EntitiesViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\EntitiesViewModel.cs",
+              "RelativeDocumentMoniker": "NetworkService\\ViewModel\\EntitiesViewModel.cs",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\EntitiesViewModel.cs",
+              "RelativeToolTip": "NetworkService\\ViewModel\\EntitiesViewModel.cs",
+              "ViewState": "AQIAAFMBAAAAAAAAAAAAAGoBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-30T11:24:03.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DisplayView.xaml",
+              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\Views\\DisplayView.xaml",
+              "RelativeDocumentMoniker": "NetworkService\\Views\\DisplayView.xaml",
+              "ToolTip": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\Views\\DisplayView.xaml",
+              "RelativeToolTip": "NetworkService\\Views\\DisplayView.xaml",
+              "ViewState": "AQIAABcAAAAAAAAAAAAAACoAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-05-26T17:18:28.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "DisplayViewModel.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\DisplayViewModel.cs",
               "RelativeDocumentMoniker": "NetworkService\\ViewModel\\DisplayViewModel.cs",
               "ToolTip": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\DisplayViewModel.cs",
               "RelativeToolTip": "NetworkService\\ViewModel\\DisplayViewModel.cs",
-              "ViewState": "AQIAAGgAAAAAAAAAAAAAAG8AAAANAAAA",
+              "ViewState": "AQIAAI8AAAAAAAAAAAAAALIAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-26T16:46:08.404Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MainWindowViewModel.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\MainWindowViewModel.cs",
               "RelativeDocumentMoniker": "NetworkService\\ViewModel\\MainWindowViewModel.cs",
               "ToolTip": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\ViewModel\\MainWindowViewModel.cs",
               "RelativeToolTip": "NetworkService\\ViewModel\\MainWindowViewModel.cs",
-              "ViewState": "AQIAAN8AAAAAAAAAAAAAAPQAAAANAAAA",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAAAL4AAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-26T12:16:09.898Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 181,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DisplayView.xaml",
-              "DocumentMoniker": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\Views\\DisplayView.xaml",
-              "RelativeDocumentMoniker": "NetworkService\\Views\\DisplayView.xaml",
-              "ToolTip": "C:\\Users\\PC\\Desktop\\HCI P2\\HCI-P2\\NetworkService\\NetworkService\\NetworkService\\Views\\DisplayView.xaml",
-              "RelativeToolTip": "NetworkService\\Views\\DisplayView.xaml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-05-26T17:18:28.305Z",
               "EditorCaption": ""
             }
           ]
