@@ -4,6 +4,271 @@
              xmlns:local="clr-namespace:NetworkService"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryColor">#3282B8</Color>
+        <Color x:Key="PrimaryColorDark">#0F4C75</Color>
+        <Color x:Key="SecondaryColor">#0F4C75</Color>
+        <Color x:Key="HoverColor">#166EA9</Color>
+        <Color x:Key="SecondaryColorLight">#535c6b</Color>
+        <Color x:Key="AccentColor">#BBE1FA</Color>
+        <Color x:Key="TextColor">#EEEEEE</Color>
+
+        <!-- SolidColorBrush Resources -->
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryColorDark}" />
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}" />
+        <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}" />
+        
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
+
+        <LinearGradientBrush x:Key="BackgroundGradientBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{StaticResource SecondaryColorLight}" Offset="0"/>
+            <GradientStop Color="{StaticResource SecondaryColor}" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="GraphBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="DarkGray" Offset="0"/>
+            <GradientStop Color="Gray" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="TextBackgroundGradientBrush" StartPoint="0,0" EndPoint="0,0.4">
+            <GradientStop Color="{StaticResource PrimaryColor}" Offset="0"/>
+            <GradientStop Color="{StaticResource SecondaryColor}" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ClearButtonGradientBrush" StartPoint="0,0" EndPoint="0,0.4">
+            <GradientStop Color="PeachPuff" Offset="0"/>
+            <GradientStop Color="Tomato" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+                                <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation 
+                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                                To="{StaticResource HoverColor}" 
+                                                Duration="0:0:0.05" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation 
+                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" 
+                                                To="{StaticResource PrimaryColor}" 
+                                                Duration="0:0:0.05" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                    <Condition Property="IsEnabled" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="False" />
+                                    <Condition Property="IsEnabled" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ControlTemplate x:Key="MenuItemControlTemplate" TargetType="{x:Type MenuItem}">
+            <Border x:Name="Border"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}">
+                <ContentPresenter ContentSource="Header"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <!-- Your custom triggers here -->
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+                </Trigger>
+                <!-- Add more triggers for other states if needed -->
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="MenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Style.Triggers>
+                <!-- Trigger for MouseEnter event -->
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!-- Define animation for background color change -->
+                            <ColorAnimation
+                        Storyboard.TargetProperty="(MenuItem.Background).(SolidColorBrush.Color)"
+                        To="{StaticResource PrimaryColorDark}" Duration="0:0:0.2"/>
+                            <!-- Define animation for opacity change -->
+                            <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="0.8" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <!-- Trigger for MouseLeave event -->
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!-- Reverse animations for background, foreground, and opacity -->
+                            <ColorAnimation
+                        Storyboard.TargetProperty="(MenuItem.Background).(SolidColorBrush.Color)"
+                        To="{StaticResource PrimaryColor}" Duration="0:0:0.2"/>
+                            <DoubleAnimation
+                        Storyboard.TargetProperty="Opacity"
+                        To="1" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ShadowTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect
+                Color="{StaticResource SecondaryColor}"
+                Direction="320"
+                ShadowDepth="5"
+                Opacity="0.5"
+                BlurRadius="10"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox" x:Key="RoundComboBoxStyle">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="5,2,10,2"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- Rectangle to create the stroke around ComboBox -->
+                            <Rectangle Stroke="{TemplateBinding BorderBrush}" 
+                               StrokeThickness="{TemplateBinding BorderThickness}" 
+                               RadiusX="10" 
+                               RadiusY="10"
+                               Fill="{TemplateBinding Background}"/>
+                            <!-- ToggleButton to handle dropdown functionality -->
+                            <ToggleButton x:Name="ToggleButton"
+                                  Focusable="false"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <!-- Grid for positioning the arrow symbol and ContentPresenter -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!-- ContentPresenter to display ComboBox content -->
+                                    <ContentPresenter 
+                                        Grid.Column="0"
+                                        x:Name="ContentSite"
+
+                                              Margin="{TemplateBinding Padding}" 
+                                              VerticalAlignment="Center" 
+                                              HorizontalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}" 
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              RecognizesAccessKey="True"/>
+                                    <!-- Arrow symbol -->
+                                    <Path 
+                                        Grid.Column="1"
+                                        Data="M 0 0 L 4 4 L 8 0 Z"
+                                          Fill="{TemplateBinding BorderBrush}" 
+                                          HorizontalAlignment="Right" 
+                                          VerticalAlignment="Center"
+                                          Margin="10,0,5,0"/>
+                                </Grid>
+                            </ToggleButton>
+                            <!-- Popup to display the dropdown items -->
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                              SnapsToDevicePixels="True"
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                    BorderThickness="3"
+                                    Background="{StaticResource SecondaryBrush}"
+                                    BorderBrush="{StaticResource PrimaryBrush}"
+                                    CornerRadius="10"/>
+                                    <ScrollViewer Margin="4,6,4,6"
+                                          SnapsToDevicePixels="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="True">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
     </Application.Resources>
 </Application>
