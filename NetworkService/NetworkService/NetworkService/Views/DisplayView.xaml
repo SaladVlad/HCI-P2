@@ -40,7 +40,7 @@
                 x:Name="LinesItemsControl"
                 Grid.Row="0" Grid.Column="0"
                 Grid.RowSpan="4" Grid.ColumnSpan="3" 
-                Panel.ZIndex="-500"
+                Panel.ZIndex="200"
                 ItemsSource="{Binding LinesToDisplay}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
