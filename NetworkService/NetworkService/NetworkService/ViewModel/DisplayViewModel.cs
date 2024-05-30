@@ -175,7 +175,6 @@ namespace NetworkService.ViewModel
             }
         }
 
-        private static readonly object _lock = new object();
         public void DrawExistingLines()
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -333,7 +332,7 @@ namespace NetworkService.ViewModel
                 Y1 = ConvertToAbsoluteY(sourceIndex),
                 X2 = ConvertToAbsoluteX(destinationIndex),
                 Y2 = ConvertToAbsoluteY(destinationIndex),
-                Stroke = Brushes.White,
+                Stroke = Brushes.Teal,
                 StrokeThickness = 3,
                 StrokeStartLineCap = PenLineCap.Round,
                 StrokeEndLineCap = PenLineCap.Round

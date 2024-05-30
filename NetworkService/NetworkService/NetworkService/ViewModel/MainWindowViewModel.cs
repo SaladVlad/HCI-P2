@@ -238,9 +238,11 @@ namespace NetworkService.ViewModel
 
                 Mutex.ReleaseMutex();
 
-                DisplayViewModel.InitializeCollections();
-                DisplayViewModel.InitializeCategories();
+                //DisplayViewModel.InitializeCollections();
+                //DisplayViewModel.InitializeCategories();
                 //DisplayViewModel.DrawExistingLines();
+
+                SelectedContent = new DisplayView();
 
             }
 
