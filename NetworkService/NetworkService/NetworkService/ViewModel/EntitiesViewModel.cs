@@ -27,6 +27,9 @@ namespace NetworkService.Views
         #region Properties and Commands
 
         #region Properties
+
+        private SolidColorBrush _idBorderBrush;
+        public SolidColorBrush IDBorderBrush { get => _idBorderBrush; set => SetProperty(ref _idBorderBrush, value); }
         public List<string> Types { get; set; }
 
         private object _selectedType;
@@ -211,6 +214,8 @@ namespace NetworkService.Views
             Types.Add("Turbine");
             Types.Add("Electronic");
 
+            IDBorderBrush = new SolidColorBrush(Colors.Transparent);
+
             IDText = "";
             NameText = "";
             SelectedType = Types[0];
@@ -322,34 +327,6 @@ namespace NetworkService.Views
 
         #endregion
 
-        private void AnimateInvalidInput(TextBox textBox)
-        {
-            // Create a color animation
-            var colorAnimation = new ColorAnimation
-            {
-                From = Colors.Red,
-                To = (Color)System.Windows.Application.Current.Resources["PrimaryColorDark"],
-                Duration = TimeSpan.FromSeconds(0.3),
-                AutoReverse = true
-            };
-
-            // Create a SolidColorBrush to use as the background brush for the animation
-            var brush = new SolidColorBrush(Colors.Red);
-            textBox.Background = brush;
-
-            // Create a storyboard and add the animation to it
-            var storyboard = new Storyboard();
-            storyboard.Children.Add(colorAnimation);
-
-            // Set the target property to the background color
-            Storyboard.SetTargetProperty(colorAnimation, new PropertyPath("(TextBox.Background).(SolidColorBrush.Color)"));
-
-            // Set the target object to the TextBox's background brush
-            Storyboard.SetTarget(colorAnimation, brush);
-
-            // Begin the animation
-            storyboard.Begin();
-        }
         private void OnTextChanged(TextBox textBox)
         {
             if (textBox.Name.Equals("IDTextBox") || textBox.Name.Equals("FilterTextBox"))
@@ -382,17 +359,13 @@ namespace NetworkService.Views
                         AutoReverse = false
                     };
 
-                    // Create a storyboard and add the animation to it
                     var storyboard = new Storyboard();
                     storyboard.Children.Add(colorAnimation);
 
-                    // Set the target property to the background color
                     Storyboard.SetTargetProperty(colorAnimation, new PropertyPath("(TextBox.Background).(SolidColorBrush.Color)"));
 
-                    // Set the target object to the TextBox's background brush
                     Storyboard.SetTarget(colorAnimation, textBox);
 
-                    // Begin the animation
                     storyboard.Begin();
                 }
             }
@@ -462,11 +435,12 @@ namespace NetworkService.Views
                     {
                         if (f.ID == intID)
                         {
+                            IDBorderBrush = new SolidColorBrush(Colors.Red);
                             allGood = false;
                             break;
                         }
                     }
-
+                    if (allGood) IDBorderBrush = new SolidColorBrush(Colors.Transparent);
                 }
                 catch
                 {

@@ -141,26 +141,34 @@
                         Foreground="White" 
                         FontSize="20"
                         VerticalContentAlignment="Center"/>
-                    <TextBox
-                        x:Name="IDTextBox"
-                        Width="140"
-                        Height="34"
+                    
+                    <Border
+                        Width="143"
+                        Height="37"
                         Margin="33 0 0 0"
-                        Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </TextBox.Resources>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="GotFocus">
-                                <i:InvokeCommandAction Command="{Binding TextBoxGotFocusCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="TextChanged">
-                                <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
+                        BorderBrush="{Binding IDBorderBrush}"
+                        BorderThickness="2"
+                        CornerRadius="10">
+                        <TextBox
+                            x:Name="IDTextBox"
+                            Width="140"
+                            Height="34"
+                            Text="{Binding IDText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </TextBox.Resources>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding TextBoxGotFocusCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding ElementName=IDTextBox}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Border>
 
                     <Label
                         Content="Type:"
