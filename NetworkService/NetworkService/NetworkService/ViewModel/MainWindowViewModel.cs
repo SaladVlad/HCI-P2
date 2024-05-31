@@ -23,19 +23,10 @@ namespace NetworkService.ViewModel
 {
     public class MainWindowViewModel : BindableBase
     {
+        #region Properties
         public static ObservableCollection<FlowMeter> FlowMeters { get; set; }
 
         public static Stack<SaveState<CommandType, object>> UndoStack { get; set; }
-
-        public static Mutex Mutex { get; set; } = new Mutex();
-
-        #region Commands
-        public MyICommand<string> ChangeViewCommand { get; set; }
-        public MyICommand UndoCommand { get; set; }
-        public MyICommand QuitCommand { get; set; }
-        public MyICommand CycleTabsCommand { get; set; }
-
-        #endregion
 
         private object _selectedContent;
         public object SelectedContent
@@ -48,9 +39,21 @@ namespace NetworkService.ViewModel
             }
         }
 
+        public static Mutex Mutex { get; set; } = new Mutex();
+        #endregion
+
+        #region Commands
+        public MyICommand<string> ChangeViewCommand { get; set; }
+        public MyICommand UndoCommand { get; set; }
+        public MyICommand QuitCommand { get; set; }
+        public MyICommand CycleTabsCommand { get; set; }
+
+        #endregion
+
+        #region Constructor
         public MainWindowViewModel()
         {
-            createListener(); //creating a listener for gathering info about network entities
+            CreateListener(); //creating a listener for gathering info about network entities
 
             FlowMeters = XmlHelper.LoadData("entityData.xml");
             UndoStack = new Stack<SaveState<CommandType, object>>();
@@ -67,7 +70,9 @@ namespace NetworkService.ViewModel
             SelectedContent = new HomeView(); //setting the home view as a default
             
         }
+        #endregion
 
+        #region Methods and Actions
         private void OnCycleTabs()
         {
             Type viewType = SelectedContent.GetType();
@@ -85,7 +90,6 @@ namespace NetworkService.ViewModel
                 SelectedContent = new EntitiesView();
             }
         }
-
         private void ChangeView(string viewName)
         {
             if (viewName == "Table" && SelectedContent.GetType() != typeof(EntitiesView))
@@ -114,8 +118,7 @@ namespace NetworkService.ViewModel
 
             }
         }
-
-        private void createListener()
+        private void CreateListener()
         {
             var tcp = new TcpListener(IPAddress.Loopback, 25657);
             tcp.Start();
@@ -143,8 +146,7 @@ namespace NetworkService.ViewModel
                         }
                         else
                         {
-                            //U suprotnom, server je poslao promenu stanja nekog objekta u sistemu
-                            Console.WriteLine(incomming); //Na primer: "Entitet_1:272"
+                            //Console.WriteLine(incomming); //"Entitet_1:272"
 
                             Logging.AppendToFile(@"..\..\log.txt", incomming);
 
@@ -157,10 +159,6 @@ namespace NetworkService.ViewModel
                                 AddValueToList(FlowMeters[id]);
                                 DisplayViewModel.UpdateEntitiesOnCanvas();
                             }
-                            else
-                            {
-                                //TODO small toast about unknown recieved value
-                            }
 
                         }
                     }, null);
@@ -170,7 +168,6 @@ namespace NetworkService.ViewModel
             listeningThread.IsBackground = true;
             listeningThread.Start();
         }
-
         private void AddValueToList(FlowMeter flowMeter)
         {
             if (flowMeter.Last_5_Values.Count == 5)
@@ -183,7 +180,6 @@ namespace NetworkService.ViewModel
                 flowMeter.Last_5_Values.Add(new Pair<DateTime, int>(DateTime.Now, flowMeter.Value));
             }
         }
-
         public bool CanUndo()
         {
             return UndoStack.Count != 0;
@@ -238,8 +234,8 @@ namespace NetworkService.ViewModel
 
                 Mutex.ReleaseMutex();
 
-                //DisplayViewModel.InitializeCollections();
-                //DisplayViewModel.InitializeCategories();
+                DisplayViewModel.InitializeCollections();
+                DisplayViewModel.InitializeCategories();
                 //DisplayViewModel.DrawExistingLines();
 
                 SelectedContent = new DisplayView();
@@ -254,5 +250,6 @@ namespace NetworkService.ViewModel
             Application.Current.MainWindow.Close();
         }
 
+        #endregion
     }
 }

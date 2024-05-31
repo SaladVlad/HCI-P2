@@ -21,8 +21,7 @@ namespace NetworkService.ViewModel
 {
     public class DisplayViewModel : BindableBase
     {
-
-        private readonly Timer _timer;
+        #region Properties
 
         private FlowMeter _selectedEntity;
         public FlowMeter SelectedEntity
@@ -50,6 +49,7 @@ namespace NetworkService.ViewModel
         public static ObservableCollection<FlowMeter> EntityInfo { get; set; } = new ObservableCollection<FlowMeter>();
         public static ObservableCollection<Brush> BorderBrushCollection { get; set; } = new ObservableCollection<Brush>();
 
+        #endregion
 
         #region Commands
 
@@ -63,7 +63,7 @@ namespace NetworkService.ViewModel
 
         #endregion
 
-
+        #region Initialization
         public DisplayViewModel()
         {
             LinesToDisplay = new ObservableCollection<Line>();
@@ -81,7 +81,7 @@ namespace NetworkService.ViewModel
 
 
         }
-
+        
         public static void InitializeCollections()
         { 
             if (CanvasCollection.Count == 0)
@@ -175,6 +175,9 @@ namespace NetworkService.ViewModel
             }
         }
 
+        #endregion
+
+        #region Line Drawing
         public void DrawExistingLines()
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -206,6 +209,74 @@ namespace NetworkService.ViewModel
             });
 
         }
+
+        #endregion
+
+        #region Line Methods
+        private Line CreateNewLine(int sourceIndex, int destinationIndex)
+        {
+            Line newLine = new Line
+            {
+                X1 = ConvertToAbsoluteX(sourceIndex),
+                Y1 = ConvertToAbsoluteY(sourceIndex),
+                X2 = ConvertToAbsoluteX(destinationIndex),
+                Y2 = ConvertToAbsoluteY(destinationIndex),
+                Stroke = Brushes.Teal,
+                StrokeThickness = 3,
+                StrokeStartLineCap = PenLineCap.Round,
+                StrokeEndLineCap = PenLineCap.Round
+            };
+            return newLine;
+        }
+        private double ConvertToAbsoluteY(int index)
+        {
+            index /= 3;
+
+            return Math.Round(index * 121.375 + 60.937);
+        }
+        private double ConvertToAbsoluteX(int index)
+        {
+            index %= 3;
+
+            return Math.Round(index * 148.333 + 74.167);
+        }
+        public static List<int> FindAllConnections(int index)
+        {
+            return Lines.Keys.Select(c =>
+            {
+                var parts = c.Split(',');
+                int index1 = int.Parse(parts[0]);
+                int index2 = int.Parse(parts[1]);
+                return index == index1 ? index2 : index == index2 ? index1 : (int?)null;
+            })
+            .Where(connectedIndex => connectedIndex.HasValue)
+            .Select(connectedIndex => connectedIndex.Value)
+            .ToList();
+
+        }
+        public static void DeleteLine(int index1, int index2)
+        {
+            string key = $"{index1},{index2}";
+            if (!Lines.Remove(key))
+            {
+                key = $"{index2},{index1}";
+                Lines.Remove(key);
+            }
+        }
+        private int IsLineAlreadyDrawn(int sourceIndex, int destinationIndex)
+        {
+            return Lines.Keys.Cast<string>().Any(c =>
+            {
+                var parts = c.Split(',');
+                int index1 = int.Parse(parts[0]);
+                int index2 = int.Parse(parts[1]);
+                return sourceIndex == index1 && destinationIndex == index2;
+            }) ? 1 : 0;
+        }
+
+        #endregion
+
+        #region Drag & Drop and Canvas Logic
 
         private void OnLeftMouseButtonUp()
         {
@@ -267,7 +338,7 @@ namespace NetworkService.ViewModel
                 CanvasCollection[index].Resources.Add("taken", true);
                 CanvasCollection[index].Resources.Add("data", _draggedItem);
                 AddedToGrid.Add(index, _draggedItem);
-                BorderBrushCollection[index] = _draggedItem.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
+                BorderBrushCollection[index] = _draggedItem.ValueState == ValueState.Normal ? Brushes.Transparent : Brushes.Crimson;
                 EntityInfo[index] = _draggedItem;
                 /*----------------------------------------------*/
 
@@ -324,67 +395,6 @@ namespace NetworkService.ViewModel
 
 
         }
-        private Line CreateNewLine(int sourceIndex, int destinationIndex)
-        {
-            Line newLine = new Line
-            {
-                X1 = ConvertToAbsoluteX(sourceIndex),
-                Y1 = ConvertToAbsoluteY(sourceIndex),
-                X2 = ConvertToAbsoluteX(destinationIndex),
-                Y2 = ConvertToAbsoluteY(destinationIndex),
-                Stroke = Brushes.Teal,
-                StrokeThickness = 3,
-                StrokeStartLineCap = PenLineCap.Round,
-                StrokeEndLineCap = PenLineCap.Round
-            };
-            return newLine;
-        }
-        private double ConvertToAbsoluteY(int index)
-        {
-            index = index / 3;
-
-            return Math.Round(index * 121.375 + 60.937);
-        }
-        private double ConvertToAbsoluteX(int index)
-        {
-            index = index % 3;
-
-            return Math.Round(index * 148.333 + 74.167);
-        }
-        public static List<int> FindAllConnections(int index)
-        {
-            return Lines.Keys.Select(c =>
-            {
-                var parts = c.Split(',');
-                int index1 = int.Parse(parts[0]);
-                int index2 = int.Parse(parts[1]);
-                return index == index1 ? index2 : index == index2 ? index1 : (int?)null;
-            })
-            .Where(connectedIndex => connectedIndex.HasValue)
-            .Select(connectedIndex => connectedIndex.Value)
-            .ToList();
-
-        }
-        public static void DeleteLine(int index1, int index2)
-        {
-            string key = $"{index1},{index2}";
-            if (!Lines.Remove(key))
-            {
-                key = $"{index2},{index1}";
-                Lines.Remove(key);
-            }
-        }
-
-        private int IsLineAlreadyDrawn(int sourceIndex, int destinationIndex)
-        {
-            return Lines.Keys.Cast<string>().Any(c =>
-            {
-                var parts = c.Split(',');
-                int index1 = int.Parse(parts[0]);
-                int index2 = int.Parse(parts[1]);
-                return sourceIndex == index1 && destinationIndex == index2;
-            }) ? 1 : 0;
-        }
 
         //method for removing content and lines from canvas
         private void ResetCanvas(string indexString)
@@ -431,6 +441,9 @@ namespace NetworkService.ViewModel
 
         }
 
+        #endregion
+
+        #region Adding/Removing From Categories
         //add entity back to the list
         private void AddToCategory(FlowMeter flowMeter)
         {
@@ -457,23 +470,33 @@ namespace NetworkService.ViewModel
             }
         }
 
+        #endregion
+
+        #region UI Updates
         //method for updating border color based on the value
         public static void UpdateEntitiesOnCanvas()
         {
-            if (CanvasCollection != null)
+            if (CanvasCollection != null )
             {
-                for (int i = 0; i < 12; i++)
+                if(CanvasCollection.Count != 0)
                 {
-                    if (CanvasCollection[i].Resources.Contains("taken"))
+                    for (int i = 0; i < 12; i++)
                     {
-                        if (AddedToGrid.TryGetValue(i, out FlowMeter flowMeter))
+                        if (CanvasCollection[i].Resources.Contains("taken"))
                         {
-                            BorderBrushCollection[i] = flowMeter.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
+                            if (AddedToGrid.TryGetValue(i, out FlowMeter flowMeter))
+                            {
+                                BorderBrushCollection[i] = flowMeter.ValueState == ValueState.Normal ? Brushes.GreenYellow : Brushes.Crimson;
+                            }
                         }
                     }
                 }
             }
         }
+
+        #endregion
+
+        #region Undo Logic
 
         //method for saving state before an action
         public static void SaveState()
@@ -496,5 +519,7 @@ namespace NetworkService.ViewModel
                 new SaveState<CommandType, object>(CommandType.CanvasManipulation, state));
 
         }
+
+        #endregion
     }
 }

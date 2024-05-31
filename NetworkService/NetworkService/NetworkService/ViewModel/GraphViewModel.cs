@@ -17,16 +17,11 @@ namespace NetworkService.ViewModel
 
         #region Properties and Commands
 
-        public ObservableCollection<FlowMeter> FlowMeters { get; set; }
+        public ObservableCollection<FlowMeter> FlowMeters
+        {
+            get;set;
+        }
         private FlowMeter selectedMeter;
-
-
-        private readonly double graphCoefficient = 0.16;
-
-        public MyICommand SelectCommand;
-        public MyICommand SelectionChangedCommand { get; }
-
-        private readonly Timer _timer;
         public FlowMeter SelectedMeter
         {
             get => selectedMeter;
@@ -37,6 +32,13 @@ namespace NetworkService.ViewModel
             }
         }
 
+        private readonly double graphCoefficient = 0.16;
+
+        public MyICommand SelectCommand;
+        public MyICommand SelectionChangedCommand { get; }
+
+        private readonly Timer _timer;
+        
         private Point startPoint;
         public Point StartPoint { get => startPoint; set => SetProperty(ref startPoint, value); }
         private Point linePoint_1;
@@ -141,7 +143,7 @@ namespace NetworkService.ViewModel
         }
         #endregion
 
-        #region Actions
+        #region Update UI
         private void UpdatePositions(object state)
         {
             if (SelectedMeter!=null && Application.Current!=null)
@@ -173,6 +175,14 @@ namespace NetworkService.ViewModel
                         DateTime dateTime = SelectedMeter.Last_5_Values[0].Item1;
                         Time_1 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
+                    else
+                    {
+                        LinePoint_1 = new Point(45, 210);
+                        MarginPoint_1 = new Thickness(30, 195, 0, 0);
+                        NodeColor_1 = new SolidColorBrush(Colors.Teal);
+                        NodeText_1 = "-";
+                        Time_1 = "00:00";
+                    }
 
 
                     if (SelectedMeter.Last_5_Values.Count > 1)
@@ -196,6 +206,14 @@ namespace NetworkService.ViewModel
                         DateTime dateTime = SelectedMeter.Last_5_Values[1].Item1;
                         Time_2 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
+                    else
+                    {
+                        LinePoint_2 = new Point(95, 210);
+                        MarginPoint_2 = new Thickness(80, 195, 0, 0);
+                        NodeColor_2 = new SolidColorBrush(Colors.Teal);
+                        NodeText_2 = "-";
+                        Time_2 = "00:00";
+                    }
 
                     if (SelectedMeter.Last_5_Values.Count > 2)
                     {
@@ -218,7 +236,14 @@ namespace NetworkService.ViewModel
                         DateTime dateTime = SelectedMeter.Last_5_Values[2].Item1;
                         Time_3 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
-
+                    else
+                    {
+                        LinePoint_3 = new Point(145, 210);
+                        MarginPoint_3 = new Thickness(130, 195, 0, 0);
+                        NodeColor_3 = new SolidColorBrush(Colors.Teal);
+                        NodeText_3 = "-";
+                        Time_3 = "00:00";
+                    }
 
                     if (SelectedMeter.Last_5_Values.Count > 3)
                     {
@@ -240,6 +265,14 @@ namespace NetworkService.ViewModel
                         }
                         DateTime dateTime = SelectedMeter.Last_5_Values[3].Item1;
                         Time_4 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
+                    }
+                    else
+                    {
+                        LinePoint_4 = new Point(195, 210);
+                        MarginPoint_4 = new Thickness(180, 195, 0, 0);
+                        NodeColor_4 = new SolidColorBrush(Colors.Teal);
+                        NodeText_4 = "-";
+                        Time_4 = "00:00";
                     }
 
                     if (SelectedMeter.Last_5_Values.Count > 4)
@@ -263,7 +296,15 @@ namespace NetworkService.ViewModel
                         DateTime dateTime = SelectedMeter.Last_5_Values[4].Item1;
                         Time_5 = dateTime.Minute.ToString() + ":" + dateTime.Second.ToString();
                     }
-                    
+                    else
+                    {
+                        LinePoint_5 = new Point(245, 210);
+                        MarginPoint_5 = new Thickness(230, 195, 0, 0);
+                        NodeColor_5 = new SolidColorBrush(Colors.Teal);
+                        NodeText_5 = "-";
+                        Time_5 = "00:00";
+                    }
+
                 });
 
             }
