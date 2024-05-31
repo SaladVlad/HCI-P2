@@ -68,7 +68,7 @@ namespace NetworkService.ViewModel
             #endregion
 
             SelectedContent = new HomeView(); //setting the home view as a default
-            
+
         }
         #endregion
 
@@ -81,11 +81,11 @@ namespace NetworkService.ViewModel
             {
                 SelectedContent = new DisplayView();
             }
-            else if(viewType == typeof(DisplayView))
+            else if (viewType == typeof(DisplayView))
             {
                 SelectedContent = new GraphView();
             }
-            else if (viewType == typeof(GraphView) || viewType==typeof(HomeView))
+            else if (viewType == typeof(GraphView) || viewType == typeof(HomeView))
             {
                 SelectedContent = new EntitiesView();
             }
@@ -153,7 +153,8 @@ namespace NetworkService.ViewModel
                             string[] parts = incomming.Split(':');
                             int id = int.Parse(parts[0].Split('_')[1]);
                             int value = int.Parse(parts[1]);
-                            if (FlowMeters[id] != null)
+
+                            if (id <= FlowMeters.Count - 1)
                             {
                                 FlowMeters[id].Value = value;
                                 AddValueToList(FlowMeters[id]);
@@ -223,7 +224,7 @@ namespace NetworkService.ViewModel
 
                 List<object> state = saveState.SavedState as List<object>;
 
-                foreach(var entry in state[0] as Dictionary<int,FlowMeter>)
+                foreach (var entry in state[0] as Dictionary<int, FlowMeter>)
                 {
                     DisplayViewModel.AddedToGrid.Add(entry.Key, entry.Value);
                 }
