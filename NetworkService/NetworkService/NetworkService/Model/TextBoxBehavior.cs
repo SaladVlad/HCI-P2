@@ -21,9 +21,6 @@ namespace NetworkService.Model
             DependencyProperty.RegisterAttached("TextChangedCommand", typeof(ICommand), typeof(TextBoxBehavior),
                 new PropertyMetadata(null, OnTextChangedCommandChanged));
 
-       
-
-
 
         public static ICommand GetGotFocusCommand(DependencyObject obj)
         {
@@ -74,7 +71,7 @@ namespace NetworkService.Model
 
         private static void OnLostFocusCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(d is TextBox textBox)
+            if (d is TextBox textBox)
             {
                 textBox.LostFocus -= TextBox_LostFocus;
                 textBox.LostFocus += TextBox_LostFocus;

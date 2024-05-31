@@ -209,10 +209,12 @@ namespace NetworkService.Views
             FilterCommand = new MyICommand(Filter, CanFilter);
             ClearFiltersCommand = new MyICommand(ClearFilters);
 
-            Types = new List<string>();
-            Types.Add("Volume");
-            Types.Add("Turbine");
-            Types.Add("Electronic");
+            Types = new List<string>
+            {
+                "Volume",
+                "Turbine",
+                "Electronic"
+            };
 
             IDBorderBrush = new SolidColorBrush(Colors.Transparent);
 
@@ -294,8 +296,7 @@ namespace NetworkService.Views
                 bool matches = true;
                 if (!string.IsNullOrWhiteSpace(FilterText))
                 {
-                    int filterValue;
-                    if (int.TryParse(FilterText, out filterValue))
+                    if (int.TryParse(FilterText, out int filterValue))
                     {
                         if (IsLowerThanChecked && flowMeter.ID >= filterValue)
                         {
@@ -327,6 +328,7 @@ namespace NetworkService.Views
 
         #endregion
 
+        #region Text Changed Action
         private void OnTextChanged(TextBox textBox)
         {
             if (textBox.Name.Equals("IDTextBox") || textBox.Name.Equals("FilterTextBox"))
@@ -371,6 +373,8 @@ namespace NetworkService.Views
             }
         }
 
+        #endregion
+
         #region Creating/Removing
         private bool CanRemoveEntity()
         {
@@ -396,7 +400,7 @@ namespace NetworkService.Views
                     var keyToRemove = DisplayViewModel.AddedToGrid.FirstOrDefault(
                     x => EqualityComparer<FlowMeter>.Default.Equals(x.Value, SelectedEntity)).Key;
 
-                    if (!EqualityComparer<int>.Default.Equals(keyToRemove, default(int)))
+                    if (!EqualityComparer<int>.Default.Equals(keyToRemove, default))
                     {
                         DisplayViewModel.AddedToGrid.Remove(keyToRemove);
                         List<int> connections = DisplayViewModel.FindAllConnections(keyToRemove);
@@ -464,13 +468,19 @@ namespace NetworkService.Views
         {
             SaveState();
 
-            FlowMeter newFlowMeter = new FlowMeter();
-            newFlowMeter.ID = int.Parse(IDText);
-            newFlowMeter.Name = NameText.Trim();
+            FlowMeter newFlowMeter = new FlowMeter
+            {
+                ID = int.Parse(IDText),
+                Name = NameText.Trim()
+            };
             string type = (SelectedType as string);
             newFlowMeter.EntityType = new EntityType(type, $"../../Resources/Images/{type.ToLower()}.png");
 
             FlowMeters.Add(newFlowMeter);
+
+            IDText = string.Empty;
+            NameText = string.Empty;
+            SelectedType = Types[0];
 
             HideKeyboard();
 
@@ -485,6 +495,10 @@ namespace NetworkService.Views
 
 
         }
+
+        #endregion
+
+        #region Undo
         private void SaveState()
         {
             MainWindowViewModel.UndoStack.Push(new SaveState<CommandType, object>
@@ -528,16 +542,14 @@ namespace NetworkService.Views
                 IsKeyboardEnabled = true;
             }
         }
-
         private void TextBoxLostFocus(object obj)
         {
-            if (obj is TextBox textBox)
+            if (obj is TextBox)
             {
                 KeyboardVisibility = Visibility.Hidden;
                 IsKeyboardEnabled = false;
             }
         }
-
         private void InputKey(string keyPressed)
         {
             if (SelectedTextBox != null && !SelectedTextBox.Name.Equals("IDTextBox"))
@@ -571,7 +583,6 @@ namespace NetworkService.Views
             }
 
         }
-
         private void InputNumber(string keyPressed)
         {
             if (SelectedTextBox != null)
@@ -579,8 +590,6 @@ namespace NetworkService.Views
                 SelectedTextBox.Text += keyPressed;
             }
         }
-
-
         #endregion
 
     }
